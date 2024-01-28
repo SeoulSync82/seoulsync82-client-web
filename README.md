@@ -8,3 +8,4 @@
   - tailwindcss
 - ESLint
 - Prettier
+- vite-plugin-svgr

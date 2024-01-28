@@ -17,7 +17,8 @@
     "react-router": "^6.21.3",
     "react-router-dom": "^6.21.3",
     "redux": "^5.0.1",
-    "scss": "^0.2.4"
+    "scss": "^0.2.4",
+    "vite-plugin-svgr": "^4.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
