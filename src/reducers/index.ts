@@ -1,5 +1,6 @@
-import { combineReducers } from 'redux';
 import testReducer, { TestState } from '@/reducers/testReducer';
+import { combineReducers } from '@reduxjs/toolkit';
+
 const rootReducer = combineReducers({
   testReducer,
 });
