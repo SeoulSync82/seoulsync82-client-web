@@ -4,11 +4,11 @@ import queryString from 'query-string';
 class Service {
   public service: AxiosInstance;
   private baseURL: string = '';
-  private authorization: string | null = null;
+  private authorization: string | null = '';
   private cookie: string = '';
 
   constructor() {
-    this.baseURL = `${process.env.BASE_URL_STG}/api`;
+    this.baseURL = `${process.env.BASE_URL_STG!}/api`;
     this.service = axios.create({
       baseURL: this.baseURL,
       withCredentials: true,
@@ -21,7 +21,9 @@ class Service {
   }
 
   private static async handleRequest(request: any) {
-    // request.headers.Authorization = `Bearer ${accessToken}`;
+    // TODO: get token
+    // this.authorization = localStorage.getItem('token');
+    request.headers.Authorization = `Bearer ${this.authorization}`;
     return request;
   }
   private static handleRequestError(error: any) {
@@ -69,17 +71,18 @@ class Service {
     return this.service.patch(url, body);
   }
 
-  setBaseUrl(url: string) {
+  // chaining methods
+  public setBaseUrl(url: string) {
     this.baseURL = url;
     this.service.defaults.baseURL = url;
     return this;
   }
-  setAuthorization(token: string | null) {
+  public setAuthorization(token: string | null) {
     this.authorization = token;
     this.service.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     return this;
   }
-  setCookie(cookie: string) {
+  public setCookie(cookie: string) {
     this.cookie = cookie;
     this.service.defaults.headers.common['Cookie'] = cookie;
     return this;
