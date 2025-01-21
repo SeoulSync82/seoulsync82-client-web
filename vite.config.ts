@@ -12,7 +12,14 @@ export default defineConfig({
   plugins: [
     react(),
     svgr({
-      svgrOptions: { exportType: 'default', ref: true, svgo: false, titleProp: true },
+      svgrOptions: {
+        icon: true,
+        exportType: 'default',
+        ref: true,
+        svgo: false,
+        titleProp: true,
+        prettier: false,
+      },
       include: '**/*.svg',
     }),
   ],
