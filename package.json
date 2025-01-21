@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview --port 5006",
-    "svgr": "npx @svgr/cli -d src/assets/icons --ignore-existing --typescript --no-dimensions --no-prettier public/svg"
+    "svgr": "npx @svgr/cli -d src/components/icons --ignore-existing --typescript --no-dimensions --no-prettier public/svg"
   },
   "dependencies": {
     "@react-router/node": "^7.1.3",
