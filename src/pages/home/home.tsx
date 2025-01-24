@@ -1,9 +1,7 @@
-const Home = () => {
+export default function Home() {
   return (
-    <div>
-      <p className="text-20 text-red-500">Home page!!</p>
+    <div className="page">
+      <p className="text-20 text-black">Home Page</p>
     </div>
   );
-};
-
-export default Home;
+}
