@@ -7,14 +7,22 @@ export type NavbarIconActive =
   | 'CommunityActive'
   | 'MyPageActive';
 
-export type Icon = NavbarIcon | NavbarIconActive | 'Alarm' | 'Search' | 'LeftArrow' | 'MenuLogo';
+export type Icon =
+  | NavbarIcon
+  | NavbarIconActive
+  | 'Alarm'
+  | 'Search'
+  | 'LeftArrow'
+  | 'MenuLogo'
+  | 'HeaderTypo'
+  | 'HeaderLogo';
 
 export type IconProps = {
   name: Icon;
   color?: string;
   width?: number;
   height?: number;
-  active: boolean;
+  active?: boolean;
   style?: string;
   onClick?: () => void;
 };

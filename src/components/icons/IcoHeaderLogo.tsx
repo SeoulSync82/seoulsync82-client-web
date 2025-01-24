@@ -1,0 +1,4 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+const SvgIcoHeaderLogo = (props: SVGProps<SVGSVGElement>) => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 28 35" {...props}><path fill="#030000" d="M6.507 21.95C2.916 21.95 0 18.996 0 15.35s2.916-6.6 6.507-6.6H8.73c0 2.767.032 3.99 2.043 4.17h12.003c2.88-.015 5.223 2.972 5.223 6.657h-.008c0 3.686-2.344 6.673-5.232 6.673h-3.49v-4.3z" /><path fill="#9070CF" d="M8.728 4.375c0-2.42 1.827-4.375 4.09-4.375H23.45c2.255 0 4.09 1.963 4.09 4.375 0 2.42-1.826 4.375-4.09 4.375H8.728zM19.272 30.625c0 2.42-1.827 4.375-4.09 4.375H4.55C2.295 35 .46 33.037.46 30.625c0-2.42 1.827-4.375 4.09-4.375h14.722z" /></svg>;
+export default SvgIcoHeaderLogo;
