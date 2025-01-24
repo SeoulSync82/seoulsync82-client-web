@@ -1,6 +1,6 @@
-import { IconProps, IconType } from '../button/types';
+import { Icon, IconProps, NavbarIcon } from '../button/types';
 import {
-  IcoProfile,
+  IcoMyPage,
   IcoAiRecommend,
   IcoHome,
   IcoMyCourse,
@@ -8,37 +8,32 @@ import {
   IcoHomeActive,
   IcoMyCourseActive,
   IcoCommunityActive,
-  IcoProfileActive,
+  IcoMyPageActive,
+  IcoHeaderLogo,
+  IcoHeaderTypo,
+  IcoAlarm,
+  IcoSearch,
 } from '../icons';
 
 export default function SVGIcon({
   width = 24,
   height = 24,
   name,
-  active,
+  active = false,
   onClick,
-  color,
 }: IconProps) {
-  const iconTypes: Record<IconType, (props: React.SVGProps<SVGSVGElement>) => JSX.Element> = {
+  const iconTypes: Record<Icon, (props: React.SVGProps<SVGSVGElement>) => JSX.Element> = {
     Home: active ? IcoHomeActive : IcoHome,
     MyCourse: active ? IcoMyCourseActive : IcoMyCourse,
     AiRecommend: IcoAiRecommend,
     Community: active ? IcoCommunityActive : IcoCommunity,
-    Profile: active ? IcoProfileActive : IcoProfile,
+    MyPage: active ? IcoMyPageActive : IcoMyPage,
+    HeaderTypo: IcoHeaderTypo,
+    HeaderLogo: IcoHeaderLogo,
+    Alarm: IcoAlarm,
+    Search: IcoSearch,
   };
-  const IconComponent = iconTypes[name as IconType];
+  const IconComponent = iconTypes[name as Icon];
 
-  return (
-    <>
-      {IconComponent && (
-        <IconComponent
-          width={width}
-          height={height}
-          // fill={color || (active ? 'primary-800' : '#ADB5BD')}
-          // stroke={color || (active ? 'primary-800' : 'none')}
-          onClick={onClick}
-        />
-      )}
-    </>
-  );
+  return <>{IconComponent && <IconComponent width={width} height={height} onClick={onClick} />}</>;
 }
