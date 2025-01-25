@@ -17,18 +17,23 @@ export const TooltipVariants = cva('relative h-[41px]', {
       bottomMiddle: 'left-[50%] bottom-0 -translate-x-1/2',
       bottomRight: 'right-[50px] bottom-0',
     },
+    isBubble: {
+      true: '',
+      false: '',
+    },
   },
   defaultVariants: {
     size: 'medium',
     direction: 'bottomMiddle',
+    isBubble: true,
   },
 });
 
 export default function Tooltip({
   size = 'medium',
   direction = 'bottomMiddle',
-  svgIcon,
   content,
+  isBubble = true,
 }: TooltipProps) {
   const containerClassName = cn(
     TooltipVariants({ size, direction }),
@@ -37,18 +42,13 @@ export default function Tooltip({
 
   return (
     <div className={TooltipVariants({ size, direction })}>
-      <div className={containerClassName}>
-        <p>{content}</p>
-      </div>
-      {svgIcon && (
-        <SVGIcon
-          style={cn('absolute', TooltipVariants({ direction }))}
-          name={svgIcon.name}
-          width={svgIcon.width}
-          height={svgIcon.height}
-          active={false}
-        />
-      )}
+      <div className={containerClassName}>{content}</div>
+      {/* TODO: implement isBubble */}
+      {/* {isBubble && (
+        <div className={cn('absolute', 'shadow-[2px_2px_8px_rgba(0,0,0,0.1)]')}>
+          <SVGIcon name={'DownTriangle'} width={16} height={16} active={false} />
+        </div>
+      )} */}
     </div>
   );
 }

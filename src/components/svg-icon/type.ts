@@ -9,7 +9,8 @@ export type Icon =
   | 'LeftArrow'
   | 'MenuLogo'
   | 'HeaderTypo'
-  | 'HeaderLogo';
+  | 'HeaderLogo'
+  | 'DownTriangle';
 
 export type SNSIcon = 'Kakao' | 'Naver' | 'Google';
 

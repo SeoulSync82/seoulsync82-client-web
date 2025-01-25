@@ -17,6 +17,7 @@ import {
   IcoKakao,
   IcoNaver,
   IcoGoogle,
+  IcoDownTriangle,
 } from '../icons';
 import { Icon, IconProps } from './type';
 
@@ -41,8 +42,8 @@ export default function SVGIcon({
     Kakao: IcoKakao,
     Naver: IcoNaver,
     Google: IcoGoogle,
+    DownTriangle: IcoDownTriangle,
     // SeoulSync: LogoSeoulsync,
-    // downTriangle: IcoDownTriangle,
     // cancelIcon: IcoCancel,
     // lineIcon: IcoLine,
     // plusIcon: IcoPlus,
