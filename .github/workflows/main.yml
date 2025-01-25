@@ -47,7 +47,7 @@ jobs:
             -d '{
                   "type": "frontend",
                   "host_port": 7011,
-                  "container_port": 5005
+                  "container_port": 7011
               }'
         env:
           HOST_NAME: ${{ secrets.NAS_MANAGE_HOST }}
