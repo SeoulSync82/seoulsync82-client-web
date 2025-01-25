@@ -1,4 +1,3 @@
-import { Icon, IconProps, NavbarIcon } from '../button/types';
 import {
   IcoMyPage,
   IcoAiRecommend,
@@ -13,7 +12,13 @@ import {
   IcoHeaderTypo,
   IcoAlarm,
   IcoSearch,
+  IcoLeftArrow,
+  // LogoSeoulsync,
+  IcoKakao,
+  IcoNaver,
+  IcoGoogle,
 } from '../icons';
+import { Icon, IconProps } from './type';
 
 export default function SVGIcon({
   width = 24,
@@ -32,6 +37,23 @@ export default function SVGIcon({
     HeaderLogo: IcoHeaderLogo,
     Alarm: IcoAlarm,
     Search: IcoSearch,
+    LeftArrow: IcoLeftArrow,
+    Kakao: IcoKakao,
+    Naver: IcoNaver,
+    Google: IcoGoogle,
+    // SeoulSync: LogoSeoulsync,
+    // downTriangle: IcoDownTriangle,
+    // cancelIcon: IcoCancel,
+    // lineIcon: IcoLine,
+    // plusIcon: IcoPlus,
+    // fullStartIcon: IcoFullStart,
+    // restaurantIcon: IcoRestaurant,
+    // cafeIcon: cafeIcon,
+    // barIcon: barIcon,
+    // shoppingIcon: shoppingIcon,
+    // cultureIcon: cultureIcon,
+    // entertainmentIcon: entertainmentIcon,
+    // logoIcon: logoIcon,
   };
   const IconComponent = iconTypes[name as Icon];
 
