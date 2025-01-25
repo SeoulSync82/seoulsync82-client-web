@@ -1,5 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import SVGIcon from '@/components/svg-icon/SVGIcon';
+import AuthService from '@/service/auth/AuthService';
+import { setAccessToken } from '@/utils/auth';
 
 export default function Header() {
   const { pathname } = useLocation();
@@ -7,6 +9,13 @@ export default function Header() {
 
   const onClickPrevButton = () => {
     navigate(-1);
+  };
+
+  // TODO: 로그인 테스트 후 삭제
+  const onClickLoginTest = async () => {
+    const response = await AuthService.getKakaoAuth();
+    response?.data.token && setAccessToken(response.data.token);
+    console.log('kakao auth token: ', response?.data.token);
   };
 
   return (
@@ -24,8 +33,15 @@ export default function Header() {
             <SVGIcon width={72} height={32} name="HeaderTypo" />
           </div>
           <div className="flex max-w-[72px] items-center gap-[8px]">
-            <SVGIcon style="mr-2" width={32} height={32} name="Alarm" active={false} />
-            <SVGIcon width={32} height={32} name="Search" active={false} />
+            <SVGIcon
+              style="mr-2"
+              width={32}
+              height={32}
+              name="Alarm"
+              active={false}
+              onClick={onClickLoginTest}
+            />
+            <SVGIcon width={32} height={32} name="Search" />
           </div>
         </div>
       ) : (
