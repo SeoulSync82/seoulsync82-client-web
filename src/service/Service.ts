@@ -1,29 +1,25 @@
+import { getAccessToken } from '@/utils/auth';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import queryString from 'query-string';
 
 class Service {
-  public service: AxiosInstance;
-  private baseURL: string = '';
-  private authorization: string | null = '';
-  private cookie: string = '';
+  service: AxiosInstance;
 
-  constructor() {
-    this.baseURL = `${process.env.BASE_URL_STG!}/api`;
+  constructor({ baseURL = `http://sunggu.myqnapcloud.com:7008/api` }: { baseURL?: string } = {}) {
     this.service = axios.create({
-      baseURL: this.baseURL,
+      baseURL,
       withCredentials: true,
     });
     this.service.interceptors.request.use(
-      Service.handleRequest.bind(this),
+      this.handleRequest.bind(this),
       Service.handleRequestError,
     );
     this.service.interceptors.response.use(Service.handleResponse, Service.handleResponseError);
   }
 
-  private static async handleRequest(request: any) {
-    // TODO: get token
-    // this.authorization = localStorage.getItem('token');
-    request.headers.Authorization = `Bearer ${this.authorization}`;
+  private handleRequest(request: any) {
+    const accessToken = getAccessToken();
+    accessToken && (request.headers.Authorization = 'Bearer ' + accessToken);
     return request;
   }
   private static handleRequestError(error: any) {
@@ -71,22 +67,20 @@ class Service {
     return this.service.patch(url, body);
   }
 
-  // chaining methods
-  public setBaseUrl(url: string) {
-    this.baseURL = url;
-    this.service.defaults.baseURL = url;
-    return this;
-  }
-  public setAuthorization(token: string | null) {
-    this.authorization = token;
-    this.service.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    return this;
-  }
-  public setCookie(cookie: string) {
-    this.cookie = cookie;
-    this.service.defaults.headers.common['Cookie'] = cookie;
-    return this;
-  }
+  // TODO: 필요시 주석 해제
+  // public setBaseUrl(url: string) {
+  //   this.service.defaults.baseURL = url;
+  //   return this;
+  // }
+  // public setAuthorization(token: string | null) {
+  //   this.service.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  //   return this;
+  // }
+  // public setCookie(cookie: string) {
+  //   this.cookie = cookie;
+  //   this.service.defaults.headers.common['Cookie'] = cookie;
+  //   return this;
+  // }
 }
 
 export default new Service();
