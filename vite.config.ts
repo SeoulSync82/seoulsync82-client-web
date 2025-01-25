@@ -27,6 +27,11 @@ export default defineConfig({
     alias: [{ find: '@', replacement: '/src' }],
   },
   server: {
-    port: 5005,
+    proxy: {
+      '/api': {
+        target: 'http://sunggu.myqnapcloud.com:7008',
+        changeOrigin: true,
+      },
+    },
   },
 });
