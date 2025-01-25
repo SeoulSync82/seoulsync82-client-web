@@ -5,9 +5,10 @@ import queryString from 'query-string';
 export default class Service {
   public service: AxiosInstance;
   private isNeedAuthorization: boolean;
+  private headers: Record<string, string> = {};
 
   constructor({
-    baseURL = `http://sunggu.myqnapcloud.com:7008/api`,
+    baseURL = 'http://sunggu.myqnapcloud.com:7008/api',
     isNeedAuthorization = true,
   }: { baseURL?: string; isNeedAuthorization?: boolean } = {}) {
     this.service = axios.create({
@@ -23,10 +24,11 @@ export default class Service {
   }
 
   private handleRequest(request: any) {
-    if (this.isNeedAuthorization) {
+    if (request.config.isNeedAuthorization || this.isNeedAuthorization) {
       // const accessToken = getAccessToken();
       const accessToken = import.meta.env.VITE_TEMP_TOKEN;
       accessToken && (request.headers.Authorization = 'Bearer ' + accessToken);
+      request.headers = { ...request.config.headers, ...this.headers };
     }
     return request;
   }
@@ -51,27 +53,5 @@ export default class Service {
         console.error('Response error:', error);
     }
     return Promise.reject(error);
-  }
-
-  public get<T>(url: string, params?: unknown): Promise<T> {
-    return this.service.get(url, {
-      params,
-      paramsSerializer: (params) => queryString.stringify(params),
-    });
-  }
-  public post<T>(url: string, body?: unknown): Promise<T> {
-    return this.service.post(url, body);
-  }
-  public put<T>(url: string, body?: unknown): Promise<T> {
-    return this.service.put(url, body);
-  }
-  public delete<T>(url: string, params?: unknown): Promise<T> {
-    return this.service.delete(url, {
-      params,
-      paramsSerializer: (params) => queryString.stringify(params),
-    });
-  }
-  public patch<T>(url: string, body?: unknown): Promise<T> {
-    return this.service.patch(url, body);
   }
 }
