@@ -2,10 +2,14 @@ import { getAccessToken } from '@/utils/auth';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import queryString from 'query-string';
 
-class Service {
-  service: AxiosInstance;
+export default class Service {
+  public service: AxiosInstance;
+  private isNeedAuthorization: boolean;
 
-  constructor({ baseURL = `http://sunggu.myqnapcloud.com:7008/api` }: { baseURL?: string } = {}) {
+  constructor({
+    baseURL = `http://sunggu.myqnapcloud.com:7008/api`,
+    isNeedAuthorization = true,
+  }: { baseURL?: string; isNeedAuthorization?: boolean } = {}) {
     this.service = axios.create({
       baseURL,
       withCredentials: true,
@@ -15,12 +19,15 @@ class Service {
       Service.handleRequestError,
     );
     this.service.interceptors.response.use(Service.handleResponse, Service.handleResponseError);
+    this.isNeedAuthorization = isNeedAuthorization;
   }
 
   private handleRequest(request: any) {
-    // const accessToken = getAccessToken();
-    const accessToken = import.meta.env.VITE_TEMP_TOKEN;
-    accessToken && (request.headers.Authorization = 'Bearer ' + accessToken);
+    if (this.isNeedAuthorization) {
+      // const accessToken = getAccessToken();
+      const accessToken = import.meta.env.VITE_TEMP_TOKEN;
+      accessToken && (request.headers.Authorization = 'Bearer ' + accessToken);
+    }
     return request;
   }
   private static handleRequestError(error: any) {
@@ -67,21 +74,4 @@ class Service {
   public patch<T>(url: string, body?: unknown): Promise<T> {
     return this.service.patch(url, body);
   }
-
-  // TODO: 필요시 주석 해제
-  // public setBaseUrl(url: string) {
-  //   this.service.defaults.baseURL = url;
-  //   return this;
-  // }
-  // public setAuthorization(token: string | null) {
-  //   this.service.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  //   return this;
-  // }
-  // public setCookie(cookie: string) {
-  //   this.cookie = cookie;
-  //   this.service.defaults.headers.common['Cookie'] = cookie;
-  //   return this;
-  // }
 }
-
-export default new Service();
