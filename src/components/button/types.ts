@@ -5,7 +5,7 @@ export type ButtonProps = {
   borderPosition?: ButtonBorderPosition;
   borderSize?: ButtonBorderSize;
   borderColor?: ButtonColor;
-  borderRadius?: number;
+  rounded?: ButtonBorderRounded;
   isActive?: boolean;
   onClick: () => void;
   disabled?: boolean;
@@ -13,6 +13,8 @@ export type ButtonProps = {
 };
 
 export type ButtonSize = 'small' | 'medium' | 'large';
+
+export type ButtonBorderRounded = 'small' | 'medium' | 'large' | 'xlarge';
 
 export type ButtonBorderPosition = 'top' | 'left' | 'right' | 'bottom' | 'x' | 'y';
 export type ButtonBorderSize = 'thin' | 'medium' | 'bold';

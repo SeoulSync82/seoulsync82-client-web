@@ -12,7 +12,7 @@ export default function Button({
   isActive = false,
   onClick,
   disabled = false,
-  borderRadius,
+  rounded,
   children,
 }: ButtonProps) {
   const className = cn(
@@ -23,10 +23,10 @@ export default function Button({
       borderStyle:
         borderPosition && borderSize && (`${borderPosition}-${borderSize}` as ButtonBorder),
       borderColor,
+      rounded,
       isActive,
       disabled,
     }),
-    borderRadius && `rounded-[${borderRadius}px]`,
   );
 
   return (

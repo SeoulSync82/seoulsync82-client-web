@@ -1,7 +1,7 @@
 export type TooltipProps = {
   size: 'small' | 'medium';
   direction: TooltipDirections;
-  content: string;
+  message: string;
   isBubble: boolean;
 };
 

@@ -49,6 +49,12 @@ export const ButtonVariants = cva('flex items-center justify-center w-full curso
       ['x-medium']: 'border-x-4',
       ['x-bold']: 'border-x-6',
     },
+    rounded: {
+      small: 'rounded-[4px]',
+      medium: 'rounded-[8px]',
+      large: 'rounded-[16px]',
+      xlarge: 'rounded-[24px]',
+    },
     isActive: {
       true: 'font-bold',
       false: '',
@@ -65,5 +71,6 @@ export const ButtonVariants = cva('flex items-center justify-center w-full curso
     borderStyle: 'none',
     isActive: false,
     disabled: false,
+    borderRadius: 'medium',
   },
 });

@@ -13,13 +13,13 @@ import {
   IcoAlarm,
   IcoSearch,
   IcoLeftArrow,
-  // LogoSeoulsync,
   IcoKakao,
   IcoNaver,
   IcoGoogle,
   IcoDownTriangle,
+  LogoSeoulsync,
 } from '../icons';
-import { Icon, IconProps } from './type';
+import { IconProps, SVGName } from './type';
 
 export default function SVGIcon({
   width = 24,
@@ -28,7 +28,7 @@ export default function SVGIcon({
   active = false,
   onClick,
 }: IconProps) {
-  const iconTypes: Record<Icon, (props: React.SVGProps<SVGSVGElement>) => JSX.Element> = {
+  const svgTypes: Record<SVGName, (props: React.SVGProps<SVGSVGElement>) => JSX.Element> = {
     Home: active ? IcoHomeActive : IcoHome,
     MyCourse: active ? IcoMyCourseActive : IcoMyCourse,
     AiRecommend: IcoAiRecommend,
@@ -43,7 +43,7 @@ export default function SVGIcon({
     Naver: IcoNaver,
     Google: IcoGoogle,
     DownTriangle: IcoDownTriangle,
-    // SeoulSync: LogoSeoulsync,
+    LogoSeoulsync: LogoSeoulsync,
     // cancelIcon: IcoCancel,
     // lineIcon: IcoLine,
     // plusIcon: IcoPlus,
@@ -56,7 +56,7 @@ export default function SVGIcon({
     // entertainmentIcon: entertainmentIcon,
     // logoIcon: logoIcon,
   };
-  const IconComponent = iconTypes[name as Icon];
+  const SvgComponent = svgTypes[name as SVGName];
 
-  return <>{IconComponent && <IconComponent width={width} height={height} onClick={onClick} />}</>;
+  return <>{SvgComponent && <SvgComponent width={width} height={height} onClick={onClick} />}</>;
 }

@@ -32,7 +32,7 @@ export const TooltipVariants = cva('relative h-[41px]', {
 export default function Tooltip({
   size = 'medium',
   direction = 'bottomMiddle',
-  content,
+  message,
   isBubble = true,
 }: TooltipProps) {
   const containerClassName = cn(
@@ -42,7 +42,7 @@ export default function Tooltip({
 
   return (
     <div className={TooltipVariants({ size, direction })}>
-      <div className={containerClassName}>{content}</div>
+      <div className={containerClassName}>{message}</div>
       {/* TODO: implement isBubble */}
       {/* {isBubble && (
         <div className={cn('absolute', 'shadow-[2px_2px_8px_rgba(0,0,0,0.1)]')}>
