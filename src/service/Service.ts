@@ -18,7 +18,8 @@ class Service {
   }
 
   private handleRequest(request: any) {
-    const accessToken = getAccessToken();
+    // const accessToken = getAccessToken();
+    const accessToken = import.meta.env.VITE_TEMP_TOKEN;
     accessToken && (request.headers.Authorization = 'Bearer ' + accessToken);
     return request;
   }
