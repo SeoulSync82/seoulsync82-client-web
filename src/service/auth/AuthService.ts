@@ -17,5 +17,15 @@ class AuthService extends Service {
     const response = await this.service.get('/user/login/google');
     console.log(response);
   }
+  //   async tokenRefresh() {
+  //     const response = await this.service.post('/user/refresh');
+  //     console.log(response);
+  //   }
+  //   async logout() {
+  //     const response = await this.service.post('/user/logout', null, {
+  //       isNeedAuthorization: true,
+  //     });
+  //     console.log(response);
+  //   }
 }
 export default new AuthService();
