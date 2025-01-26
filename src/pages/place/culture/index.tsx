@@ -1,3 +1,3 @@
-export default function PlaceDetail() {
-  return <div>PlaceDetail</div>;
+export default function Culture() {
+  return <div>Culture</div>;
 }
