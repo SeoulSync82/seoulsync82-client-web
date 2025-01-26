@@ -10,18 +10,17 @@ export default function Login() {
   };
 
   return (
-    <div className="page mt-12">
+    <div className="page">
       <div className="max-container flex h-[88dvh] items-center justify-center">
         <div className="flex flex-col items-center justify-center">
           <SVGIcon name="LogoSeoulsync" width={169} height={169} />
-          <div className="mb-3 mt-[113px]">
-            <Tooltip
-              size="small"
-              direction="bottomMiddle"
-              message="⚡️ 로그인하고 나에게 맞는 코스를 추천 받아보세요!"
-              isBubble
-            />
-          </div>
+          <Tooltip
+            size="small"
+            direction="bottomMiddle"
+            message="⚡️ 로그인하고 나에게 맞는 코스를 추천 받아보세요!"
+            isBubble
+            className="mb-3 mt-[113px]"
+          />
           <div className="flex w-full flex-col items-center justify-center gap-[12px]">
             <Button
               bgColor="kakaoYellow"

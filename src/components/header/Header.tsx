@@ -39,11 +39,11 @@ function PageHeader({
   onClickPrevButton: () => void;
 }) {
   return (
-    <div className="relative flex w-full items-center">
+    <div className="relative flex h-full w-full items-center">
       <SVGIcon
-        name="LeftArrow"
-        width={30}
-        height={30}
+        name="ArrowLeft"
+        width={24}
+        height={24}
         active={false}
         onClick={onClickPrevButton}
         color="#000"
