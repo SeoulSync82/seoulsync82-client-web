@@ -43,8 +43,8 @@ export default function Tooltip({
   );
 
   return (
-    <div className={TooltipVariants({ size, direction })}>
-      <div className={clsx(containerClassName, className)}>{message}</div>
+    <div className={clsx(TooltipVariants({ size, direction }), className)}>
+      <div className={containerClassName}>{message}</div>
       {/* TODO: implement isBubble */}
       {/* {isBubble && (
         <div className={cn('absolute', 'shadow-[2px_2px_8px_rgba(0,0,0,0.1)]')}>

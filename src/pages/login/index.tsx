@@ -2,6 +2,7 @@ import SVGIcon from '@/components/svg-icon/SVGIcon';
 import Tooltip from '@/components/tooltip/Tooltip';
 import Button from '@/components/button/Button';
 import AuthService from '@/service/auth/AuthService';
+import clsx from 'clsx';
 
 export default function Login() {
   const onClickLogin = (authType: 'kakao' | 'naver' | 'google') => {
@@ -19,7 +20,7 @@ export default function Login() {
             direction="bottomMiddle"
             message="⚡️ 로그인하고 나에게 맞는 코스를 추천 받아보세요!"
             isBubble
-            className="mb-3 mt-[113px]"
+            className="mb-[15px] mt-[70px]"
           />
           <div className="flex w-full flex-col items-center justify-center gap-[12px]">
             <Button
