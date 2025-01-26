@@ -4,8 +4,9 @@ import Button from '@/components/button/Button';
 import AuthService from '@/service/auth/AuthService';
 
 export default function Login() {
-  const onClickLogin = async (authType: 'kakao' | 'naver' | 'google') => {
-    await AuthService.getKakaoAuth();
+  const onClickLogin = (authType: 'kakao' | 'naver' | 'google') => {
+    const socialLoginUrl = `${AuthService.service.defaults.baseURL}/user/login/${authType}`;
+    window.location.href = socialLoginUrl;
   };
 
   return (
