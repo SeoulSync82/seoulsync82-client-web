@@ -14,8 +14,7 @@ export default function Header() {
   // TODO: 로그인 테스트 후 삭제
   const onClickLoginTest = async () => {
     const response = await AuthService.getKakaoAuth();
-    response?.data.token && setAccessToken(response.data.token);
-    console.log('kakao auth token: ', response?.data.token);
+    console.log('kakao auth token: ', response);
   };
 
   return (
