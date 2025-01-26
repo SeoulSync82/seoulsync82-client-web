@@ -78,15 +78,21 @@ export default function Home() {
               minWidth="clamp(240px, 64vw, 275px)"
               className="rounded-[8px]"
             >
-              <div className="mb-[28px] flex w-full flex-col gap-[8px] px-[16px] text-white">
-                <div className="w-full truncate text-[22px] font-bold leading-[28px]">
-                  {item?.place_name}
-                </div>
-                <div className="flex w-full flex-col items-center">
-                  <div className="w-full truncate text-[12px] font-medium">{item?.address}</div>
-                  <div className="w-full truncate text-[12px] font-medium">
-                    {convertDateToYMD(item?.start_date)} - {convertDateToYMD(item?.end_date)}
+              <div className="mb-[28px] flex w-full items-end justify-between gap-[30px] px-[16px] text-white">
+                <div className="flex w-[55%] flex-col gap-[8px]">
+                  <div className="w-full truncate text-[22px] font-bold leading-[28px]">
+                    {item?.place_name}
                   </div>
+                  <div className="flex w-full flex-col items-center">
+                    <div className="w-full truncate text-[12px] font-medium">{item?.address}</div>
+                    <div className="w-full truncate text-[12px] font-medium">
+                      {convertDateToYMD(item?.start_date)} - {convertDateToYMD(item?.end_date)}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-[12px] font-medium leading-[18px]">
+                  <span className="font-bold">{idx + 1}</span>/
+                  <span>{cultureData?.data?.items.length}</span>
                 </div>
               </div>
             </SwiperCard>
