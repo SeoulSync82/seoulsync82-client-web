@@ -6,7 +6,7 @@ import { NavbarIcon, NavbarIconActive } from '../navigation/types';
 //   | SNSIcon
 //   | 'Alarm'
 //   | 'Search'
-//   | 'LeftArrow'
+//   | 'ArrowLeft'
 //   | 'MenuLogo'
 //   | 'HeaderTypo'
 //   | 'HeaderLogo'
@@ -19,13 +19,13 @@ export type SVGName =
   | SNSIcon
   | 'Alarm'
   | 'Search'
-  | 'LeftArrow'
   | 'MenuLogo'
   | 'HeaderTypo'
   | 'HeaderLogo'
   | 'DownTriangle'
   | 'SplashLogo'
-  | 'LogoSeoulsync';
+  | 'LogoSeoulsync'
+  | 'ArrowLeft';
 
 export type SNSIcon = 'Kakao' | 'Naver' | 'Google';
 
