@@ -1,6 +1,47 @@
 import SVGIcon from '../svg-icon/SVGIcon';
 import { Link, useLocation } from 'react-router-dom';
-import { NavbarIcon } from '../button/types';
+import { NavbarIcon } from './types';
+import { cn } from '@/utils/clsx';
+import { cva } from 'class-variance-authority';
+
+const listItemVariants = cva(
+  'group flex grow cursor-pointer flex-col items-center justify-center',
+  {
+    variants: {
+      active: {
+        true: 'active',
+        false: '',
+      },
+    },
+    defaultVariants: {
+      active: false,
+    },
+  },
+);
+
+const textVariants = cva('text-12 font-bold w-fit', {
+  variants: {
+    isAiRecommend: {
+      true: 'mb-8 text-[#9070CF]',
+      false: 'mt-[6px] text-gray-300 group-[&.active]:text-[#353D4A]',
+    },
+  },
+  defaultVariants: {
+    isAiRecommend: false,
+  },
+});
+
+const iconWrapperVariants = cva('w-fit', {
+  variants: {
+    isAiRecommend: {
+      true: 'mb-[6px]',
+      false: '',
+    },
+  },
+  defaultVariants: {
+    isAiRecommend: false,
+  },
+});
 
 export default function Navigation() {
   const { pathname } = useLocation();
@@ -10,6 +51,7 @@ export default function Navigation() {
     size: number;
     path: string;
   };
+
   const navbarMenu: Record<NavbarIcon, MenuItem> = {
     Home: { name: '홈', size: 24, path: '/' },
     MyCourse: { name: '내 코스', size: 24, path: '/my-course' },
@@ -21,45 +63,23 @@ export default function Navigation() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 mx-auto flex h-[109px] w-full max-w-[430px] items-end transition-all">
       <div className="h-[86px] w-full rounded-t-[20px] bg-white shadow-[0_-4px_8px_rgba(0,0,0,0.08)]">
-        <ul className="justify-between] max-container flex h-full items-center">
+        <ul className="flex h-full items-center justify-between">
           {Object.entries(navbarMenu).map(([key, { name, size, path }]: [string, MenuItem]) => (
-            <li
-              className={`group flex grow cursor-pointer flex-col items-center justify-center ${pathname === key && 'active'}`}
-              key={key}
-            >
-              {key === 'AiRecommend' ? (
-                <Link
-                  to={path}
-                  className="flex min-w-14 max-w-14 flex-col items-center justify-center"
-                >
-                  <div className="mb-[6px] w-fit">
-                    <SVGIcon
-                      name={key as NavbarIcon}
-                      height={size}
-                      width={size}
-                      active={pathname === key}
-                    />
-                  </div>
-                  <div className="mb-8 w-fit text-12 font-bold text-[#9070CF]">{name}</div>
-                </Link>
-              ) : (
-                <Link
-                  to={path}
-                  className="flex min-w-14 max-w-14 flex-col items-center justify-center"
-                >
-                  <div className="w-fit">
-                    <SVGIcon
-                      name={key as NavbarIcon}
-                      height={size}
-                      width={size}
-                      active={pathname === key}
-                    />
-                  </div>
-                  <div className="mt-[6px] w-fit text-12 font-bold text-gray-300 group-[&.active]:text-[#353D4A]">
-                    {name}
-                  </div>
-                </Link>
-              )}
+            <li className={listItemVariants({ active: pathname === path })} key={key}>
+              <Link
+                to={path}
+                className="flex min-w-[56px] max-w-[56px] flex-col items-center justify-center"
+              >
+                <div className={iconWrapperVariants({ isAiRecommend: key === 'AiRecommend' })}>
+                  <SVGIcon
+                    name={key as NavbarIcon}
+                    height={size}
+                    width={size}
+                    active={pathname === path}
+                  />
+                </div>
+                <div className={textVariants({ isAiRecommend: key === 'AiRecommend' })}>{name}</div>
+              </Link>
             </li>
           ))}
         </ul>
