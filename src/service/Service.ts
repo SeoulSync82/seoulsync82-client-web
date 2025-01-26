@@ -1,11 +1,9 @@
 import { getAccessToken } from '@/utils/auth';
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import queryString from 'query-string';
+import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 export default class Service {
   public service: AxiosInstance;
   private isNeedAuthorization: boolean;
-  private headers: Record<string, string> = {};
 
   constructor({
     baseURL = 'http://sunggu.myqnapcloud.com:7008/api',
@@ -23,14 +21,12 @@ export default class Service {
     this.isNeedAuthorization = isNeedAuthorization;
   }
 
-  private handleRequest(request: any) {
-    if (request.config.isNeedAuthorization || this.isNeedAuthorization) {
-      // const accessToken = getAccessToken();
-      const accessToken = import.meta.env.VITE_TEMP_TOKEN;
-      accessToken && (request.headers.Authorization = 'Bearer ' + accessToken);
-      request.headers = { ...request.config.headers, ...this.headers };
+  private handleRequest(config: InternalAxiosRequestConfig<any>) {
+    if (this.isNeedAuthorization) {
+      const accessToken = getAccessToken();
+      accessToken && (config.headers.Authorization = 'Bearer ' + accessToken);
     }
-    return request;
+    return config;
   }
   private static handleRequestError(error: any) {
     console.error('Request error:', error);

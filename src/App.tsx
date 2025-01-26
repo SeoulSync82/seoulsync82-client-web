@@ -1,12 +1,13 @@
-import { RouterProvider } from "react-router-dom";
-import { router } from "./routes";
+import { RouterProvider } from 'react-router-dom';
+import { router } from './routes';
+import { useAuthHandler } from './hooks/useAuthHandler';
 
-function App() {
+export default function App() {
+  useAuthHandler();
+
   return (
     <>
       <RouterProvider router={router} />
     </>
   );
 }
-
-export default App;
