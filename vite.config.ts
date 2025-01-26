@@ -31,6 +31,8 @@ export default defineConfig({
       '/api': {
         target: 'http://sunggu.myqnapcloud.com:7008',
         changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+        secure: false,
       },
     },
   },
