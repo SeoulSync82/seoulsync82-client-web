@@ -9,7 +9,7 @@ const queryKeys = {
 };
 
 export const queryOptions = {
-  getPlaceCulture: (size: number, last_id: number = 0) => ({
+  getPlaceCulture: (size: number, last_id: number) => ({
     queryKey: queryKeys.getPlaceCulture,
     queryFn: () => PlaceService.getPlaceCulture(size, last_id),
   }),
@@ -17,11 +17,11 @@ export const queryOptions = {
     queryKey: queryKeys.getPlaceCultureDetail,
     queryFn: () => PlaceService.getPlaceCultureDetail(uuid),
   }),
-  getPlaceExhibition: (size: number, last_id: number = 0, order: number = 0) => ({
+  getPlaceExhibition: (size: number, last_id: number, order: number) => ({
     queryKey: queryKeys.getPlaceExhibition,
     queryFn: () => PlaceService.getPlaceExhibition(size, last_id, order),
   }),
-  getPlacePopup: (size: number, last_id: number = 0, order: number = 0) => ({
+  getPlacePopup: (size: number, last_id: number, order: number) => ({
     queryKey: queryKeys.getPlacePopup,
     queryFn: () => PlaceService.getPlacePopup(size, last_id, order),
   }),

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { queryOptions } from './queries';
 
-export const usePlaceCulture = (size: number, last_id: number = 0) => {
+export const usePlaceCulture = (size: number = 10, last_id: number = 0) => {
   return useQuery(queryOptions.getPlaceCulture(size, last_id));
 };
 
@@ -17,6 +17,6 @@ export const usePlacePopup = (size: number, last_id: number = 0, order: number =
   return useQuery(queryOptions.getPlacePopup(size, last_id, order));
 };
 
-export const usePlaceDetail = (uuid: string) => {
+export const usePlaceDetail = (uuid: string) => {``
   return useQuery(queryOptions.getPlaceDetail(uuid));
 };

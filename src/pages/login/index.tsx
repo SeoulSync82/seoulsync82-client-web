@@ -1,11 +1,12 @@
 import SVGIcon from '@/components/svg-icon/SVGIcon';
 import Tooltip from '@/components/tooltip/Tooltip';
-import { useNavigate } from 'react-router-dom';
 import Button from '@/components/button/Button';
-import Service from '@/service/Service';
+import AuthService from '@/service/auth/AuthService';
 
 export default function Login() {
-  const navigate = useNavigate();
+  const onClickLogin = async (authType: 'kakao' | 'naver' | 'google') => {
+    await AuthService.getKakaoAuth();
+  };
 
   return (
     <div className="page mt-12">
@@ -26,7 +27,7 @@ export default function Login() {
               textColor="gray900"
               size="medium"
               rounded="medium"
-              onClick={() => navigate('/user/login/kakao')}
+              onClick={() => onClickLogin('kakao')}
             >
               <SVGIcon name={'Kakao'} width={22} height={22} />
               <span className="ml-2 font-bold">카카오톡으로 계속하기</span>
@@ -36,7 +37,7 @@ export default function Login() {
               textColor="white"
               size="medium"
               rounded="medium"
-              onClick={() => navigate('/user/login/naver')}
+              onClick={() => onClickLogin('naver')}
             >
               <SVGIcon name={'Naver'} width={22} height={22} />
               <span className="ml-2 font-bold">네이버로 계속하기</span>
@@ -46,7 +47,7 @@ export default function Login() {
               textColor="gray900"
               size="medium"
               rounded="medium"
-              onClick={() => navigate('/user/login/google')}
+              onClick={() => onClickLogin('google')}
             >
               <SVGIcon name={'Google'} width={22} height={22} />
               <span className="ml-2 font-bold">구글로 계속하기</span>
