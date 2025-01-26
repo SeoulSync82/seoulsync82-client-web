@@ -7,7 +7,12 @@ import MyCourseDetail from '@/pages/my-course/detail';
 import AiRecommend from '@/pages/ai-recommend';
 import Community from '@/pages/community';
 import MyPage from '@/pages/my-page';
+import PlaceDetail from '@/pages/place';
+import Culture from '@/pages/place/culture';
+import Popups from '@/pages/place/culture/popups';
+import Exhibitions from '@/pages/place/culture/exhibitions';
 
+// TODO: react-router-v7 업그레이드할것
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -43,5 +48,25 @@ export const router = createBrowserRouter([
     path: '/login',
     element: <Layout />,
     children: [{ index: true, element: <Login /> }],
+  },
+  {
+    path: '/place/:id',
+    element: <Layout />,
+    children: [{ index: true, element: <PlaceDetail /> }],
+  },
+  {
+    path: '/culture',
+    element: <Layout />,
+    children: [{ index: true, element: <Culture /> }],
+  },
+  {
+    path: '/culture/popups',
+    element: <Layout />,
+    children: [{ index: true, element: <Popups /> }],
+  },
+  {
+    path: '/culture/exhibitions',
+    element: <Layout />,
+    children: [{ index: true, element: <Exhibitions /> }],
   },
 ]);
