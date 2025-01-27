@@ -3,6 +3,7 @@ export type TooltipProps = {
   direction: TooltipDirections;
   message: string;
   isBubble: boolean;
+  className?: string;
 };
 
 export type TooltipDirections =

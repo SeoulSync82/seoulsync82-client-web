@@ -1,57 +1,31 @@
 import SVGIcon from '@/components/svg-icon/SVGIcon';
 import Tooltip from '@/components/tooltip/Tooltip';
-import Button from '@/components/button/Button';
-import AuthService from '@/service/auth/AuthService';
+import SocialLoginButton from '@/components/buttons/social-login/SocialLoginButton';
+import Service from '@/service/Service';
 
 export default function Login() {
-  const onClickLogin = async (authType: 'kakao' | 'naver' | 'google') => {
-    await AuthService.getKakaoAuth();
+  const onClickLogin = (authType: 'kakao' | 'naver' | 'google') => {
+    const serviceInstance = new Service();
+    const socialLoginUrl = `${serviceInstance.service.defaults.baseURL}/user/login/${authType}`;
+    window.location.href = socialLoginUrl;
   };
 
   return (
-    <div className="page mt-12">
+    <div className="page">
       <div className="max-container flex h-[88dvh] items-center justify-center">
         <div className="flex flex-col items-center justify-center">
           <SVGIcon name="LogoSeoulsync" width={169} height={169} />
-          <div className="mb-3 mt-[113px]">
-            <Tooltip
-              size="small"
-              direction="bottomMiddle"
-              message="⚡️ 로그인하고 나에게 맞는 코스를 추천 받아보세요!"
-              isBubble
-            />
-          </div>
+          <Tooltip
+            size="small"
+            direction="bottomMiddle"
+            message="⚡️ 로그인하고 나에게 맞는 코스를 추천 받아보세요!"
+            isBubble
+            className="mb-[15px] mt-[70px]"
+          />
           <div className="flex w-full flex-col items-center justify-center gap-[12px]">
-            <Button
-              bgColor="kakaoYellow"
-              textColor="gray900"
-              size="medium"
-              rounded="medium"
-              onClick={() => onClickLogin('kakao')}
-            >
-              <SVGIcon name={'Kakao'} width={22} height={22} />
-              <span className="ml-2 font-bold">카카오톡으로 계속하기</span>
-            </Button>
-            <Button
-              bgColor="naverGreen"
-              textColor="white"
-              size="medium"
-              rounded="medium"
-              onClick={() => onClickLogin('naver')}
-            >
-              <SVGIcon name={'Naver'} width={22} height={22} />
-              <span className="ml-2 font-bold">네이버로 계속하기</span>
-            </Button>
-            <Button
-              bgColor="googleGray"
-              textColor="gray900"
-              size="medium"
-              rounded="medium"
-              onClick={() => onClickLogin('google')}
-            >
-              <SVGIcon name={'Google'} width={22} height={22} />
-              <span className="ml-2 font-bold">구글로 계속하기</span>
-            </Button>
+            <SocialLoginButton snsType="kakao" onClick={() => onClickLogin('kakao')} />
+            <SocialLoginButton snsType="naver" onClick={() => onClickLogin('naver')} />
+            <SocialLoginButton snsType="google" onClick={() => onClickLogin('google')} />
           </div>
         </div>
       </div>

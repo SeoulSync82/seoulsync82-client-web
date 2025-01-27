@@ -2,6 +2,7 @@ import SVGIcon from '../svg-icon/SVGIcon';
 import { TooltipProps } from './types';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/utils/clsx';
+import clsx from 'clsx';
 
 export const TooltipVariants = cva('relative h-[41px]', {
   variants: {
@@ -34,6 +35,7 @@ export default function Tooltip({
   direction = 'bottomMiddle',
   message,
   isBubble = true,
+  className,
 }: TooltipProps) {
   const containerClassName = cn(
     TooltipVariants({ size, direction }),
@@ -41,7 +43,7 @@ export default function Tooltip({
   );
 
   return (
-    <div className={TooltipVariants({ size, direction })}>
+    <div className={clsx(TooltipVariants({ size, direction }), className)}>
       <div className={containerClassName}>{message}</div>
       {/* TODO: implement isBubble */}
       {/* {isBubble && (
