@@ -1,12 +1,14 @@
-import { getAccessToken } from '@/utils/auth';
+import { checkTokenExpired, getAccessToken, setAccessToken } from '@/utils/auth';
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 export default class Service {
   public service: AxiosInstance;
   private isNeedAuthorization: boolean;
+  private isRefreshing: boolean = false;
 
   constructor({
-    baseURL = 'http://sunggu.myqnapcloud.com:7008/api',
+    baseURL = 'http://127.0.0.1:3456/api',
+    // baseURL = 'http://sunggu.myqnapcloud.com:7008/api',
     isNeedAuthorization = true,
   }: { baseURL?: string; isNeedAuthorization?: boolean } = {}) {
     this.service = axios.create({
@@ -21,10 +23,26 @@ export default class Service {
     this.isNeedAuthorization = isNeedAuthorization;
   }
 
-  private handleRequest(config: InternalAxiosRequestConfig<any>) {
+  private async handleRequest(config: InternalAxiosRequestConfig<any>) {
     if (this.isNeedAuthorization) {
-      const accessToken = getAccessToken();
-      accessToken && (config.headers.Authorization = 'Bearer ' + accessToken);
+      let token = getAccessToken();
+
+      if (checkTokenExpired(token as string)) {
+        try {
+          const newToken = await this.silentTokenRefresh();
+          setAccessToken(newToken as string);
+          token = newToken;
+        } catch (error) {
+          window.location.href = '/login';
+          console.log('token refresh failed: ', error);
+          throw Error('token refresh error');
+        } finally {
+          this.isRefreshing = false;
+        }
+        token = getAccessToken();
+      }
+
+      token && (config.headers.Authorization = `Bearer ${token}`);
     }
     return config;
   }
@@ -38,16 +56,21 @@ export default class Service {
   private static handleResponseError(error: any) {
     switch (error.response?.status) {
       case 401:
-        break;
       case 403:
+        window.location.href = '/login';
         break;
       case 404:
-        break;
       case 500:
+        // TODO: redirect to error page
         break;
       default:
         console.error('Response error:', error);
     }
     return Promise.reject(error);
+  }
+
+  private async silentTokenRefresh() {
+    const response = await this.service.post('/user/refresh');
+    return response.data.eid_access_token;
   }
 }
