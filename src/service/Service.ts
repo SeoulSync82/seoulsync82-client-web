@@ -1,13 +1,12 @@
-import { checkTokenExpired, getAccessToken, setAccessToken } from '@/utils/auth';
-import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { checkTokenExpired, getAccessToken, removeAccessToken, setAccessToken } from '@/utils/auth';
+import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 export default class Service {
   public service: AxiosInstance;
   private isNeedAuthorization: boolean;
 
   constructor({
-    baseURL = 'http://127.0.0.1:3456/api',
-    // baseURL = 'http://sunggu.myqnapcloud.com:7008/api',
+    baseURL = 'http://sunggu.myqnapcloud.com:7008/api',
     isNeedAuthorization = true,
   }: { baseURL?: string; isNeedAuthorization?: boolean } = {}) {
     this.service = axios.create({
@@ -18,26 +17,16 @@ export default class Service {
       this.handleRequest.bind(this),
       Service.handleRequestError,
     );
-    this.service.interceptors.response.use(Service.handleResponse, Service.handleResponseError);
+    this.service.interceptors.response.use(
+      Service.handleResponse,
+      this.handleResponseError.bind(this),
+    );
     this.isNeedAuthorization = isNeedAuthorization;
   }
 
   private async handleRequest(config: InternalAxiosRequestConfig<any>) {
     if (this.isNeedAuthorization) {
-      let token = getAccessToken();
-
-      if (checkTokenExpired(token as string)) {
-        try {
-          const newToken = await this.silentTokenRefresh();
-          setAccessToken(newToken as string);
-          token = newToken;
-        } catch (error) {
-          window.location.href = '/login';
-          console.log('token refresh failed: ', error);
-          throw Error('token refresh error');
-        }
-      }
-
+      const token = getAccessToken();
       token && (config.headers.Authorization = `Bearer ${token}`);
     }
     return config;
@@ -49,9 +38,23 @@ export default class Service {
   private static handleResponse<T>(response: AxiosResponse<T>) {
     return response.data;
   }
-  private static handleResponseError(error: any) {
+  private async handleResponseError(error: any) {
     switch (error.response?.status) {
-      case 401:
+      case 401: {
+        let token = getAccessToken();
+        if (!token || checkTokenExpired(token)) {
+          try {
+            const response = await this.silentTokenRefresh();
+            token = response.data.eid_access_token;
+            setAccessToken(token as string);
+            this.service.defaults.headers.Authorization = `Bearer ${token}`;
+          } catch (refreshError) {
+            removeAccessToken();
+            window.location.href = '/login';
+          }
+        }
+        break;
+      }
       case 403:
         window.location.href = '/login';
         break;
@@ -62,11 +65,11 @@ export default class Service {
       default:
         console.error('Response error:', error);
     }
+
     return Promise.reject(error);
   }
 
   private async silentTokenRefresh() {
-    const response = await this.service.post('/user/refresh');
-    return response.data.eid_access_token;
+    return await this.service.post('/user/refresh');
   }
 }
