@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Layout from '@/layouts';
+import Layout from '@/layouts/default';
 import Home from '@/pages/home';
 import Login from '@/pages/login';
 import MyCourse from '@/pages/my-course';
