@@ -1,8 +1,15 @@
 import SVGIcon from '@/components/svg-icon/SVGIcon';
 import Tooltip from '@/components/tooltip/Tooltip';
 import SocialLoginButton from '@/components/buttons/social-login/SocialLoginButton';
+import Service from '@/service/Service';
 
 export default function Login() {
+  const onClickLogin = (authType: 'kakao' | 'naver' | 'google') => {
+    const serviceInstance = new Service();
+    const socialLoginUrl = `${serviceInstance.service.defaults.baseURL}/user/login/${authType}`;
+    window.location.href = socialLoginUrl;
+  };
+
   return (
     <div className="page">
       <div className="max-container flex h-[88dvh] items-center justify-center">
@@ -16,9 +23,9 @@ export default function Login() {
             className="mb-[15px] mt-[70px]"
           />
           <div className="flex w-full flex-col items-center justify-center gap-[12px]">
-            <SocialLoginButton snsType="kakao" />
-            <SocialLoginButton snsType="naver" />
-            <SocialLoginButton snsType="google" />
+            <SocialLoginButton snsType="kakao" onClick={() => onClickLogin('kakao')} />
+            <SocialLoginButton snsType="naver" onClick={() => onClickLogin('naver')} />
+            <SocialLoginButton snsType="google" onClick={() => onClickLogin('google')} />
           </div>
         </div>
       </div>
