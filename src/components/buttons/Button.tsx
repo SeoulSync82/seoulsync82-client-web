@@ -1,6 +1,7 @@
 import { cn } from '@/utils/clsx';
 import { ButtonVariants } from './variants';
 import { ButtonBorder, ButtonProps } from './types';
+import clsx from 'clsx';
 
 export default function Button({
   size = 'medium',
@@ -14,8 +15,9 @@ export default function Button({
   disabled = false,
   rounded,
   children,
+  className,
 }: ButtonProps) {
-  const className = cn(
+  const buttonStyles = clsx(
     ButtonVariants({
       size,
       bgColor,
@@ -27,10 +29,11 @@ export default function Button({
       isActive,
       disabled,
     }),
+    className,
   );
 
   return (
-    <button className={className} onClick={onClick} disabled={disabled}>
+    <button className={buttonStyles} onClick={onClick} disabled={disabled}>
       {children}
     </button>
   );

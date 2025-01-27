@@ -1,15 +1,8 @@
 import SVGIcon from '@/components/svg-icon/SVGIcon';
 import Tooltip from '@/components/tooltip/Tooltip';
-import Button from '@/components/button/Button';
-import AuthService from '@/service/auth/AuthService';
-import clsx from 'clsx';
+import SocialLoginButton from '@/components/buttons/social-login/SocialLoginButton';
 
 export default function Login() {
-  const onClickLogin = (authType: 'kakao' | 'naver' | 'google') => {
-    const socialLoginUrl = `${AuthService.service.defaults.baseURL}/user/login/${authType}`;
-    window.location.href = socialLoginUrl;
-  };
-
   return (
     <div className="page">
       <div className="max-container flex h-[88dvh] items-center justify-center">
@@ -23,36 +16,9 @@ export default function Login() {
             className="mb-[15px] mt-[70px]"
           />
           <div className="flex w-full flex-col items-center justify-center gap-[12px]">
-            <Button
-              bgColor="kakaoYellow"
-              textColor="gray900"
-              size="medium"
-              rounded="medium"
-              onClick={() => onClickLogin('kakao')}
-            >
-              <SVGIcon name={'Kakao'} width={22} height={22} />
-              <span className="ml-2 font-bold">카카오톡으로 계속하기</span>
-            </Button>
-            <Button
-              bgColor="naverGreen"
-              textColor="white"
-              size="medium"
-              rounded="medium"
-              onClick={() => onClickLogin('naver')}
-            >
-              <SVGIcon name={'Naver'} width={22} height={22} />
-              <span className="ml-2 font-bold">네이버로 계속하기</span>
-            </Button>
-            <Button
-              bgColor="googleGray"
-              textColor="gray900"
-              size="medium"
-              rounded="medium"
-              onClick={() => onClickLogin('google')}
-            >
-              <SVGIcon name={'Google'} width={22} height={22} />
-              <span className="ml-2 font-bold">구글로 계속하기</span>
-            </Button>
+            <SocialLoginButton snsType="kakao" />
+            <SocialLoginButton snsType="naver" />
+            <SocialLoginButton snsType="google" />
           </div>
         </div>
       </div>

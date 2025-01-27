@@ -1,18 +1,5 @@
 import { NavbarIcon, NavbarIconActive } from '../navigation/types';
 
-// export type Icon =
-//   | NavbarIcon
-//   | NavbarIconActive
-//   | SNSIcon
-//   | 'Alarm'
-//   | 'Search'
-//   | 'ArrowLeft'
-//   | 'MenuLogo'
-//   | 'HeaderTypo'
-//   | 'HeaderLogo'
-//   | 'DownTriangle'
-//   | SVGName;
-
 export type SVGName =
   | NavbarIcon
   | NavbarIconActive
@@ -25,9 +12,20 @@ export type SVGName =
   | 'DownTriangle'
   | 'SplashLogo'
   | 'LogoSeoulsync'
-  | 'ArrowLeft';
+  | 'ArrowLeft'
+  | 'Cancel'
+  | 'Line'
+  | 'Plus'
+  | 'FullStar'
+  | 'Restaurant'
+  | 'Cafe'
+  | 'Bar'
+  | 'Shopping'
+  | 'Culture'
+  | 'Entertainment'
+  | 'Logo';
 
-export type SNSIcon = 'Kakao' | 'Naver' | 'Google';
+export type SNSType = 'kakao' | 'naver' | 'google';
 
 export type IconProps = {
   name: SVGName | string;
@@ -37,4 +35,5 @@ export type IconProps = {
   active?: boolean;
   style?: string;
   onClick?: () => void;
+  className?: string;
 };

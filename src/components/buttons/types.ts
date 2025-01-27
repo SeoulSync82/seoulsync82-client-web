@@ -9,7 +9,8 @@ export type ButtonProps = {
   isActive?: boolean;
   onClick: () => void;
   disabled?: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  className?: string;
 };
 
 export type ButtonSize = 'small' | 'medium' | 'large';
