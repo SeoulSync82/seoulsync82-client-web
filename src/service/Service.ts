@@ -6,7 +6,8 @@ export default class Service {
   private isNeedAuthorization: boolean;
 
   constructor({
-    baseURL = 'http://sunggu.myqnapcloud.com:7008/api',
+    // baseURL = 'http://sunggu.myqnapcloud.com:7008/api',
+    baseURL = 'http://127.0.0.1:3456/api',
     isNeedAuthorization = true,
   }: { baseURL?: string; isNeedAuthorization?: boolean } = {}) {
     this.service = axios.create({
@@ -46,9 +47,11 @@ export default class Service {
           try {
             const response = await this.silentTokenRefresh();
             token = response.data.eid_access_token;
+            console.log('refresh ', response);
             setAccessToken(token as string);
             this.service.defaults.headers.Authorization = `Bearer ${token}`;
           } catch (refreshError) {
+            console.log(1111, token, refreshError);
             removeAccessToken();
             window.location.href = '/login';
           }
