@@ -4,7 +4,6 @@ import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 
 export default class Service {
   public service: AxiosInstance;
   private isNeedAuthorization: boolean;
-  private isRefreshing: boolean = false;
 
   constructor({
     baseURL = 'http://127.0.0.1:3456/api',
@@ -36,10 +35,7 @@ export default class Service {
           window.location.href = '/login';
           console.log('token refresh failed: ', error);
           throw Error('token refresh error');
-        } finally {
-          this.isRefreshing = false;
         }
-        token = getAccessToken();
       }
 
       token && (config.headers.Authorization = `Bearer ${token}`);
