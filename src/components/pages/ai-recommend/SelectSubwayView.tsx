@@ -57,7 +57,7 @@ export default function SelectSubwayView() {
             key={item.station_uuid}
             content={item.station}
             bgColor={station_uuid === item.uuid ? 'primary' : 'white'}
-            textColor={station_uuid === item.uuid ? 'primary' : 'gray400'}
+            textColor={station_uuid === item.uuid ? 'white' : 'gray400'}
             isActive={station_uuid === item.uuid}
             onClick={() => onClickSubwayStation(item)}
             className="border-b border-gray-200 text-16 font-normal"
