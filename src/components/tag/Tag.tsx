@@ -11,7 +11,7 @@ export type TagPropsType = {
 
 export default function Tag({ size, content, color, className, onClick }: TagPropsType) {
   const sizeVariants = {
-    small: 'h-[26px] text-14',
+    small: 'h-[24px] text-14',
     medium: 'h-[30px] text-18',
   };
 
@@ -31,10 +31,9 @@ export default function Tag({ size, content, color, className, onClick }: TagPro
   return (
     <div
       className={clsx(
-        'flex items-center justify-center rounded-[50px]',
+        'flex w-fit items-center justify-center rounded-[50px] px-[16px] font-semibold',
         bgColorVariants[color],
         sizeVariants[size],
-        'w-full font-semibold',
         className,
       )}
       onClick={onClick}

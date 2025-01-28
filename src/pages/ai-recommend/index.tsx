@@ -284,7 +284,6 @@ const SelectCustomView = () => {
                         size="small"
                         color="gray100"
                         content="삭제"
-                        className="w-12"
                         onClick={() => {
                           console.log('deletePlaceItem');
                         }}
