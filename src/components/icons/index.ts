@@ -1,6 +1,7 @@
 export { default as IcoAiRecommend } from './IcoAiRecommend'
 export { default as IcoAlarm } from './IcoAlarm'
 export { default as IcoArrowLeft } from './IcoArrowLeft'
+export { default as IcoArrow } from './IcoArrow'
 export { default as IcoBar } from './IcoBar'
 export { default as IcoCafe } from './IcoCafe'
 export { default as IcoCancel } from './IcoCancel'
