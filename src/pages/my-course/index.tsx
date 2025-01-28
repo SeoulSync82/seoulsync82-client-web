@@ -1,6 +1,7 @@
 import TabButton from '@/components/buttons/tab';
 import clsx from 'clsx';
-import { useLocation } from 'react-router';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 
 export default function MyCourse() {
   const tabItems = [
@@ -14,6 +15,19 @@ export default function MyCourse() {
     },
   ];
   const { pathname, search } = useLocation();
+  const searchParams = new URLSearchParams(search);
+  const type = searchParams.get('type');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!type) {
+      searchParams.set('type', 'liked');
+      navigate({
+        pathname,
+        search: `?${searchParams.toString()}`,
+      });
+    }
+  }, [type]);
 
   return (
     <div className="page w-full">
@@ -28,9 +42,7 @@ export default function MyCourse() {
           />
         ))}
       </div>
-      <div className="w-full overflow-y-scroll">
-        
-      </div>
+      <div className="w-full overflow-y-scroll"></div>
     </div>
   );
 }

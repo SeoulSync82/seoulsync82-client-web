@@ -12,10 +12,10 @@ export default function AiRecommend() {
   const { pathname, search } = useLocation();
   const searchParams = new URLSearchParams(search);
 
-  const line_uuid = searchParams.get('line_uuid');
+  const line_uuid = searchParams.get('line_uuid') || '077ff3adc0e556148bf7eeb7a0273fb9';
   const station_uuid = searchParams.get('station_uuid');
   const theme_uuid = searchParams.get('theme_uuid');
-  const type = searchParams.get('type') || 'subway';
+  const type = searchParams.get('type');
 
   const tabItems = [
     {
@@ -74,6 +74,14 @@ export default function AiRecommend() {
     (type === 'theme' && (!line_uuid || !station_uuid || !theme_uuid));
 
   useEffect(() => {
+    if (!type) {
+      searchParams.set('type', 'subway');
+      searchParams.set('line_uuid', line_uuid);
+      navigate({
+        pathname,
+        search: `?${searchParams.toString()}`,
+      });
+    }
     setCurrentView(selectViewOptions[type]);
   }, [type]);
 
