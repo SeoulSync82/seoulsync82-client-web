@@ -15,7 +15,7 @@ export default function DefaultHeader({ pageName }: { pageName: string }) {
         onClick={onClickPrevButton}
         color="#000"
       />
-      <div className="absolute left-1/2 top-1/2 max-h-[48px] max-w-[50%] -translate-x-1/2 -translate-y-1/2 text-16 font-bold text-[#101010]">
+      <div className="absolute left-1/2 top-1/2 max-h-[48px] max-w-[50%] -translate-x-1/2 -translate-y-1/2 text-20 font-bold text-[#101010]">
         {pageName}
       </div>
     </div>

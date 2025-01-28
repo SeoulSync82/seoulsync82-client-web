@@ -1,16 +1,16 @@
-import TabButton from '@/components/buttons/tab';
-import clsx from 'clsx';
-import { useLocation } from 'react-router';
+import TabButton from "@/components/buttons/tab";
+import clsx from "clsx";
+import { useLocation } from "react-router";
 
-export default function MyCourse() {
+export default function Culture() {
   const tabItems = [
     {
-      label: '좋아요 한 코스',
-      type: 'liked',
+      label: '전시',
+      type: 'exhibitions',
     },
     {
-      label: '추천 받은 코스',
-      type: 'bookmarked',
+      label: '팝업',
+      type: 'popups',
     },
   ];
   const { pathname, search } = useLocation();
@@ -28,9 +28,7 @@ export default function MyCourse() {
           />
         ))}
       </div>
-      <div className="w-full overflow-y-scroll">
-        
-      </div>
+      <div className="w-full overflow-y-scroll">culture</div>
     </div>
   );
 }
