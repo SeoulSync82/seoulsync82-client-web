@@ -174,9 +174,9 @@ const SelectCustomView = () => {
           </div>
         </div>
         {courseRecommendData?.data?.items.places.map((place) => (
-          <div className="flex w-full items-center justify-between">
+          <div className="mb-[16px] flex w-full items-center justify-between ">
             {isPlaceOpen ? (
-              <div className="mb-[16px] flex w-full">
+              <div className="flex w-full">
                 <div className="flex flex-col items-center justify-center">
                   <div className="relative mr-2 h-fit w-fit">
                     <SVGIcon
@@ -201,7 +201,6 @@ const SelectCustomView = () => {
                       size="small"
                       color="gray100"
                       content="삭제"
-                      className="w-12"
                       onClick={() => {
                         console.log('deletePlaceItem');
                       }}
@@ -277,7 +276,7 @@ const SelectCustomView = () => {
                   </div>
                   <div className="w-full">
                     <div className="flex w-full justify-between">
-                      <div className="mb-[14px] mt-[5px] text-14 font-normal text-gray-300">
+                      <div className="mt-[5px] text-14 font-normal text-gray-300">
                         {PlaceType[place.place_type as keyof typeof PlaceType]}
                       </div>
                       <Tag
@@ -289,14 +288,14 @@ const SelectCustomView = () => {
                         }}
                       />
                     </div>
-                    <div className="flex items-center justify-between">
-                      <div className="text-20 font-semibold text-gray-900">{place.place_name}</div>
+                    <div className="mt-[16px] flex items-center justify-between">
+                      <div className="text-16 font-semibold text-gray-900">{place.place_name}</div>
                       <SVGIcon
                         name="Arrow"
                         width={16}
                         height={16}
                         onClick={onClickPlaceToggle}
-                        className="rotate-[270deg]"
+                        className="rotate-[270deg] mr-[8px]"
                       />
                     </div>
                   </div>
