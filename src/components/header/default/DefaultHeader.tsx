@@ -6,7 +6,7 @@ export default function DefaultHeader({ pageName }: { pageName: string }) {
   const onClickPrevButton = () => navigate(-1);
 
   return (
-    <div className="relative flex h-full w-full items-center">
+    <div className="relative flex h-[60px] w-full items-center">
       <SVGIcon
         name="ArrowLeft"
         width={24}
