@@ -27,7 +27,7 @@ export default function SocialLoginButton({
       onClick={onClick}
     >
       <SVGIcon name={snsTypes[snsType].icon as SNSType} width={22} height={22} />
-      <span className="ml-2 font-bold">{snsTypes[snsType].label}로 계속하기</span>
+      <span className="ml-2 font-bold">{snsTypes[snsType].label} 로그인</span>
     </Button>
   );
 }

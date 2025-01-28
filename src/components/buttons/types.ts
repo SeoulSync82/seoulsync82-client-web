@@ -7,8 +7,9 @@ export type ButtonProps = {
   borderColor?: ButtonColor;
   rounded?: ButtonBorderRounded;
   isActive?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   disabled?: boolean;
+  href?: string;
   children?: React.ReactNode;
   className?: string;
 };
@@ -36,4 +37,5 @@ export type ButtonColor =
   | 'gray900'
   | 'gray100'
   | 'gray200'
+  | 'gray300'
   | 'gray400';

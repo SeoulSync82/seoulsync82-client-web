@@ -6,8 +6,8 @@ export default class Service {
   private isNeedAuthorization: boolean;
 
   constructor({
-    // baseURL = 'http://sunggu.myqnapcloud.com:7008/api',
-    baseURL = 'http://127.0.0.1:3456/api',
+    baseURL = 'http://sunggu.myqnapcloud.com:7008/api',
+    // baseURL = 'http://localhost:3456/api',
     isNeedAuthorization = true,
   }: { baseURL?: string; isNeedAuthorization?: boolean } = {}) {
     this.service = axios.create({
@@ -39,34 +39,37 @@ export default class Service {
   private static handleResponse<T>(response: AxiosResponse<T>) {
     return response.data;
   }
-  private async handleResponseError(error: any) {
-    switch (error.response?.status) {
-      case 401: {
-        let token = getAccessToken();
-        if (!token || checkTokenExpired(token)) {
-          try {
-            const response = await this.silentTokenRefresh();
-            token = response.data.eid_access_token;
-            console.log('refresh ', response);
-            setAccessToken(token as string);
-            this.service.defaults.headers.Authorization = `Bearer ${token}`;
-          } catch (refreshError) {
-            console.log(1111, token, refreshError);
-            removeAccessToken();
+  private async handleResponseError(error: AxiosError) {
+    if (error.response) {
+      switch (error.response.status) {
+        case 401:
+          const token = getAccessToken();
+          console.log('token: ', token);
+          if (!token) {
             window.location.href = '/login';
+          } else if (checkTokenExpired(token)) {
+            try {
+              // TODO: http cookie 이슈 (samesite) - AWS 이관 후 주석 해제!
+              // const response = await this.silentTokenRefresh();
+              // const newToken = response.data.access_token;
+              // setAccessToken(newToken);
+              // this.service.defaults.headers.Authorization = `Bearer ${newToken}`;
+            } catch (error) {
+              removeAccessToken();
+              window.location.href = '/login';
+            }
           }
-        }
-        break;
+          break;
+        case 403:
+          window.location.href = '/login';
+          break;
+        case 404:
+        case 500:
+          // TODO: redirect to error page
+          break;
+        default:
+          console.error('Response error:', error);
       }
-      case 403:
-        window.location.href = '/login';
-        break;
-      case 404:
-      case 500:
-        // TODO: redirect to error page
-        break;
-      default:
-        console.error('Response error:', error);
     }
 
     return Promise.reject(error);

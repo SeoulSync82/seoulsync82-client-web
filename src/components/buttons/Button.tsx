@@ -1,7 +1,7 @@
-import { cn } from '@/utils/clsx';
 import { ButtonVariants } from './variants';
 import { ButtonBorder, ButtonProps } from './types';
 import clsx from 'clsx';
+import { Link, NavLink } from 'react-router';
 
 export default function Button({
   size = 'medium',
@@ -14,6 +14,7 @@ export default function Button({
   onClick,
   disabled = false,
   rounded,
+  href,
   children,
   className,
 }: ButtonProps) {
@@ -32,9 +33,13 @@ export default function Button({
     className,
   );
 
+  const ButtonComponent = href ? Link : 'button';
+  const handleClick = href ? undefined : onClick;
+  const to = href || undefined;
+
   return (
-    <button className={buttonStyles} onClick={onClick} disabled={disabled}>
+    <ButtonComponent to={to as string} className={buttonStyles} onClick={handleClick} disabled={disabled}>
       {children}
-    </button>
+    </ButtonComponent>
   );
 }

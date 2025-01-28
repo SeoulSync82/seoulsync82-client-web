@@ -10,7 +10,7 @@ export default function Layout() {
       <div className="mx-auto flex h-dvh w-full max-w-[430px] flex-col bg-white shadow-[0px_0px_16px_rgba(50,_50,_50,_0.05)]">
         <Header />
         <Outlet />
-        {pathname === '/login' ? null : <Navigation />}
+        {pathname === '/login' || pathname === '/ai-recommend' ? null : <Navigation />}
       </div>
     </div>
   );
