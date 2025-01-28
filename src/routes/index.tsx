@@ -33,10 +33,6 @@ export const router = createBrowserRouter([
       {
         path: '/culture',
         element: <Culture />,
-        children: [
-          { path: 'popups', element: <Popups /> },
-          { path: 'exhibitions', element: <Exhibitions /> },
-        ],
       },
     ],
   },
