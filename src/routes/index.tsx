@@ -1,4 +1,3 @@
-import { createBrowserRouter } from 'react-router-dom';
 import Layout from '@/layouts/default';
 import Home from '@/pages/home';
 import Login from '@/pages/login';
@@ -8,65 +7,37 @@ import AiRecommend from '@/pages/ai-recommend';
 import Community from '@/pages/community';
 import MyPage from '@/pages/my-page';
 import PlaceDetail from '@/pages/place';
-import Culture from '@/pages/place/culture';
-import Popups from '@/pages/place/culture/popups';
-import Exhibitions from '@/pages/place/culture/exhibitions';
+import Culture from '@/pages/culture';
+import Popups from '@/pages/culture/popups';
+import Exhibitions from '@/pages/culture/exhibitions';
+import { createBrowserRouter } from 'react-router';
 
-// TODO: react-router-v7 업그레이드할것
 export const router = createBrowserRouter([
   {
-    path: '/',
     element: <Layout />,
-    children: [{ index: true, element: <Home /> }],
-  },
-  {
-    path: '/my-course',
-    element: <Layout />,
-    children: [{ index: true, element: <MyCourse /> }],
-  },
-  {
-    path: '/my-course/:id',
-    element: <Layout />,
-    children: [{ index: true, element: <MyCourseDetail /> }],
-  },
-  {
-    path: '/ai-recommend',
-    element: <Layout />,
-    children: [{ index: true, element: <AiRecommend /> }],
-  },
-  {
-    path: '/community',
-    element: <Layout />,
-    children: [{ index: true, element: <Community /> }],
-  },
-  {
-    path: '/my-page',
-    element: <Layout />,
-    children: [{ index: true, element: <MyPage /> }],
-  },
-  {
-    path: '/login',
-    element: <Layout />,
-    children: [{ index: true, element: <Login /> }],
-  },
-  {
-    path: '/place/:id',
-    element: <Layout />,
-    children: [{ index: true, element: <PlaceDetail /> }],
-  },
-  {
-    path: '/culture',
-    element: <Layout />,
-    children: [{ index: true, element: <Culture /> }],
-  },
-  {
-    path: '/culture/popups',
-    element: <Layout />,
-    children: [{ index: true, element: <Popups /> }],
-  },
-  {
-    path: '/culture/exhibitions',
-    element: <Layout />,
-    children: [{ index: true, element: <Exhibitions /> }],
+    children: [
+      { index: true, element: <Home /> },
+      { path: '/login', element: <Login /> },
+      { path: '/community', element: <Community /> },
+      { path: '/my-page', element: <MyPage /> },
+      {
+        path: '/place/:id',
+        element: <PlaceDetail />,
+      },
+      { path: '/my-course', element: <MyCourse /> },
+      {
+        path: '/my-course/:id',
+        element: <MyCourseDetail />,
+      },
+      { path: '/ai-recommend', element: <AiRecommend /> },
+      {
+        path: '/culture',
+        element: <Culture />,
+        children: [
+          { path: 'popups', element: <Popups /> },
+          { path: 'exhibitions', element: <Exhibitions /> },
+        ],
+      },
+    ],
   },
 ]);

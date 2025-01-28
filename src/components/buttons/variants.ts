@@ -5,7 +5,7 @@ export const ButtonVariants = cva('flex items-center justify-center w-full curso
     size: {
       small: 'min-h-[46px] text-14',
       medium: 'min-h-[56px] text-16',
-      large: 'min-h-[76px] text-20',
+      large: 'min-h-[72px] text-20',
     },
     bgColor: {
       primary: 'bg-primary-500',
@@ -54,6 +54,7 @@ export const ButtonVariants = cva('flex items-center justify-center w-full curso
       medium: 'rounded-[8px]',
       large: 'rounded-[16px]',
       xlarge: 'rounded-[24px]',
+      none: '',
     },
     isActive: {
       true: 'font-bold',
@@ -71,6 +72,6 @@ export const ButtonVariants = cva('flex items-center justify-center w-full curso
     borderStyle: 'none',
     isActive: false,
     disabled: false,
-    borderRadius: 'medium',
+    rounded: 'none',
   },
 });

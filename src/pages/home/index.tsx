@@ -4,7 +4,7 @@ import { CommunityPostItem } from '@/service/community/types';
 import { PlaceItem } from '@/service/place/types';
 import { convertDateToYMD } from '@/utils';
 import { useQueries } from '@tanstack/react-query';
-import { Link } from 'react-router';
+import { Link, Links } from 'react-router';
 import clsx from 'clsx';
 
 function SectionHeader({
@@ -31,14 +31,16 @@ function SwiperCard({
   children,
   minWidth,
   className,
+  link,
 }: {
   background: string;
   children: React.ReactNode;
   minWidth: string;
   className?: string;
+  link: string;
 }) {
   return (
-    <div
+    <Link
       style={{
         background,
         backgroundSize: 'cover',
@@ -47,9 +49,10 @@ function SwiperCard({
         minWidth,
       }}
       className={clsx('flex aspect-[3/4] flex-col justify-end', className)}
+      to={link}
     >
       {children}
-    </div>
+    </Link>
   );
 }
 
@@ -74,6 +77,7 @@ export default function Home() {
           {cultureData?.data?.items?.map((item: PlaceItem, idx: number) => (
             <SwiperCard
               key={idx}
+              link={`/culture`}
               background={`linear-gradient(180deg, rgba(63, 63, 63, 0) 43.43%, #181616 100%), url(${item.thumbnail})`}
               minWidth="clamp(240px, 64vw, 275px)"
               className="rounded-[8px]"
