@@ -30,6 +30,8 @@ import {
   IcoEntertainment,
   IcoLogo,
   IcoArrow,
+  IcoHeart,
+  IcoHeartActive,
 } from '../icons';
 import { IconProps, SVGName } from './type';
 
@@ -69,6 +71,7 @@ export default function SVGIcon({
     Entertainment: IcoEntertainment,
     Logo: IcoLogo,
     Arrow: IcoArrow,
+    Heart: active ? IcoHeartActive : IcoHeart,
   };
   const SvgComponent = svgTypes[name as SVGName];
 
