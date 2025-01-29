@@ -1,7 +1,5 @@
 import clsx from 'clsx';
 import Button from '../Button';
-import { cva } from 'class-variance-authority';
-import { cn } from '@/utils/clsx';
 
 export interface TabButtonProps {
   active?: boolean;
@@ -20,29 +18,22 @@ export default function TabButton({
   className,
   disabled,
 }: TabButtonProps) {
-  const tabButtonVariants = cva('flex h-[44px] w-full items-center justify-center text-16', {
-    variants: {
-      active: {
-        true: 'border-b-[2px] border-gray-900 font-bold text-gray-900',
-        false: 'border-b-[1px] border-gray-200 font-medium text-gray-300',
-      },
-      disabled: {
-        true: 'cursor-not-allowed',
-        false: '',
-      },
+  const tabButtonClassName = clsx(
+    'flex h-[44px] w-full items-center justify-center text-16',
+    {
+      'border-b-[2px] border-gray-900 font-bold text-gray-900': active,
+      'border-b-[1px] border-gray-200 font-medium text-gray-300': !active,
+      'cursor-not-allowed': disabled,
     },
-    defaultVariants: {
-      active: false,
-      disabled: false,
-    },
-  });
+    className,
+  );
 
   return (
     <Button
       size="small"
       bgColor="white"
       textColor="gray300"
-      className={cn(tabButtonVariants({ active, disabled }), className)}
+      className={tabButtonClassName}
       onClick={onClick}
       href={href}
       disabled={disabled}
