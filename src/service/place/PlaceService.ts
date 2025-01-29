@@ -13,13 +13,17 @@ class PlaceService extends Service {
     return await this.service.get(`/place/culture/${uuid}`);
   }
 
-  async getPlaceExhibition(size: number, last_id: number = 0, order: number = 0) {
+  async getPlaceExhibition(
+    size: number,
+    last_id: number = 0,
+    order: 'latest' | 'deadline' = 'latest',
+  ) {
     return await this.service.get(
       `/place/exhibition?size=${size}&last_id=${last_id}&order=${order}`,
     );
   }
 
-  async getPlacePopup(size: number, last_id: number = 0, order: number = 0) {
+  async getPlacePopup(size: number, last_id: number = 0, order: 'latest' | 'deadline' = 'latest') {
     return await this.service.get(`/place/popup?size=${size}&last_id=${last_id}&order=${order}`);
   }
 

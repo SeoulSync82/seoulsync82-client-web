@@ -54,10 +54,12 @@ export default function MyCourse() {
           />
         ))}
       </div>
-      <div className="w-full overflow-y-scroll">
-        {courseList?.map((item: CourseListItemProps & { [key: string]: any }) => (
-          <CourseListItem key={item.course_uuid} {...item} />
-        ))}
+      <div className="h-screen w-full overflow-y-scroll">
+        <div className="overflow-y-hidden pb-[109px]">
+          {courseList?.map((item: CourseListItemProps & { [key: string]: any }) => (
+            <CourseListItem key={item.course_uuid} {...item} />
+          ))}
+        </div>
       </div>
     </div>
   );
