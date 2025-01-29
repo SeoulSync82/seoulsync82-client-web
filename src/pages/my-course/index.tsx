@@ -1,4 +1,9 @@
 import TabButton from '@/components/buttons/tab';
+import CourseListItem, { CourseListItemProps } from '@/components/pages/my-course/CourseListItem';
+import {
+  useBookmarkedCourseList,
+  useCourseRecommendHistory,
+} from '@/service/course/useCourseService';
 import clsx from 'clsx';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
@@ -11,7 +16,7 @@ export default function MyCourse() {
     },
     {
       label: '추천 받은 코스',
-      type: 'bookmarked',
+      type: 'recommended',
     },
   ];
   const { pathname, search } = useLocation();
@@ -29,6 +34,13 @@ export default function MyCourse() {
     }
   }, [type]);
 
+  const { data: bookmarkedCourseData } = useBookmarkedCourseList({ enabled: type === 'liked' });
+  const { data: courseHistoryData } = useCourseRecommendHistory({
+    enabled: type === 'recommended',
+  });
+  const courseList =
+    type === 'liked' ? bookmarkedCourseData?.data.items : courseHistoryData?.data.items;
+
   return (
     <div className="page w-full">
       <div className="flex w-full">
@@ -42,7 +54,11 @@ export default function MyCourse() {
           />
         ))}
       </div>
-      <div className="w-full overflow-y-scroll"></div>
+      <div className="w-full overflow-y-scroll">
+        {courseList?.map((item: CourseListItemProps & { [key: string]: any }) => (
+          <CourseListItem key={item.course_uuid} {...item} />
+        ))}
+      </div>
     </div>
   );
 }

@@ -7,6 +7,7 @@ const queryKeys = {
   saveCourseRecommend: ['saveCourseRecommend'] as const,
   getMyCourseHistory: ['getMyCourseHistory'] as const,
   getCourseDetail: ['getCourseDetail'] as const,
+  getBookmarkedCourseList: ['getBookmarkedCourseList'] as const,
 };
 
 export const queryOptions = {
@@ -28,9 +29,23 @@ export const queryOptions = {
     queryKey: queryKeys.saveCourseRecommend,
     queryFn: () => CourseService.saveCourseRecommend(),
   }),
-  getMyCourseHistory: (size: number, last_id?: number) => ({
+  getBookmarkedCourseList: (
+    { enabled }: { enabled?: boolean } = {},
+    size: number = 10,
+    last_id: string = '',
+  ) => ({
+    queryKey: queryKeys.getBookmarkedCourseList,
+    queryFn: () => CourseService.getBookmarkedCourseList(size, last_id),
+    enabled,
+  }),
+  getMyCourseHistory: (
+    { enabled }: { enabled?: boolean } = {},
+    size: number = 10,
+    last_id: string = '',
+  ) => ({
     queryKey: queryKeys.getMyCourseHistory,
     queryFn: () => CourseService.getMyCourseHistory(size, last_id),
+    enabled,
   }),
   getCourseDetail: (uuid: string) => ({
     queryKey: queryKeys.getCourseDetail,
