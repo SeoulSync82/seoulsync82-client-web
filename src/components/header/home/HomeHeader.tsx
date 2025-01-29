@@ -1,4 +1,5 @@
-import SVGIcon from "@/components/svg-icon/SVGIcon";
+import SVGIcon from '@/components/svg-icon/SVGIcon';
+import { Link } from 'react-router';
 
 export default function HomeHeader() {
   return (
@@ -8,7 +9,9 @@ export default function HomeHeader() {
         <SVGIcon width={72} height={32} name="HeaderTypo" />
       </div>
       <div className="flex max-w-[72px] items-center gap-[8px]">
-        <SVGIcon className="mr-2" width={32} height={32} name="Alarm" active={false} />
+        <Link to="/notifications">
+          <SVGIcon className="mr-2" width={32} height={32} name="Alarm" active={false} />
+        </Link>
         <SVGIcon width={32} height={32} name="Search" />
       </div>
     </div>

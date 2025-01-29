@@ -11,6 +11,8 @@ import Culture from '@/pages/culture';
 import Popups from '@/pages/culture/popups';
 import Exhibitions from '@/pages/culture/exhibitions';
 import { createBrowserRouter } from 'react-router';
+import Alarm from '@/pages/notifications';
+import Notifications from '@/pages/notifications';
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +35,10 @@ export const router = createBrowserRouter([
       {
         path: '/culture',
         element: <Culture />,
+      },
+      {
+        path: '/notifications',
+        element: <Notifications />,
       },
     ],
   },

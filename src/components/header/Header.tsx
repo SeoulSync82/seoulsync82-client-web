@@ -32,6 +32,7 @@ export default function Header() {
       '/culture': '큐레이션',
       '/culture/popups': '큐레이션',
       '/culture/exhibitions': '큐레이션',
+      '/notifications': '알림',
     };
 
     if (pathname.startsWith('/my-course/') && id) {
