@@ -50,19 +50,11 @@ export default function NotificationItem({
     }
   };
 
-  // TODO: 알림 읽음/안읽음 스타일 적용
-  const checkIsRead = () => {
-    const readTimestamp = new Date(read_at).getTime();
-    const currentTimeStamp = new Date().getTime();
-    const timeDiff = Math.abs(readTimestamp - currentTimeStamp);
-    return timeDiff > 0 ? true : false;
-  };
-
   return (
     <div
       className={clsx(
         'flex h-[70px] w-full items-center gap-[14px] px-[20px]',
-        checkIsRead() && 'bg-primary-50 opacity-50',
+        read_at && 'bg-primary-50 opacity-50',
       )}
       onClick={onClick}
     >
