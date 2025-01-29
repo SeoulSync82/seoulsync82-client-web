@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+
 export interface NotificationItem {
   id: number;
   uuid: string;
@@ -16,6 +18,7 @@ export default function NotificationItem({
   content,
   created_at,
   user_thumbnail,
+  read_at,
   onClick,
 }: NotificationItemProps) {
   const convertDateToTimeAgo = (dateString: string) => {
@@ -47,6 +50,7 @@ export default function NotificationItem({
     }
   };
 
+  // TODO: 알림 읽음/안읽음 스타일 적용
   const checkIsRead = () => {
     const readTimestamp = new Date(read_at).getTime();
     const currentTimeStamp = new Date().getTime();
@@ -55,7 +59,13 @@ export default function NotificationItem({
   };
 
   return (
-    <div className="flex h-[70px] w-full items-center gap-[14px] px-[20px]" onClick={onClick}>
+    <div
+      className={clsx(
+        'flex h-[70px] w-full items-center gap-[14px] px-[20px]',
+        checkIsRead() && 'bg-primary-50 opacity-50',
+      )}
+      onClick={onClick}
+    >
       <img src={user_thumbnail} alt="Profile" className="h-[40px] w-[40px] rounded-full" />
       <div>
         <div
