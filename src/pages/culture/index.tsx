@@ -107,8 +107,8 @@ export default function Culture() {
           ))}
         </div>
       </div>
-      <div className="h-screen w-full overflow-y-scroll">
-        <div className="overflow-y-hidden pb-[109px]">
+      <div className="h-[calc(100vh-192px)] w-full overflow-y-scroll">
+        <div className="overflow-y-hidden pb-[86px]">
           {cultureData?.data.items.map((item: ExhibitionItem & PopupItem) => (
             <CulturePlaceItem key={`culture-${item.uuid}`} {...item} />
           ))}
