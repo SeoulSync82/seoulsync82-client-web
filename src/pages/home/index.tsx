@@ -59,7 +59,7 @@ function SwiperCard({
 function SectionSwiper({ children }: { children: React.ReactNode }) {
   return (
     <div className="w-full overflow-x-hidden">
-      <div className="scrollbar-hide flex gap-[12px] overflow-x-auto px-[20px]">{children}</div>
+      <div className="flex gap-[12px] overflow-x-auto px-[20px] scrollbar-hide">{children}</div>
     </div>
   );
 }
@@ -72,7 +72,7 @@ export default function Home() {
   return (
     <div className="page gap-[10px] overflow-y-auto pb-[109px]">
       <div className="w-full">
-        <SectionHeader title="주목해야할 전시 · 팝업" link="/popups" linkText="더보기" />
+        <SectionHeader title="주목해야할 전시 · 팝업" link="/culture" linkText="더보기" />
         <SectionSwiper>
           {cultureData?.data?.items?.map((item: PlaceItem, idx: number) => (
             <SwiperCard
