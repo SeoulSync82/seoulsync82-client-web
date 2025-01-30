@@ -54,7 +54,7 @@ export default function MyCourse() {
           />
         ))}
       </div>
-      <div className="h-screen w-full overflow-y-scroll">
+      <div className="h-[calc(100dvh-192px)] w-full overflow-y-scroll">
         <div className="overflow-y-hidden pb-[109px]">
           {courseList?.map((item: CourseListItemProps & { [key: string]: any }) => (
             <CourseListItem key={item.course_uuid} {...item} />
