@@ -2,8 +2,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { queryOptions } from './queries';
 import NotificationService from './NotificationService';
 
-export const useNotificationList = () => {
-  return useQuery(queryOptions.getNotificationList());
+export const useNotificationList = (size: number = 10, last_id: number = 0) => {
+  return useQuery(queryOptions.getNotificationList(size, last_id));
 };
 
 export const useSetReadNotification = ({
