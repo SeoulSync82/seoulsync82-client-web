@@ -1,6 +1,7 @@
 import Button from '../Button';
 import { cva } from 'class-variance-authority';
 import { cn } from '@/utils/clsx';
+import clsx from 'clsx';
 
 export interface BottomButtonProps {
   disabled?: boolean;
@@ -9,20 +10,6 @@ export interface BottomButtonProps {
   className?: string;
 }
 
-const BottomButtonVariants = cva(
-  'fixed bottom-0 left-0 right-0 mx-auto max-w-[430px] text-18 font-semibold',
-  {
-    variants: {
-      disabled: {
-        true: 'bg-gray-300',
-        false: '',
-      },
-    },
-    defaultVariants: {
-      disabled: false,
-    },
-  },
-);
 export default function BottomButton({
   disabled,
   onClick,
@@ -32,11 +19,14 @@ export default function BottomButton({
   return (
     <Button
       size="medium"
-      bgColor="primary"
+      bgColor={disabled ? 'gray300' : 'primary'}
       textColor="white"
       disabled={disabled}
       onClick={onClick}
-      className={cn(BottomButtonVariants({ disabled }), className)}
+      className={clsx(
+        'fixed bottom-0 left-0 right-0 mx-auto max-w-[430px] text-18 font-semibold',
+        className,
+      )}
     >
       {children}
     </Button>

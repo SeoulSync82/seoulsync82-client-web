@@ -7,7 +7,7 @@ export type ButtonProps = {
   borderColor?: ButtonColor;
   rounded?: ButtonBorderRounded;
   isActive?: boolean;
-  onClick?: () => void;
+  onClick?: () => void | ((e: MouseEvent) => void);
   disabled?: boolean;
   href?: string;
   children?: React.ReactNode;

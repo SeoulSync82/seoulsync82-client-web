@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 
-export const ButtonVariants = cva('flex items-center justify-center w-full cursor-pointer', {
+export const ButtonVariants = cva('flex items-center justify-center w-full', {
   variants: {
     size: {
       small: 'min-h-[46px] text-14',
@@ -61,8 +61,8 @@ export const ButtonVariants = cva('flex items-center justify-center w-full curso
       false: '',
     },
     disabled: {
-      true: 'bg-gray-300 text-gray-300 cursor-not-allowed',
-      false: '',
+      true: 'bg-gray-300 text-gray-300',
+      false: 'cursor-pointer',
     },
   },
   defaultVariants: {

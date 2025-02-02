@@ -1,7 +1,7 @@
 import { ButtonVariants } from './variants';
 import { ButtonBorder, ButtonProps } from './types';
 import clsx from 'clsx';
-import { Link, NavLink } from 'react-router';
+import { Link } from 'react-router';
 
 export default function Button({
   size = 'medium',
