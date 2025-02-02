@@ -11,9 +11,14 @@ const queryKeys = {
 };
 
 export const queryOptions = {
-  getCourseRecommend: (station_uuid: string, theme_uuid: string = '') => ({
+  getCourseRecommend: (
+    { enabled }: { enabled?: boolean } = {},
+    station_uuid: string,
+    theme_uuid: string = '',
+  ) => ({
     queryKey: queryKeys.getCourseRecommend(station_uuid, theme_uuid),
     queryFn: () => CourseService.getCourseRecommend(station_uuid, theme_uuid),
+    enabled,
   }),
   getPlaceCustomize: (
     place_uuids: string,

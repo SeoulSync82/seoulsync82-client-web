@@ -1,26 +1,24 @@
 import clsx from 'clsx';
-import TabButton from '@/components/buttons/tab';
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation } from 'react-router';
 import { useCourseRecommend } from '@/service/course/useCourseService';
+import TabButton from '@/components/buttons/tab';
 import BottomButton from '@/components/buttons/bottom/BottomButton';
 import SelectSubwayView from '@/components/pages/ai-recommend/SelectSubwayView';
 import SelectThemeView from '@/components/pages/ai-recommend/SelectThemeView';
+import SelectCustomView from '@/components/pages/ai-recommend/SelectCustomView';
 import { useSubwayLines, useSubwayStations } from '@/service/subway/useSubwayService';
 import { useThemesList } from '@/service/theme/useThemeService';
-import SelectCustomView from '@/components/pages/ai-recommend/SelectCustomView';
-import { useCallback } from 'react';
 import { useQueryParams } from '@/hooks/useQueryParams';
 
-export const TAB_TYPES = {
+const TAB_TYPES = {
   SUBWAY: 'subway',
   THEME: 'theme',
   CUSTOM: 'custom',
 };
-
-const DEFAULT_LINE_UUID = '077ff3adc0e556148bf7eeb7a0273fb9';
+const DEFAULT_LINE_UUID = '077ff3adc0e556148bf7eeb7a0273fb9'; // 1호선
+const THREE_POINT_FIVE_STARS_THEME_UUID = 'c4ca35dff1a85b6788f66e864f58958a'; // 별점 3.5이상
 
 export default function AiRecommend() {
-  const navigate = useNavigate();
   const { pathname, search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const type = searchParams.get('type');
@@ -33,12 +31,12 @@ export default function AiRecommend() {
     {
       label: '테마선택',
       type: TAB_TYPES.THEME,
-      disabled: type === 'subway',
+      disabled: type === TAB_TYPES.SUBWAY,
     },
     {
       label: '커스텀',
       type: TAB_TYPES.CUSTOM,
-      disabled: type === 'subway' || type === 'theme',
+      disabled: type === TAB_TYPES.SUBWAY || type === TAB_TYPES.THEME,
     },
   ];
 
@@ -52,22 +50,25 @@ export default function AiRecommend() {
   });
   const { data: themeData } = useThemesList();
   const { data: courseRecommendData } = useCourseRecommend(
+    { enabled: !!station_uuid && !!theme_uuid },
     station_uuid as string,
-    theme_uuid as string,
+    theme_uuid === THREE_POINT_FIVE_STARS_THEME_UUID ? '' : (theme_uuid as string),
   );
 
   const { updateQueryParam, deleteQueryParam } = useQueryParams();
   const navigateOptions = {
     state: { previousPath: `${pathname}?type=${type}` },
+    replace: true,
   };
 
-  // TODO: BottomButton disabled 스타일 적용되도록 수정
   const isSelectButtonDisabled =
-    (type === 'subway' && (!line_uuid || !station_uuid)) ||
-    (type === 'theme' && (!line_uuid || !station_uuid || !theme_uuid));
+    (type === TAB_TYPES.SUBWAY && (!line_uuid || !station_uuid)) ||
+    (type === TAB_TYPES.THEME && (!line_uuid || !station_uuid || !theme_uuid));
 
   const onClickTabButton = (e: MouseEvent, item: { label: string; type: string }) => {
-    const isTabButtonDisabled = type === 'subway' || (type === 'theme' && item.type === 'custom');
+    const isTabButtonDisabled =
+      type === TAB_TYPES.SUBWAY || (type === TAB_TYPES.THEME && item.type === TAB_TYPES.CUSTOM);
+
     if (isTabButtonDisabled) {
       e.preventDefault();
       return;
@@ -89,10 +90,10 @@ export default function AiRecommend() {
     deleteQueryParam('theme_uuid', navigateOptions);
   };
   const onClickSelectButton = () => {
-    if (type === 'subway' && line_uuid && station_uuid) {
-      updateQueryParam('type', 'theme', navigateOptions);
-    } else if (type === 'theme' && line_uuid && station_uuid && theme_uuid) {
-      updateQueryParam('type', 'custom', navigateOptions);
+    if (type === TAB_TYPES.SUBWAY && line_uuid && station_uuid) {
+      updateQueryParam('type', TAB_TYPES.THEME, navigateOptions);
+    } else if (type === TAB_TYPES.THEME && line_uuid && station_uuid && theme_uuid) {
+      updateQueryParam('type', TAB_TYPES.CUSTOM, navigateOptions);
     }
   };
 
@@ -111,7 +112,7 @@ export default function AiRecommend() {
         ))}
       </div>
       <div className="w-full">
-        {type === 'subway' && (
+        {type === TAB_TYPES.SUBWAY && (
           <SelectSubwayView
             subwayLineData={subwayLineData}
             subwayStationData={subwayStationData}
@@ -119,17 +120,19 @@ export default function AiRecommend() {
             onClickSubwayStation={onClickSubwayStation}
           />
         )}
-        {type === 'theme' && (
+        {type === TAB_TYPES.THEME && (
           <SelectThemeView
             themeData={themeData}
             onClickTheme={onClickTheme}
             onClickCancelTheme={onClickCancelTheme}
           />
         )}
-        {type === 'custom' && <SelectCustomView courseRecommendData={courseRecommendData} />}
+        {type === TAB_TYPES.CUSTOM && (
+          <SelectCustomView courseRecommendData={courseRecommendData} />
+        )}
       </div>
       <BottomButton disabled={isSelectButtonDisabled} onClick={() => onClickSelectButton()}>
-        {type !== 'custom' ? '선택하기' : '완료'}
+        {type !== TAB_TYPES.CUSTOM ? '선택하기' : '완료'}
       </BottomButton>
     </div>
   );
