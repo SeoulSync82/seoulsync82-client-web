@@ -56,9 +56,23 @@ export default function AiRecommend() {
   );
 
   const { updateQueryParam, deleteQueryParam } = useQueryParams();
+
+  // TODO: 뒤로가기 액션 정책 논의 필요
+  const getPreviousPath = () => {
+    switch (type) {
+      case TAB_TYPES.THEME:
+        return `${pathname}?type=${TAB_TYPES.SUBWAY}&line_uuid=${line_uuid}&station_uuid=${station_uuid}`;
+      case TAB_TYPES.CUSTOM:
+        return `${pathname}?type=${TAB_TYPES.THEME}&line_uuid=${line_uuid}&station_uuid=${station_uuid}&theme_uuid=${theme_uuid}`;
+      default:
+        return `${pathname}?type=${type}`;
+    }
+  };
+  const navigationPreviousPath = getPreviousPath();
   const navigateOptions = {
-    state: { previousPath: `${pathname}?type=${type}` },
-    replace: true,
+    state: {
+      previousPath: navigationPreviousPath,
+    },
   };
 
   const isSelectButtonDisabled =
@@ -77,17 +91,17 @@ export default function AiRecommend() {
   };
 
   const onClickSubwayLine = (item: any) => {
-    updateQueryParam('line_uuid', item.uuid, navigateOptions);
+    updateQueryParam('line_uuid', item.uuid);
     deleteQueryParam('station_uuid');
   };
   const onClickSubwayStation = (item: any) => {
-    updateQueryParam('station_uuid', item.uuid, navigateOptions);
+    updateQueryParam('station_uuid', item.uuid);
   };
   const onClickTheme = (item: any) => {
-    updateQueryParam('theme_uuid', item.uuid, navigateOptions);
+    updateQueryParam('theme_uuid', item.uuid);
   };
   const onClickCancelTheme = () => {
-    deleteQueryParam('theme_uuid', navigateOptions);
+    deleteQueryParam('theme_uuid');
   };
   const onClickSelectButton = () => {
     if (type === TAB_TYPES.SUBWAY && line_uuid && station_uuid) {
