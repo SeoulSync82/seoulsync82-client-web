@@ -4,7 +4,7 @@ import Button from '../Button';
 export interface TabButtonProps {
   active?: boolean;
   title?: string;
-  onClick?: () => void;
+  onClick?: (e: MouseEvent) => void;
   href?: string;
   disabled?: boolean;
   className?: string;

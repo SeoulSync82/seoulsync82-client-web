@@ -1,9 +1,16 @@
 import SVGIcon from '@/components/svg-icon/SVGIcon';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 export default function DefaultHeader({ pageName }: { pageName: string }) {
   const navigate = useNavigate();
-  const onClickPrevButton = () => navigate(-1);
+  const location = useLocation();
+  const onClickBackButton = () => {
+    if (location.state && location.state.previousPath) {
+      navigate(location.state.previousPath);
+    } else {
+      navigate('/');
+    }
+  };
 
   return (
     <div className="relative flex h-[60px] w-full items-center">
@@ -12,7 +19,7 @@ export default function DefaultHeader({ pageName }: { pageName: string }) {
         width={24}
         height={24}
         active={false}
-        onClick={onClickPrevButton}
+        onClick={onClickBackButton}
         color="#000"
       />
       <div className="absolute left-1/2 top-1/2 max-h-[48px] max-w-[50%] -translate-x-1/2 -translate-y-1/2 text-20 font-bold text-[#101010]">

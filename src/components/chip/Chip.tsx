@@ -3,7 +3,7 @@ import SVGIcon from '../svg-icon/SVGIcon';
 
 export type ChipPropsType = {
   size: 'small' | 'medium';
-  active: boolean;
+  active?: boolean;
   content: string;
   onClick?: () => void;
   onClickCancel?: () => void;

@@ -5,7 +5,10 @@ export const useSubwayLines = () => {
   return useQuery(queryOptions.getSubwayLines());
 };
 
-export const useSubwayStations = (line_uuid: string, { enabled }: { enabled?: boolean }) => {
+export const useSubwayStations = (
+  line_uuid: string,
+  { enabled = false }: { enabled?: boolean },
+) => {
   return useQuery(queryOptions.getSubwayStations(line_uuid, { enabled: !!line_uuid }));
 };
 
