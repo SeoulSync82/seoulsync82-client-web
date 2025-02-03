@@ -21,7 +21,7 @@ export default function SelectSubwayButton({
       borderSize="thin"
       isActive={isActive}
       onClick={onClick}
-      className="border-b border-gray-200"
+      className="border-b border-gray-200 font-medium"
     >
       {content}
     </Button>

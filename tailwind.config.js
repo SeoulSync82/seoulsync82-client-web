@@ -29,6 +29,7 @@ module.exports = {
           800: '#31363A',
           900: '#212529',
         },
+        black: '#101010',
         kakao: '#F5DA35',
         naver: '#4DA524',
         google: '#F3F3F3',
