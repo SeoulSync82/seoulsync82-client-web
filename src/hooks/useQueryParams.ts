@@ -11,7 +11,7 @@ export function useQueryParams() {
   const { pathname, search } = useLocation();
   const searchParams = new URLSearchParams(search);
 
-  const updateQueryParam = (key: string, value: string, navigateOptions?: NavigateOptions) => {
+  const updateQueryParam = (key: string, value: string, navigateOptions: NavigateOptions = {}) => {
     searchParams.set(key, value);
     navigate(
       {
@@ -22,7 +22,7 @@ export function useQueryParams() {
     );
   };
 
-  const deleteQueryParam = (key: string, navigateOptions?: NavigateOptions) => {
+  const deleteQueryParam = (key: string, navigateOptions: NavigateOptions = {}) => {
     searchParams.delete(key);
     navigate(
       {

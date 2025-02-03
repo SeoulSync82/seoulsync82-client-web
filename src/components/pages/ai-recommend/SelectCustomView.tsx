@@ -1,8 +1,16 @@
 import SVGIcon from '@/components/svg-icon/SVGIcon';
 import Tag from '@/components/tag/Tag';
+import { useBoundStore } from '@/stores';
 import { forwardRef, useState } from 'react';
-import { useLocation } from 'react-router';
 
+const LINE_COLORS = {
+  1: '#FFC700',
+  2: '#9070CF',
+  3: '#6495ED',
+  4: '#90D690',
+  5: '#F04F09',
+  6: '#705F30',
+};
 export const PLACE_TYPES = {
   RESTAURANT: '음식점',
   CAFE: '카페',
@@ -13,44 +21,25 @@ export const PLACE_TYPES = {
   EXHIBITION: '전시',
   POPUP: '팝업',
 };
+
 export default forwardRef(function SelectCustomView(
   {
     courseRecommendData,
     onClickAddPlace,
-    onClickDeletePlace,
   }: {
     courseRecommendData: any;
     onClickAddPlace: (message: string) => void;
-    onClickDeletePlace: (message: string, uuid: string) => void;
   },
   ref,
 ) {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const station_uuid = searchParams.get('station_uuid');
-  const theme_uuid = searchParams.get('theme_uuid');
-  const place_uuid = searchParams.get('place_uuid');
+  const [isPlaceOpen, setIsPlaceOpen] = useState(true);
+  const { placeUuidList, setPlaceUuidList } = useBoundStore((state) => state);
 
-  const [isPlaceOpen, setIsCourseOpen] = useState(true);
-
-  const LineIconColorVariants = (place) => {
-    switch (place.sort) {
-      case 1:
-        return '#FFC700';
-      case 2:
-        return '#9070CF';
-      case 3:
-        return '#6495ED';
-      case 4:
-        return '#90D690';
-      case 5:
-        return '#F04F09';
-      case 6:
-        return '#705F30';
-    }
+  const onClickDeletePlace = (uuid: string) => {
+    setPlaceUuidList(placeUuidList.filter((item) => item !== uuid));
   };
   const onClickPlaceToggle = () => {
-    setIsCourseOpen(!isPlaceOpen);
+    setIsPlaceOpen(!isPlaceOpen);
   };
 
   return (
@@ -74,13 +63,7 @@ export default forwardRef(function SelectCustomView(
               <div className="flex w-full">
                 <div className="flex flex-col items-center justify-center">
                   <div className="relative mr-2 h-fit w-fit">
-                    <SVGIcon
-                      name="Line"
-                      width={33}
-                      height={33}
-                      active={false}
-                      color={LineIconColorVariants(place)}
-                    />
+                    <SVGIcon name="Line" width={33} height={33} active={false} />
                     <p className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-2 text-10 text-white">
                       {place.sort}
                     </p>
@@ -96,7 +79,7 @@ export default forwardRef(function SelectCustomView(
                       size="small"
                       color="gray100"
                       content="삭제"
-                      onClick={() => onClickDeletePlace('deletePlace', place.uuid)}
+                      onClick={() => onClickDeletePlace(place.uuid)}
                     />
                   </div>
                   <div className="flex w-full items-center justify-between">
@@ -154,13 +137,7 @@ export default forwardRef(function SelectCustomView(
                 <div className="mb-[16px] flex w-full">
                   <div className="flex flex-col items-center justify-center">
                     <div className="relative mr-2 h-fit w-fit">
-                      <SVGIcon
-                        name="Line"
-                        width={33}
-                        height={33}
-                        active={false}
-                        color={LineIconColorVariants(place)}
-                      />
+                      <SVGIcon name="Line" width={33} height={33} active={false} />
                       <p className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-2 text-10 text-white">
                         {place.sort}
                       </p>

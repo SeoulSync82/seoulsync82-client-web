@@ -1,28 +1,26 @@
 import SelectStationButton from '@/components/buttons/select-station/SelecStationButton';
 import SelectSubwayButton from '@/components/buttons/select-subway/SelectSubwayButton';
+import { useBoundStore } from '@/stores';
 import { AxiosResponse } from 'axios';
-import { useLocation } from 'react-router';
 
 interface SelectSubwayViewProps {
   subwayLineData: AxiosResponse<any> | undefined;
   subwayStationData: AxiosResponse<any> | undefined;
-  onClickSubwayLine: (item: any) => void;
-  onClickSubwayStation: (item: any) => void;
 }
 
 export default function SelectSubwayView({
   subwayLineData,
   subwayStationData,
-  onClickSubwayLine,
-  onClickSubwayStation,
 }: SelectSubwayViewProps) {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const line_uuid = searchParams.get('line_uuid');
-  const station_uuid = searchParams.get('station_uuid');
-  
-  const isActiveSubwayLine = (item: any) => line_uuid === item.uuid;
-  const isActiveSubwayStation = (item: any) => station_uuid === item.uuid;
+  const { lineUuid, stationUuid, setLineUuid, setStationUuid } = useBoundStore((state) => state);
+
+  const onClickSubwayLine = (item: any) => {
+    setLineUuid(item.uuid);
+    setStationUuid('');
+  };
+  const onClickSubwayStation = (item: any) => {
+    setStationUuid(item.uuid);
+  };
 
   return (
     <div className="flex h-[calc(100vh-162px)] w-full bg-white">
@@ -31,8 +29,8 @@ export default function SelectSubwayView({
           <SelectSubwayButton
             key={item.uuid}
             content={item.line}
-            textColor={isActiveSubwayLine(item) ? 'primary' : 'gray400'}
-            isActive={isActiveSubwayLine(item)}
+            textColor={lineUuid === item.uuid ? 'primary' : 'gray400'}
+            isActive={lineUuid === item.uuid}
             onClick={() => onClickSubwayLine(item)}
           />
         ))}
@@ -42,9 +40,9 @@ export default function SelectSubwayView({
           <SelectStationButton
             key={item.station_uuid}
             content={item.station}
-            bgColor={isActiveSubwayStation(item) ? 'primary' : 'white'}
-            textColor={isActiveSubwayStation(item) ? 'white' : 'gray400'}
-            isActive={isActiveSubwayStation(item)}
+            bgColor={stationUuid === item.uuid ? 'primary' : 'white'}
+            textColor={stationUuid === item.uuid ? 'white' : 'gray400'}
+            isActive={stationUuid === item.uuid}
             onClick={() => onClickSubwayStation(item)}
             className="border-b border-gray-200 text-16 font-normal"
           />

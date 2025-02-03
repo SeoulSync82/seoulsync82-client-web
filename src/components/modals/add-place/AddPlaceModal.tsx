@@ -1,5 +1,6 @@
 import SVGIcon from '@/components/svg-icon/SVGIcon';
-import { useState } from 'react';
+import { useBoundStore } from '@/stores';
+import ModalOuter from '../ModalOuter';
 
 const placeTypes = [
   { label: '식당', type: 'Restaurant', position: 'bottom-[7%] left-[4%]' },
@@ -10,33 +11,31 @@ const placeTypes = [
   { label: '놀거리', type: 'Entertainment', position: 'bottom-[7%] right-[4%]' },
 ];
 
-export default function AddPlaceModal({
-  onSelectCustomPlaceType,
-}: {
-  onSelectCustomPlaceType: (message: string, type: string) => void;
-}) {
-  const [selectedType, setSelectedType] = useState<string | null>(null);
+export default function AddPlaceModal({ onClose }: { onClose: () => void }) {
+  const { customPlaceType, setCustomPlaceType } = useBoundStore((state) => state);
+
   const onClickPlaceButton = (placeType: string) => {
-    setSelectedType(placeType);
-    onSelectCustomPlaceType('selectCustomPlaceType', placeType);
+    setCustomPlaceType(placeType);
   };
   return (
-    <div className="custom-clip-path absolute bottom-0 left-0 flex h-[252px] w-full flex-col justify-center bg-white p-5 shadow-md">
-      {placeTypes.map(({ label, type, position }) => (
-        <PlaceButton
-          key={type}
-          label={label}
-          type={type}
-          position={position}
-          isSelected={selectedType === type}
-          isIconActive={selectedType === type}
-          onClick={() => onClickPlaceButton(type)}
-        />
-      ))}
-      <div className="absolute bottom-[4px] left-1/2 flex -translate-x-1/2 flex-col items-center">
-        <SVGIcon name="AiRecommend" width={126} height={126} />
+    <ModalOuter close={onClose}>
+      <div className="custom-clip-path absolute bottom-0 left-0 flex h-[252px] w-full flex-col justify-center bg-white p-5 shadow-md">
+        {placeTypes.map(({ label, type, position }) => (
+          <PlaceButton
+            key={type}
+            label={label}
+            type={type}
+            position={position}
+            isSelected={customPlaceType === type}
+            isIconActive={customPlaceType === type}
+            onClick={() => onClickPlaceButton(type)}
+          />
+        ))}
+        <div className="absolute bottom-[4px] left-1/2 flex -translate-x-1/2 flex-col items-center">
+          <SVGIcon name="AiRecommend" width={126} height={126} />
+        </div>
       </div>
-    </div>
+    </ModalOuter>
   );
 }
 

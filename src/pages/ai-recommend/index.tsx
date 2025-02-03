@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { useLocation } from 'react-router';
 import { useCourseRecommend, usePlaceCustomize } from '@/service/course/useCourseService';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSubwayLines, useSubwayStations } from '@/service/subway/useSubwayService';
 import { useThemesList } from '@/service/theme/useThemeService';
 import { CustomPlaceItem } from '@/service/course/types';
@@ -14,18 +14,22 @@ import SelectCustomView from '@/components/pages/ai-recommend/SelectCustomView';
 import ModalOuter from '@/components/modals/ModalOuter';
 import AddPlaceModal from '@/components/modals/add-place/AddPlaceModal';
 import useModal from '@/hooks/useModal';
+import { useStore } from 'zustand';
+import { useBoundStore } from '@/stores';
 
 const TAB_TYPES = {
   SUBWAY: 'subway',
   THEME: 'theme',
   CUSTOM: 'custom',
 };
-const DEFAULT_LINE_UUID = '077ff3adc0e556148bf7eeb7a0273fb9'; // 1호선
 const THREE_POINT_FIVE_STARS_THEME_UUID = 'c4ca35dff1a85b6788f66e864f58958a'; // 별점 3.5이상
 
 export default function AiRecommend() {
-  const { pathname, search } = useLocation();
-  const searchParams = new URLSearchParams(search);
+  const { searchParams, updateQueryParam } = useQueryParams();
+  const { isModalOpen, openModal, closeModal } = useModal();
+  const { lineUuid, stationUuid, themeUuid, placeUuidList, customPlaceType, setPlaceUuidList } =
+    useBoundStore((state) => state);
+
   const type = searchParams.get('type');
   const tabItems = [
     {
@@ -45,62 +49,42 @@ export default function AiRecommend() {
     },
   ];
 
-  const line_uuid: string = searchParams.get('line_uuid') || DEFAULT_LINE_UUID;
-  const station_uuid: string | null = searchParams.get('station_uuid');
-  const theme_uuid: string | null = searchParams.get('theme_uuid');
-
-  const [placeType, setPlaceType] = useState('');
-
   const { data: subwayLineData } = useSubwayLines();
-  const { data: subwayStationData } = useSubwayStations(line_uuid as string, {
-    enabled: !!line_uuid,
+  const { data: subwayStationData } = useSubwayStations(lineUuid as string, {
+    enabled: !!lineUuid,
   });
   const { data: themeData } = useThemesList();
   const { data: courseRecommendData } = useCourseRecommend(
-    station_uuid as string,
-    theme_uuid === THREE_POINT_FIVE_STARS_THEME_UUID ? '' : (theme_uuid as string),
+    stationUuid as string,
+    themeUuid !== THREE_POINT_FIVE_STARS_THEME_UUID ? (themeUuid as string) : '',
     {
-      enabled: !!station_uuid && !!theme_uuid,
+      enabled: !!stationUuid && !!themeUuid,
     },
   );
 
-  const { data: placeCustomData } = usePlaceCustomize(
+  const { data: customPlaceData } = usePlaceCustomize(
     {
-      place_uuids: courseRecommendData?.data?.items.places
-        ?.map((place: CustomPlaceItem) => place.uuid)
-        .join(','),
-      place_type: placeType,
-      station_uuid,
+      place_uuids: placeUuidList?.join(','),
+      place_type: customPlaceType.toUpperCase(),
+      station_uuid: stationUuid,
       theme_uuid: '',
     },
     {
-      enabled: !!placeType && !!courseRecommendData?.data?.items.places.length,
+      enabled: !!customPlaceType && !!courseRecommendData?.data?.items.places.length,
     },
   );
 
-  const { updateQueryParam, deleteQueryParam } = useQueryParams();
+  useEffect(() => {
+    const placeUuids = courseRecommendData?.data.items.places.map((item) => item.uuid);
+    const customPlaceUuid = customPlaceData?.data.items.uuid;
+    const newPlaceUuidList = customPlaceUuid ? [...placeUuids, customPlaceUuid] : placeUuids;
+    setPlaceUuidList(newPlaceUuidList);
+  }, [courseRecommendData]);
 
-  // // TODO: 뒤로가기 액션 정책 논의 필요
-  const getPreviousPath = () => {
-    switch (type) {
-      case TAB_TYPES.THEME:
-        return `${pathname}?type=${TAB_TYPES.SUBWAY}&line_uuid=${line_uuid}&station_uuid=${station_uuid}`;
-      case TAB_TYPES.CUSTOM:
-        return `${pathname}?type=${TAB_TYPES.THEME}&line_uuid=${line_uuid}&station_uuid=${station_uuid}&theme_uuid=${theme_uuid}`;
-      default:
-        return `${pathname}?type=${type}`;
-    }
-  };
-  const navigationPreviousPath = getPreviousPath();
-  const navigateOptions = {
-    state: {
-      previousPath: navigationPreviousPath,
-    },
-  };
-
+  console.log(111, placeUuidList);
   const isSelectButtonDisabled =
-    (type === TAB_TYPES.SUBWAY && (!line_uuid || !station_uuid)) ||
-    (type === TAB_TYPES.THEME && (!line_uuid || !station_uuid || !theme_uuid));
+    (type === TAB_TYPES.SUBWAY && (!lineUuid || !stationUuid)) ||
+    (type === TAB_TYPES.THEME && (!lineUuid || !stationUuid || !themeUuid));
 
   const onClickTabButton = (e: MouseEvent, item: { label: string; type: string }) => {
     const isTabButtonDisabled =
@@ -112,43 +96,17 @@ export default function AiRecommend() {
     }
     updateQueryParam('type', item.type);
   };
-
-  const onClickSubwayLine = (item: any) => {
-    updateQueryParam('line_uuid', item.uuid);
-    deleteQueryParam('station_uuid');
-  };
-  const onClickSubwayStation = (item: any) => {
-    updateQueryParam('station_uuid', item.uuid);
-  };
-  const onClickTheme = (item: any) => {
-    updateQueryParam('theme_uuid', item.uuid);
-  };
-  const onClickCancelTheme = () => {
-    deleteQueryParam('theme_uuid');
-  };
   const onClickSelectButton = () => {
-    if (type === TAB_TYPES.SUBWAY && line_uuid && station_uuid) {
+    if (type === TAB_TYPES.SUBWAY && lineUuid && stationUuid) {
       updateQueryParam('type', TAB_TYPES.THEME);
-    } else if (type === TAB_TYPES.THEME && line_uuid && station_uuid && theme_uuid) {
+    } else if (type === TAB_TYPES.THEME && lineUuid && stationUuid && themeUuid) {
       updateQueryParam('type', TAB_TYPES.CUSTOM);
     }
   };
 
-  const { isModalOpen, openModal, closeModal } = useModal();
   const handleAddPlace = (message: string) => {
     if (message === 'openAddPlaceModal') {
       openModal();
-    }
-  };
-  const handleDeletePlace = (message: string, uuid: string) => {
-    if (message === 'deletePlace') {
-      console.log(message, uuid);
-    }
-  };
-  const handleSelectCustomPlaceType = (message: string, type: string) => {
-    if (message === 'selectCustomPlaceType') {
-      console.log(message, type.toUpperCase());
-      setPlaceType(type.toUpperCase());
     }
   };
 
@@ -168,36 +126,20 @@ export default function AiRecommend() {
       </div>
       <div className="w-full">
         {type === TAB_TYPES.SUBWAY && (
-          <SelectSubwayView
-            subwayLineData={subwayLineData}
-            subwayStationData={subwayStationData}
-            onClickSubwayLine={onClickSubwayLine}
-            onClickSubwayStation={onClickSubwayStation}
-          />
+          <SelectSubwayView subwayLineData={subwayLineData} subwayStationData={subwayStationData} />
         )}
-        {type === TAB_TYPES.THEME && (
-          <SelectThemeView
-            themeData={themeData}
-            onClickTheme={onClickTheme}
-            onClickCancelTheme={onClickCancelTheme}
-          />
-        )}
+        {type === TAB_TYPES.THEME && <SelectThemeView themeData={themeData} />}
         {type === TAB_TYPES.CUSTOM && (
           <SelectCustomView
             courseRecommendData={courseRecommendData}
             onClickAddPlace={handleAddPlace}
-            onClickDeletePlace={handleDeletePlace}
           />
         )}
       </div>
       <BottomButton disabled={isSelectButtonDisabled} onClick={() => onClickSelectButton()}>
         {type !== TAB_TYPES.CUSTOM ? '선택하기' : '완료'}
       </BottomButton>
-      {isModalOpen && (
-        <ModalOuter close={closeModal}>
-          <AddPlaceModal onSelectCustomPlaceType={handleSelectCustomPlaceType} />
-        </ModalOuter>
-      )}
+      {isModalOpen && <AddPlaceModal onClose={closeModal} />}
     </div>
   );
 }
