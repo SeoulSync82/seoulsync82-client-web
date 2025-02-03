@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { queryOptions } from './queries';
+import { PlaceCustomParams } from './types';
 
 export const useCourseRecommend = (
-  { enabled }: { enabled?: boolean } = {},
   station_uuid: string,
   theme_uuid: string,
+  { enabled }: any = {},
 ) => {
-  return useQuery(queryOptions.getCourseRecommend({ enabled }, station_uuid, theme_uuid));
+  return useQuery(queryOptions.getCourseRecommend(station_uuid, theme_uuid, { enabled }));
 };
 
 export const useCourseRecommendHistory = (
@@ -23,4 +24,16 @@ export const useBookmarkedCourseList = (
   last_id: string = '',
 ) => {
   return useQuery(queryOptions.getBookmarkedCourseList({ enabled }, size, last_id));
+};
+
+export const usePlaceCustomize = (
+  { place_uuids, place_type, station_uuid, theme_uuid = '' }: PlaceCustomParams,
+  { enabled }: { enabled?: boolean } = {},
+) => {
+  return useQuery(
+    queryOptions.getPlaceCustomize(
+      { place_uuids, place_type, station_uuid, theme_uuid },
+      { enabled },
+    ),
+  );
 };

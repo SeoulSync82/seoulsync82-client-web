@@ -1,26 +1,25 @@
 import Service from '../Service';
-
+import { PlaceCustomParams, SaveCourseRecommendReqData } from './types';
 class CourseService extends Service {
   async getCourseRecommend(station_uuid: string, theme_uuid: string) {
-    // TODO: subway_uuid -> station_uuid 변경 요청
     return await this.service.get(
       `/course/recommend?station_uuid=${station_uuid}&theme_uuid=${theme_uuid}`,
     );
   }
 
-  async getPlaceCustomize(
-    place_uuids: string,
-    place_type: string,
-    station_uuid: string,
-    theme_uuid?: string,
-  ) {
-    return await this.service.get(
-      `/course/place/customize?place_uuids=${place_uuids}&place_type=${place_type}&station_uuid=${station_uuid}&theme_uuid=${theme_uuid}`,
-    );
+  async getPlaceCustomize({
+    place_uuids,
+    place_type,
+    station_uuid,
+    theme_uuid = '',
+  }: PlaceCustomParams) {
+    return await this.service.get('/course/place/customize', {
+      params: { place_uuids, place_type, station_uuid, theme_uuid },
+    });
   }
 
-  async saveCourseRecommend() {
-    return await this.service.post('/course/recommend/save');
+  async saveCourseRecommend(data: SaveCourseRecommendReqData) {
+    return await this.service.post('/course/recommend/save', data);
   }
 
   async getMyCourseHistory(size: number, last_id?: string) {

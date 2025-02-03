@@ -1,9 +1,12 @@
+import { useQuery } from '@tanstack/react-query';
 import CourseService from './CourseService';
+import { PlaceCustomParams } from './types';
 
 const queryKeys = {
   getCourseRecommend: (subway_uuid: string, theme_uuid: string) =>
     ['courseRecommend', subway_uuid, theme_uuid] as const,
-  getPlaceCustomize: ['placeCustomize'] as const,
+  getPlaceCustomize: (place_type: string, place_uuids: string) =>
+    ['placeCustomize', place_type, place_uuids] as const,
   saveCourseRecommend: ['saveCourseRecommend'] as const,
   getMyCourseHistory: ['getMyCourseHistory'] as const,
   getCourseDetail: ['getCourseDetail'] as const,
@@ -11,28 +14,19 @@ const queryKeys = {
 };
 
 export const queryOptions = {
-  getCourseRecommend: (
-    { enabled }: { enabled?: boolean } = {},
-    station_uuid: string,
-    theme_uuid: string = '',
-  ) => ({
+  getCourseRecommend: (station_uuid: string, theme_uuid: string = '', { enabled }: any) => ({
     queryKey: queryKeys.getCourseRecommend(station_uuid, theme_uuid),
     queryFn: () => CourseService.getCourseRecommend(station_uuid, theme_uuid),
     enabled,
   }),
   getPlaceCustomize: (
-    place_uuids: string,
-    place_type: string,
-    subway_uuid: string,
-    theme_uuid?: string,
+    { place_uuids, place_type, station_uuid, theme_uuid = '' }: PlaceCustomParams,
+    { enabled }: { enabled?: boolean } = {},
   ) => ({
-    queryKey: queryKeys.getPlaceCustomize,
+    queryKey: queryKeys.getPlaceCustomize(place_type, place_uuids),
     queryFn: () =>
-      CourseService.getPlaceCustomize(place_uuids, place_type, subway_uuid, theme_uuid),
-  }),
-  saveCourseRecommend: () => ({
-    queryKey: queryKeys.saveCourseRecommend,
-    queryFn: () => CourseService.saveCourseRecommend(),
+      CourseService.getPlaceCustomize({ place_uuids, place_type, station_uuid, theme_uuid }),
+    enabled,
   }),
   getBookmarkedCourseList: (
     { enabled }: { enabled?: boolean } = {},
