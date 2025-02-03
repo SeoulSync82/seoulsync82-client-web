@@ -1,24 +1,35 @@
 import SVGIcon from '@/components/svg-icon/SVGIcon';
 import Tag from '@/components/tag/Tag';
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { useLocation } from 'react-router';
 
-export default function SelectCustomView({ courseRecommendData }: { courseRecommendData: any }) {
-  const PlaceType = {
-    RESTAURANT: '음식점',
-    CAFE: '카페',
-    BAR: '술집',
-    SHOPPING: '쇼핑',
-    CULTURE: '문화',
-    ENTERTAINMENT: '놀거리',
-    EXHIBITION: '전시',
-    POPUP: '팝업',
-  };
-
+export const PLACE_TYPES = {
+  RESTAURANT: '음식점',
+  CAFE: '카페',
+  BAR: '술집',
+  SHOPPING: '쇼핑',
+  CULTURE: '문화',
+  ENTERTAINMENT: '놀거리',
+  EXHIBITION: '전시',
+  POPUP: '팝업',
+};
+export default forwardRef(function SelectCustomView(
+  {
+    courseRecommendData,
+    onClickAddPlace,
+    onClickDeletePlace,
+  }: {
+    courseRecommendData: any;
+    onClickAddPlace: (message: string) => void;
+    onClickDeletePlace: (message: string, uuid: string) => void;
+  },
+  ref,
+) {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const station_uuid = searchParams.get('station_uuid');
   const theme_uuid = searchParams.get('theme_uuid');
+  const place_uuid = searchParams.get('place_uuid');
 
   const [isPlaceOpen, setIsCourseOpen] = useState(true);
 
@@ -41,14 +52,14 @@ export default function SelectCustomView({ courseRecommendData }: { courseRecomm
   const onClickPlaceToggle = () => {
     setIsCourseOpen(!isPlaceOpen);
   };
-  
+
   return (
     <div className="flex h-[calc(100vh-106px)] overflow-y-scroll">
       <div className="mb-[76px] h-full w-full bg-white px-[20px]">
         <div className="my-4 flex h-[77px] w-full items-center rounded-lg bg-gray-50 px-5 shadow-[2px_2px_8px_0_rgba(0,0,0,0.1)]">
           <div
-            className="flex size-[36px] items-center justify-center rounded-full bg-primary-500"
-            // onClick={click}
+            onClick={() => onClickAddPlace('openAddPlaceModal')}
+            className="flex size-[36px] cursor-pointer items-center justify-center rounded-full bg-primary-500"
           >
             <SVGIcon name="Plus" width={24} height={24} active={false} />
           </div>
@@ -57,8 +68,8 @@ export default function SelectCustomView({ courseRecommendData }: { courseRecomm
             <p className="text-12 font-medium text-primary-500">다른 장소 추천받기</p>
           </div>
         </div>
-        {courseRecommendData?.data?.items.places.map((place) => (
-          <div className="mb-[16px] flex w-full items-center justify-between ">
+        {courseRecommendData?.data?.items.places.map((place, idx) => (
+          <div key={idx} className="mb-[16px] flex w-full items-center justify-between ">
             {isPlaceOpen ? (
               <div className="flex w-full">
                 <div className="flex flex-col items-center justify-center">
@@ -79,19 +90,17 @@ export default function SelectCustomView({ courseRecommendData }: { courseRecomm
                 <div className="w-full">
                   <div className="flex w-full justify-between">
                     <div className="mb-[14px] mt-[5px] text-14 font-normal text-gray-300">
-                      {PlaceType[place.place_type as keyof typeof PlaceType]}
+                      {PLACE_TYPES[place.place_type as keyof typeof PLACE_TYPES]}
                     </div>
                     <Tag
                       size="small"
                       color="gray100"
                       content="삭제"
-                      onClick={() => {
-                        console.log('deletePlaceItem');
-                      }}
+                      onClick={() => onClickDeletePlace('deletePlace', place.uuid)}
                     />
                   </div>
                   <div className="flex w-full items-center justify-between">
-                    <div className="w-full rounded-lg bg-gray-50 p-4">
+                    <div ref={ref} className="w-full rounded-lg bg-gray-50 p-4">
                       <div className="mb-3 flex w-full items-center justify-between">
                         <p className="text-16 text-1620 font-bold text-black">{place.place_name}</p>
                         <SVGIcon
@@ -161,16 +170,9 @@ export default function SelectCustomView({ courseRecommendData }: { courseRecomm
                   <div className="w-full">
                     <div className="flex w-full justify-between">
                       <div className="mt-[5px] text-14 font-normal text-gray-300">
-                        {PlaceType[place.place_type as keyof typeof PlaceType]}
+                        {PLACE_TYPES[place.place_type as keyof typeof PLACE_TYPES]}
                       </div>
-                      <Tag
-                        size="small"
-                        color="gray100"
-                        content="삭제"
-                        onClick={() => {
-                          console.log('deletePlaceItem');
-                        }}
-                      />
+                      <Tag size="small" color="gray100" content="삭제" />
                     </div>
                     <div className="mt-[16px] flex items-center justify-between">
                       <div className="text-16 font-semibold text-gray-900">{place.place_name}</div>
@@ -191,4 +193,4 @@ export default function SelectCustomView({ courseRecommendData }: { courseRecomm
       </div>
     </div>
   );
-}
+});
