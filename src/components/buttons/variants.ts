@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 
-export const ButtonVariants = cva('flex items-center justify-center w-full', {
+export const ButtonVariants = cva('flex items-center justify-center w-full font-bold', {
   variants: {
     size: {
       small: 'min-h-[46px] text-14',
@@ -30,15 +30,15 @@ export const ButtonVariants = cva('flex items-center justify-center w-full', {
       gray400: 'text-gray-400',
     },
     borderColor: {
-      primary: 'border-primary-500',
-      naverGreen: 'border-naver',
-      kakaoYellow: 'border-kakao',
-      googleGray: 'border-google',
-      white: 'border-white',
-      gray900: 'border-gray-900',
-      gray100: 'border-gray-100',
-      gray200: 'border-gray-200',
-      gray400: 'border-gray-400',
+      primary: 'border-primary-500 border-[1px]',
+      naverGreen: 'border-naver border-[1px]',
+      kakaoYellow: 'border-kakao border-[1px]',
+      googleGray: 'border-google border-[1px]',
+      white: 'border-white border-[1px]',
+      gray900: 'border-gray-900 border-[1px]',
+      gray100: 'border-gray-100 border-[1px]',
+      gray200: 'border-gray-200 border-[1px]',
+      gray400: 'border-gray-400 border-[1px]',
     },
     borderStyle: {
       none: '',
