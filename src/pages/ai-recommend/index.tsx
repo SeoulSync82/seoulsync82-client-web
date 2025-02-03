@@ -1,14 +1,19 @@
 import clsx from 'clsx';
 import { useLocation } from 'react-router';
-import { useCourseRecommend } from '@/service/course/useCourseService';
+import { useCourseRecommend, usePlaceCustomize } from '@/service/course/useCourseService';
+import { useState } from 'react';
+import { useSubwayLines, useSubwayStations } from '@/service/subway/useSubwayService';
+import { useThemesList } from '@/service/theme/useThemeService';
+import { CustomPlaceItem } from '@/service/course/types';
+import { useQueryParams } from '@/hooks/useQueryParams';
 import TabButton from '@/components/buttons/tab';
 import BottomButton from '@/components/buttons/bottom/BottomButton';
 import SelectSubwayView from '@/components/pages/ai-recommend/SelectSubwayView';
 import SelectThemeView from '@/components/pages/ai-recommend/SelectThemeView';
 import SelectCustomView from '@/components/pages/ai-recommend/SelectCustomView';
-import { useSubwayLines, useSubwayStations } from '@/service/subway/useSubwayService';
-import { useThemesList } from '@/service/theme/useThemeService';
-import { useQueryParams } from '@/hooks/useQueryParams';
+import ModalOuter from '@/components/modals/ModalOuter';
+import AddPlaceModal from '@/components/modals/add-place/AddPlaceModal';
+import useModal from '@/hooks/useModal';
 
 const TAB_TYPES = {
   SUBWAY: 'subway',
@@ -40,9 +45,11 @@ export default function AiRecommend() {
     },
   ];
 
-  const line_uuid = searchParams.get('line_uuid') || DEFAULT_LINE_UUID;
-  const station_uuid = searchParams.get('station_uuid');
-  const theme_uuid = searchParams.get('theme_uuid');
+  const line_uuid: string = searchParams.get('line_uuid') || DEFAULT_LINE_UUID;
+  const station_uuid: string | null = searchParams.get('station_uuid');
+  const theme_uuid: string | null = searchParams.get('theme_uuid');
+
+  const [placeType, setPlaceType] = useState('');
 
   const { data: subwayLineData } = useSubwayLines();
   const { data: subwayStationData } = useSubwayStations(line_uuid as string, {
@@ -50,14 +57,30 @@ export default function AiRecommend() {
   });
   const { data: themeData } = useThemesList();
   const { data: courseRecommendData } = useCourseRecommend(
-    { enabled: !!station_uuid && !!theme_uuid },
     station_uuid as string,
     theme_uuid === THREE_POINT_FIVE_STARS_THEME_UUID ? '' : (theme_uuid as string),
+    {
+      enabled: !!station_uuid && !!theme_uuid,
+    },
+  );
+
+  const { data: placeCustomData } = usePlaceCustomize(
+    {
+      place_uuids: courseRecommendData?.data?.items.places
+        ?.map((place: CustomPlaceItem) => place.uuid)
+        .join(','),
+      place_type: placeType,
+      station_uuid,
+      theme_uuid: '',
+    },
+    {
+      enabled: !!placeType && !!courseRecommendData?.data?.items.places.length,
+    },
   );
 
   const { updateQueryParam, deleteQueryParam } = useQueryParams();
 
-  // TODO: 뒤로가기 액션 정책 논의 필요
+  // // TODO: 뒤로가기 액션 정책 논의 필요
   const getPreviousPath = () => {
     switch (type) {
       case TAB_TYPES.THEME:
@@ -87,7 +110,7 @@ export default function AiRecommend() {
       e.preventDefault();
       return;
     }
-    updateQueryParam('type', item.type, navigateOptions);
+    updateQueryParam('type', item.type);
   };
 
   const onClickSubwayLine = (item: any) => {
@@ -105,9 +128,27 @@ export default function AiRecommend() {
   };
   const onClickSelectButton = () => {
     if (type === TAB_TYPES.SUBWAY && line_uuid && station_uuid) {
-      updateQueryParam('type', TAB_TYPES.THEME, navigateOptions);
+      updateQueryParam('type', TAB_TYPES.THEME);
     } else if (type === TAB_TYPES.THEME && line_uuid && station_uuid && theme_uuid) {
-      updateQueryParam('type', TAB_TYPES.CUSTOM, navigateOptions);
+      updateQueryParam('type', TAB_TYPES.CUSTOM);
+    }
+  };
+
+  const { isModalOpen, openModal, closeModal } = useModal();
+  const handleAddPlace = (message: string) => {
+    if (message === 'openAddPlaceModal') {
+      openModal();
+    }
+  };
+  const handleDeletePlace = (message: string, uuid: string) => {
+    if (message === 'deletePlace') {
+      console.log(message, uuid);
+    }
+  };
+  const handleSelectCustomPlaceType = (message: string, type: string) => {
+    if (message === 'selectCustomPlaceType') {
+      console.log(message, type.toUpperCase());
+      setPlaceType(type.toUpperCase());
     }
   };
 
@@ -142,12 +183,21 @@ export default function AiRecommend() {
           />
         )}
         {type === TAB_TYPES.CUSTOM && (
-          <SelectCustomView courseRecommendData={courseRecommendData} />
+          <SelectCustomView
+            courseRecommendData={courseRecommendData}
+            onClickAddPlace={handleAddPlace}
+            onClickDeletePlace={handleDeletePlace}
+          />
         )}
       </div>
       <BottomButton disabled={isSelectButtonDisabled} onClick={() => onClickSelectButton()}>
         {type !== TAB_TYPES.CUSTOM ? '선택하기' : '완료'}
       </BottomButton>
+      {isModalOpen && (
+        <ModalOuter close={closeModal}>
+          <AddPlaceModal onSelectCustomPlaceType={handleSelectCustomPlaceType} />
+        </ModalOuter>
+      )}
     </div>
   );
 }
