@@ -39,6 +39,10 @@ export const usePlaceCustomize = (
   );
 };
 
+export const useCourseDetail = (uuid: string) => {
+  return useQuery(queryOptions.getCourseDetail(uuid));
+};
+
 // mutations
 export const useSaveRecommendCourse = () => {
   return useMutation({

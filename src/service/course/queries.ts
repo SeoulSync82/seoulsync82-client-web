@@ -9,7 +9,7 @@ const queryKeys = {
     ['placeCustomize', place_uuids, place_type] as const,
   saveCourseRecommend: ['saveCourseRecommend'] as const,
   getMyCourseHistory: ['getMyCourseHistory'] as const,
-  getCourseDetail: ['getCourseDetail'] as const,
+  getCourseDetail: (uuid: string) => ['getCourseDetail', uuid] as const,
   getBookmarkedCourseList: ['getBookmarkedCourseList'] as const,
 };
 
@@ -47,7 +47,7 @@ export const queryOptions = {
     enabled,
   }),
   getCourseDetail: (uuid: string) => ({
-    queryKey: queryKeys.getCourseDetail,
+    queryKey: queryKeys.getCourseDetail(uuid),
     queryFn: () => CourseService.getCourseDetail(uuid),
   }),
 };

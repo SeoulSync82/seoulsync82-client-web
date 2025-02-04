@@ -13,8 +13,10 @@ import Exhibitions from '@/pages/culture/exhibitions';
 import { createBrowserRouter } from 'react-router';
 import Alarm from '@/pages/notifications';
 import Notifications from '@/pages/notifications';
+import Map from '@/pages/map';
 
 export const router = createBrowserRouter([
+  { path: '/map', element: <Map /> },
   {
     element: <Layout />,
     children: [
