@@ -24,19 +24,18 @@ export const PLACE_TYPES = {
 
 export default forwardRef(function SelectCustomView(
   {
-    courseRecommendData,
-    onClickAddPlace,
+    onClickAddCustomPlace,
   }: {
-    courseRecommendData: any;
-    onClickAddPlace: (message: string) => void;
+    onClickAddCustomPlace: (message: string) => void;
   },
   ref,
 ) {
   const [isPlaceOpen, setIsPlaceOpen] = useState(true);
-  const { placeUuidList, setPlaceUuidList } = useBoundStore((state) => state);
+  const { customPlaceList, setCustomPlaceList } = useBoundStore((state) => state);
 
   const onClickDeletePlace = (uuid: string) => {
-    setPlaceUuidList(placeUuidList.filter((item) => item !== uuid));
+    const filteredList = customPlaceList.filter((item) => item.uuid !== uuid);
+    setCustomPlaceList(filteredList);
   };
   const onClickPlaceToggle = () => {
     setIsPlaceOpen(!isPlaceOpen);
@@ -47,7 +46,7 @@ export default forwardRef(function SelectCustomView(
       <div className="mb-[76px] h-full w-full bg-white px-[20px]">
         <div className="my-4 flex h-[77px] w-full items-center rounded-lg bg-gray-50 px-5 shadow-[2px_2px_8px_0_rgba(0,0,0,0.1)]">
           <div
-            onClick={() => onClickAddPlace('openAddPlaceModal')}
+            onClick={() => onClickAddCustomPlace('openAddPlaceModal')}
             className="flex size-[36px] cursor-pointer items-center justify-center rounded-full bg-primary-500"
           >
             <SVGIcon name="Plus" width={24} height={24} active={false} />
@@ -57,7 +56,7 @@ export default forwardRef(function SelectCustomView(
             <p className="text-12 font-medium text-primary-500">다른 장소 추천받기</p>
           </div>
         </div>
-        {courseRecommendData?.data?.items.places.map((place, idx) => (
+        {customPlaceList?.map((place, idx) => (
           <div key={idx} className="mb-[16px] flex w-full items-center justify-between ">
             {isPlaceOpen ? (
               <div className="flex w-full">

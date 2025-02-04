@@ -1,53 +1,72 @@
 import clsx from 'clsx';
-import { useLocation } from 'react-router';
-import { useCourseRecommend, usePlaceCustomize } from '@/service/course/useCourseService';
+import {
+  useCourseRecommend,
+  usePlaceCustomize,
+  useSaveRecommendCourse,
+} from '@/service/course/useCourseService';
 import { useEffect, useState } from 'react';
-import { useSubwayLines, useSubwayStations } from '@/service/subway/useSubwayService';
+import {
+  useSubwayLines,
+  useSubwayStationCustomCount,
+  useSubwayStations,
+} from '@/service/subway/useSubwayService';
 import { useThemesList } from '@/service/theme/useThemeService';
-import { CustomPlaceItem } from '@/service/course/types';
 import { useQueryParams } from '@/hooks/useQueryParams';
 import TabButton from '@/components/buttons/tab';
 import BottomButton from '@/components/buttons/bottom/BottomButton';
 import SelectSubwayView from '@/components/pages/ai-recommend/SelectSubwayView';
 import SelectThemeView from '@/components/pages/ai-recommend/SelectThemeView';
 import SelectCustomView from '@/components/pages/ai-recommend/SelectCustomView';
-import ModalOuter from '@/components/modals/ModalOuter';
-import AddPlaceModal from '@/components/modals/add-place/AddPlaceModal';
+import AddCustomPlaceModal from '@/components/modals/add-custom-place/AddCustomPlaceModal';
 import useModal from '@/hooks/useModal';
-import { useStore } from 'zustand';
-import { useBoundStore } from '@/stores';
+import { DEFAULT_LINE_UUID, useBoundStore } from '@/stores';
 
 const TAB_TYPES = {
   SUBWAY: 'subway',
   THEME: 'theme',
   CUSTOM: 'custom',
 };
+const TAB_ITEMS: TabItem[] = [
+  {
+    label: '역주변',
+    type: TAB_TYPES.SUBWAY,
+  },
+  {
+    label: '테마선택',
+    type: TAB_TYPES.THEME,
+  },
+  {
+    label: '커스텀',
+    type: TAB_TYPES.CUSTOM,
+  },
+];
 const THREE_POINT_FIVE_STARS_THEME_UUID = 'c4ca35dff1a85b6788f66e864f58958a'; // 별점 3.5이상
+
+export type TabItem = { label: string; type: string; disabled?: boolean };
 
 export default function AiRecommend() {
   const { searchParams, updateQueryParam } = useQueryParams();
-  const { isModalOpen, openModal, closeModal } = useModal();
-  const { lineUuid, stationUuid, themeUuid, placeUuidList, customPlaceType, setPlaceUuidList } =
-    useBoundStore((state) => state);
+  const { isModalOpen, openModal, closeModal: closeAddCustomPlaceModal } = useModal();
+  const {
+    lineUuid,
+    stationUuid,
+    themeUuid,
+    customPlaceList,
+    customPlaceType,
+    setLineUuid,
+    setStationUuid,
+    setThemeUuid,
+    setCustomPlaceList,
+    setCustomPlaceType,
+  } = useBoundStore((state) => state);
+
+  const resetUUidData = () => {
+    setLineUuid(DEFAULT_LINE_UUID);
+    setStationUuid('');
+    setThemeUuid('');
+  };
 
   const type = searchParams.get('type');
-  const tabItems = [
-    {
-      label: '역주변',
-      type: TAB_TYPES.SUBWAY,
-      disabled: undefined,
-    },
-    {
-      label: '테마선택',
-      type: TAB_TYPES.THEME,
-      disabled: type === TAB_TYPES.SUBWAY,
-    },
-    {
-      label: '커스텀',
-      type: TAB_TYPES.CUSTOM,
-      disabled: type === TAB_TYPES.SUBWAY || type === TAB_TYPES.THEME,
-    },
-  ];
 
   const { data: subwayLineData } = useSubwayLines();
   const { data: subwayStationData } = useSubwayStations(lineUuid as string, {
@@ -61,50 +80,60 @@ export default function AiRecommend() {
       enabled: !!stationUuid && !!themeUuid,
     },
   );
-
   const { data: customPlaceData } = usePlaceCustomize(
     {
-      place_uuids: placeUuidList?.join(','),
+      place_uuids: customPlaceList?.map((place: any) => place.uuid).join(','),
       place_type: customPlaceType.toUpperCase(),
       station_uuid: stationUuid,
-      theme_uuid: '',
+      theme_uuid: themeUuid,
     },
     {
-      enabled: !!customPlaceType && !!courseRecommendData?.data?.items.places.length,
+      enabled: !!customPlaceType,
     },
   );
+  const { mutate: saveRecommendCourse } = useSaveRecommendCourse();
 
   useEffect(() => {
-    const placeUuids = courseRecommendData?.data.items.places.map((item) => item.uuid);
-    const customPlaceUuid = customPlaceData?.data.items.uuid;
-    const newPlaceUuidList = customPlaceUuid ? [...placeUuids, customPlaceUuid] : placeUuids;
-    setPlaceUuidList(newPlaceUuidList);
-  }, [courseRecommendData]);
+    const recommendPlaceList = courseRecommendData?.data?.items?.places || [];
+    const customPlace = customPlaceData?.data?.items;
+    setCustomPlaceList(customPlace ? [...recommendPlaceList, customPlace] : recommendPlaceList);
+  }, [courseRecommendData, customPlaceData]);
 
-  console.log(111, placeUuidList);
-  const isSelectButtonDisabled =
+  useEffect(() => {
+    console.log('## custom place list: ', customPlaceList);
+  }, [customPlaceList]);
+
+  const isTabButtonDisabled = (tab: TabItem) =>
+    type === TAB_TYPES.SUBWAY || (type === TAB_TYPES.THEME && tab.type === TAB_TYPES.CUSTOM);
+  const isBottomButtonDisabled =
     (type === TAB_TYPES.SUBWAY && (!lineUuid || !stationUuid)) ||
     (type === TAB_TYPES.THEME && (!lineUuid || !stationUuid || !themeUuid));
 
-  const onClickTabButton = (e: MouseEvent, item: { label: string; type: string }) => {
-    const isTabButtonDisabled =
-      type === TAB_TYPES.SUBWAY || (type === TAB_TYPES.THEME && item.type === TAB_TYPES.CUSTOM);
-
-    if (isTabButtonDisabled) {
-      e.preventDefault();
-      return;
-    }
+  const onClickTabButton = (item: TabItem) => {
     updateQueryParam('type', item.type);
   };
-  const onClickSelectButton = () => {
+  const onClickBottomButton = () => {
     if (type === TAB_TYPES.SUBWAY && lineUuid && stationUuid) {
       updateQueryParam('type', TAB_TYPES.THEME);
     } else if (type === TAB_TYPES.THEME && lineUuid && stationUuid && themeUuid) {
       updateQueryParam('type', TAB_TYPES.CUSTOM);
+    } else if (type === TAB_TYPES.CUSTOM) {
+      // TODO: subway -> station_uuid, theme -> theme_uuid 수정 요청
+      const data = {
+        subway: { uuid: stationUuid },
+        theme: { uuid: themeUuid },
+        course_uuid: courseRecommendData?.data?.items.course_uuid,
+        course_name: courseRecommendData?.data?.items.course_name,
+        places: customPlaceList,
+      };
+      if (customPlaceList.length < 3) {
+        alert('toast: 3개 이상의 장소를 추가해주세요.');
+        return;
+      }
+      saveRecommendCourse(data);
     }
   };
-
-  const handleAddPlace = (message: string) => {
+  const handleClickAddCustomPlace = (message: string) => {
     if (message === 'openAddPlaceModal') {
       openModal();
     }
@@ -113,14 +142,14 @@ export default function AiRecommend() {
   return (
     <div className="page w-full">
       <div className="flex w-full">
-        {tabItems.map((item, idx) => (
+        {TAB_ITEMS.map((tab, idx) => (
           <TabButton
             key={`tab-${idx}`}
-            title={item.label}
-            active={type === item.type}
+            title={tab.label}
+            active={type === tab.type}
             className={clsx('flex-1')}
-            onClick={(e: MouseEvent) => onClickTabButton(e, item)}
-            disabled={item.disabled}
+            onClick={() => onClickTabButton(tab)}
+            disabled={isTabButtonDisabled(tab)}
           />
         ))}
       </div>
@@ -130,16 +159,13 @@ export default function AiRecommend() {
         )}
         {type === TAB_TYPES.THEME && <SelectThemeView themeData={themeData} />}
         {type === TAB_TYPES.CUSTOM && (
-          <SelectCustomView
-            courseRecommendData={courseRecommendData}
-            onClickAddPlace={handleAddPlace}
-          />
+          <SelectCustomView onClickAddCustomPlace={handleClickAddCustomPlace} />
         )}
       </div>
-      <BottomButton disabled={isSelectButtonDisabled} onClick={() => onClickSelectButton()}>
+      <BottomButton disabled={isBottomButtonDisabled} onClick={onClickBottomButton}>
         {type !== TAB_TYPES.CUSTOM ? '선택하기' : '완료'}
       </BottomButton>
-      {isModalOpen && <AddPlaceModal onClose={closeModal} />}
+      {isModalOpen && <AddCustomPlaceModal onClose={closeAddCustomPlaceModal} />}
     </div>
   );
 }

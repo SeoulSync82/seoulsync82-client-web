@@ -1,6 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryOptions } from './queries';
-import { PlaceCustomParams } from './types';
+import { PlaceCustomParams, SaveCourseRecommendReqData } from './types';
+import CourseService from './CourseService';
 
 export const useCourseRecommend = (
   station_uuid: string,
@@ -36,4 +37,15 @@ export const usePlaceCustomize = (
       { enabled },
     ),
   );
+};
+
+// mutations
+export const useSaveRecommendCourse = () => {
+  return useMutation({
+    mutationFn: (data: SaveCourseRecommendReqData) => CourseService.saveCourseRecommend(data),
+    onSuccess: ({ data }) => {
+      alert('toast: 코스 생성을 완료했어요!');
+      window.location.replace(`/my-course/${data.items}`);
+    },
+  });
 };

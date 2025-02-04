@@ -1,11 +1,11 @@
 export type SubwayItem = {
   uuid: string;
-  station: string;
+  station?: string;
 };
 
 export type ThemeItem = {
   uuid: string;
-  theme: string;
+  theme?: string;
 };
 
 export type CustomPlaceItem = {
