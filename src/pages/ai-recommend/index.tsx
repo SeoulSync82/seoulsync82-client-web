@@ -152,7 +152,7 @@ export default function AiRecommend() {
           />
         ))}
       </div>
-      <div className="w-full">
+      <div className="h-[calc(100dvh-162px)] w-full overflow-y-scroll">
         {type === TAB_TYPES.SUBWAY && (
           <SelectSubwayView subwayLineData={subwayLineData} subwayStationData={subwayStationData} />
         )}

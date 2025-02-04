@@ -29,7 +29,7 @@ const SelectCustomView = forwardRef<HTMLDivElement, SelectCustomViewProps>(
     };
 
     return (
-      <div className="flex h-[calc(100vh-106px)] overflow-y-scroll">
+      <div className="flex overflow-y-hidden">
         <div className="mb-[76px] h-full w-full bg-white px-[20px]">
           {/* 추가 버튼 영역 */}
           <div className="my-4 flex h-[77px] w-full items-center rounded-lg bg-gray-50 px-5 shadow-[2px_2px_8px_0_rgba(0,0,0,0.1)]">
