@@ -48,6 +48,7 @@ export default function SVGIcon({
   active = false,
   onClick,
   className,
+  color,
 }: IconProps) {
   const svgTypes: Record<SVGName, (props: React.SVGProps<SVGSVGElement>) => JSX.Element> = {
     Home: active ? IcoHomeActive : IcoHome,
@@ -84,7 +85,13 @@ export default function SVGIcon({
   return (
     <>
       {SvgComponent && (
-        <SvgComponent width={width} height={height} onClick={onClick} className={className} />
+        <SvgComponent
+          width={width}
+          color={color}
+          height={height}
+          onClick={onClick}
+          className={className}
+        />
       )}
     </>
   );

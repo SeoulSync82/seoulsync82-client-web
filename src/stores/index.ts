@@ -27,6 +27,6 @@ export const useBoundStore = create<BoundStoreState & BoundStoreActions>((set, g
   setLineUuid: (lineUuid: string) => set({ lineUuid }),
   setStationUuid: (stationUuid: string) => set({ stationUuid }),
   setThemeUuid: (themeUuid: string) => set({ themeUuid }),
-  setCustomPlaceList: (placeList: string[]) => set({ customPlaceList: placeList }),
+  setCustomPlaceList: (customPlaceList: string[]) => set({ customPlaceList }),
   setCustomPlaceType: (customPlaceType: string) => set({ customPlaceType }),
 }));

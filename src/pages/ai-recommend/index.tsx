@@ -82,7 +82,7 @@ export default function AiRecommend() {
   );
   const { data: customPlaceData } = usePlaceCustomize(
     {
-      place_uuids: customPlaceList?.map((place: any) => place.uuid).join(','),
+      place_uuids: customPlaceList?.map((place: any) => place?.uuid).join(','),
       place_type: customPlaceType.toUpperCase(),
       station_uuid: stationUuid,
       theme_uuid: themeUuid,
@@ -95,8 +95,8 @@ export default function AiRecommend() {
 
   useEffect(() => {
     const recommendPlaceList = courseRecommendData?.data?.items?.places || [];
-    const customPlace = customPlaceData?.data?.items;
-    setCustomPlaceList(customPlace ? [...recommendPlaceList, customPlace] : recommendPlaceList);
+    const customPlace = customPlaceData?.data?.items ? [customPlaceData?.data?.items] : [];
+    setCustomPlaceList([...recommendPlaceList, ...customPlace]);
   }, [courseRecommendData, customPlaceData]);
 
   useEffect(() => {
@@ -118,10 +118,9 @@ export default function AiRecommend() {
     } else if (type === TAB_TYPES.THEME && lineUuid && stationUuid && themeUuid) {
       updateQueryParam('type', TAB_TYPES.CUSTOM);
     } else if (type === TAB_TYPES.CUSTOM) {
-      // TODO: subway -> station_uuid, theme -> theme_uuid 수정 요청
       const data = {
-        subway: { uuid: stationUuid },
-        theme: { uuid: themeUuid },
+        station_uuid: stationUuid,
+        theme_uuid: themeUuid,
         course_uuid: courseRecommendData?.data?.items.course_uuid,
         course_name: courseRecommendData?.data?.items.course_name,
         places: customPlaceList,
