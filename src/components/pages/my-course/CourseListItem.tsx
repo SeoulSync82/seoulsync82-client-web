@@ -1,5 +1,6 @@
 import SVGIcon from '@/components/svg-icon/SVGIcon';
 import { convertDateToYMD } from '@/utils';
+import { Link } from 'react-router';
 
 export interface CourseListItemProps {
   course_name: string;
@@ -17,7 +18,7 @@ export default function CourseListItem({
   course_uuid,
 }: CourseListItemProps) {
   return (
-    <div className="flex h-[100px] w-full px-[20px]">
+    <Link to={`/my-course/${course_uuid}`} className="flex h-[100px] w-full px-[20px]">
       <div className="flex w-full items-center gap-[10px] border-b-[1px] border-gray-200">
         <img
           src={course_image ?? 'https://dummyimage.com/70x70'}
@@ -40,6 +41,6 @@ export default function CourseListItem({
           <SVGIcon name="Heart" width={14} height={14} active className="" />
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

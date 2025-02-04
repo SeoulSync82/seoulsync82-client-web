@@ -8,7 +8,7 @@ export default function DefaultHeader({ pageName }: { pageName: string }) {
     if (location.state && location.state.previousPath) {
       navigate(location.state.previousPath);
     } else {
-      navigate('/');
+      navigate(-1);
     }
   };
 

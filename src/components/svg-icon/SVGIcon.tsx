@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import {
   IcoMyPage,
   IcoAiRecommend,
@@ -90,7 +91,7 @@ export default function SVGIcon({
           color={color}
           height={height}
           onClick={onClick}
-          className={className}
+          className={clsx(onClick && 'cursor-pointer', className)}
         />
       )}
     </>
