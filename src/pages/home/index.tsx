@@ -82,14 +82,18 @@ export default function Home() {
               minWidth="clamp(240px, 64vw, 275px)"
               className="rounded-[8px]"
             >
-              <div className="mb-[28px] flex w-full items-end justify-between gap-[30px] px-[16px] text-white">
-                <div className="flex w-[55%] flex-col gap-[8px]">
-                  <div className="w-full truncate text-[22px] font-bold leading-[28px]">
-                    {item?.place_name}
-                  </div>
+              <div className="mb-[8px] w-full px-[16px]">
+                <div className="w-full truncate text-[22px] font-bold leading-[28px] leading-[28px] text-white">
+                  {item?.place_name}
+                </div>
+              </div>
+              <div className="mb-[28px] flex w-full items-end justify-between px-[16px] text-white">
+                <div className="flex flex-col gap-[8px]">
                   <div className="flex w-full flex-col items-center">
-                    <div className="w-full truncate text-[12px] font-medium">{item?.address}</div>
-                    <div className="w-full truncate text-[12px] font-medium">
+                    <div className="w-full truncate text-[12px] font-medium leading-[18px]">
+                      {item?.address}
+                    </div>
+                    <div className="w-full truncate text-[12px] font-medium leading-[18px]">
                       {convertDateToYMD(item?.start_date)} - {convertDateToYMD(item?.end_date)}
                     </div>
                   </div>
