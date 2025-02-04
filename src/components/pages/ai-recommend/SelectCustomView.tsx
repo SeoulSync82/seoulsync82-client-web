@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, ReactNode, useState } from 'react';
 import { Link } from 'react-router';
 import { useBoundStore } from '@/stores';
 import { CustomPlaceItem as CustomPlaceItemType } from '@/service/course/types';
@@ -44,12 +44,11 @@ const SelectCustomView = forwardRef<HTMLDivElement, SelectCustomViewProps>(
               <p className="text-12 font-medium text-primary-500">다른 장소 추천받기</p>
             </div>
           </div>
-          {/* 장소 리스트 */}
           {customPlaceList?.map((place: any) => (
             <CustomPlaceItem
               key={place.uuid}
               place={place}
-              onDelete={handleDeletePlace}
+              onDeletePlace={handleDeletePlace}
               forwardedRef={ref}
             />
           ))}
@@ -62,17 +61,15 @@ export default SelectCustomView;
 
 interface CustomPlaceItemProps {
   place: CustomPlaceItemType;
-  onDelete: (uuid: string) => void;
+  onDeletePlace: (uuid: string) => void;
   forwardedRef?: React.Ref<HTMLDivElement>;
 }
 
 const CustomPlaceItem = forwardRef<HTMLDivElement, CustomPlaceItemProps>(function CustomPlaceItem(
-  { place, onDelete, forwardedRef },
+  { place, onDeletePlace, forwardedRef },
   ref,
 ) {
-  // 여기서는 각 항목별로 확장 여부(expanded)를 내부 상태로 관리합니다.
-  const [expanded, setExpanded] = useState<boolean>(false);
-
+  const [expanded, setExpanded] = useState(true);
   const handleToggle = () => setExpanded((prev) => !prev);
 
   return (
@@ -80,16 +77,64 @@ const CustomPlaceItem = forwardRef<HTMLDivElement, CustomPlaceItemProps>(functio
       <div className="flex w-full">
         <CustomPlaceSymbol>{place.sort}</CustomPlaceSymbol>
         <div className="flex w-full flex-col items-center justify-start">
-          <CustomPlaceHeader placeType={place.place_type} onDelete={() => onDelete(place.uuid)} />
-          {expanded ? (
-            <CustomPlaceCard place={place} onToggle={handleToggle} />
-          ) : (
-            <CustomPlaceTitle
-              placeName={place.place_name}
-              onToggle={handleToggle}
-              className="mt-[16px] px-[16px]"
+          <div className="flex w-full items-center justify-between pl-[16px]">
+            <div className="flex items-start text-14 font-normal text-gray-300">
+              {PLACE_TYPES[place.place_type as keyof typeof PLACE_TYPES]}
+            </div>
+            <Tag
+              size="small"
+              color="gray100"
+              content="삭제"
+              onClick={() => onDeletePlace(place.uuid)}
             />
-          )}
+          </div>
+          <div
+            className={`${expanded ? 'mt-[16px] bg-gray-50 p-[16px]' : ''} flex max-h-[128px] w-full flex-col gap-[8px] rounded-[8px]`}
+          >
+            {/* */}
+            <div
+              className={`${expanded ? '' : 'mt-[16px] px-[16px]'} flex w-full items-center justify-between`}
+            >
+              <div className="text-16 font-semibold text-gray-900">{place.place_name}</div>
+              <SVGIcon
+                name="Arrow"
+                width={16}
+                height={16}
+                onClick={handleToggle}
+                className={`${expanded ? 'rotate-[90deg]' : 'rotate-[270deg]'} cursor-pointer transition-all duration-300 ease-in-out`}
+              />
+            </div>
+            {/*  */}
+            {expanded && (
+              <div className="flex w-full items-center gap-[10px]">
+                <img
+                  src={place.thumbnail}
+                  alt={place.place_name}
+                  className="size-[68px] min-w-[68px] rounded-lg object-cover"
+                />
+                <div className="flex w-full items-center justify-between gap-[22px]">
+                  <div className="flex flex-col gap-[8px]">
+                    <div className="line-clamp-2 break-all text-14 font-normal leading-[18px] text-gray-500">
+                      {place.address}
+                    </div>
+                    <div className="flex items-center">
+                      <Link
+                        to={`/map?latitude=${place.latitude}&longitude=${place.longitude}`}
+                        target="_blank"
+                        className="text-12 font-bold text-primary-500"
+                      >
+                        지도보기
+                      </Link>
+                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    <SVGIcon name="FullStar" width={14} height={14} />
+                    <span className="text-12 font-normal text-gray-900">{place.score}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -106,86 +151,6 @@ const CustomPlaceSymbol = ({ children }: { children: React.ReactNode }) => {
         </div>
       </div>
       <hr className="mt-[4px] h-[100%] w-0 border-[1px] border-dashed" />
-    </div>
-  );
-};
-
-const CustomPlaceHeader = ({
-  placeType,
-  onDelete,
-}: {
-  placeType: string;
-  onDelete: () => void;
-}) => {
-  return (
-    <div className="flex w-full items-center justify-between pl-[16px]">
-      <div className="flex items-start text-14 font-normal text-gray-300">
-        {PLACE_TYPES[placeType as keyof typeof PLACE_TYPES]}
-      </div>
-      <Tag size="small" color="gray100" content="삭제" onClick={onDelete} />
-    </div>
-  );
-};
-
-const CustomPlaceTitle = ({
-  className,
-  placeName,
-  onToggle,
-}: {
-  placeName: string;
-  onToggle: () => void;
-  className?: string;
-}) => {
-  return (
-    <div className={`flex w-full items-center justify-between ${className}`}>
-      <div className="text-16 font-semibold text-gray-900">{placeName}</div>
-      <SVGIcon
-        name="Arrow"
-        width={16}
-        height={16}
-        onClick={onToggle}
-        className="rotate-[90deg] cursor-pointer"
-      />
-    </div>
-  );
-};
-
-const CustomPlaceCard = ({
-  place,
-  onToggle,
-}: {
-  place: CustomPlaceItemType;
-  onToggle: () => void;
-}) => {
-  return (
-    <div className="mt-[16px] flex h-[128px] w-full flex-col gap-[8px] rounded-[8px] bg-gray-50 p-[16px]">
-      <CustomPlaceTitle placeName={place.place_name} onToggle={onToggle} />
-      <div className="flex w-full items-center gap-[10px]">
-        <img
-          src={place.thumbnail}
-          alt={place.place_name}
-          className="size-[68px] min-w-[68px] rounded-lg object-cover"
-        />
-        <div className="flex w-full items-center justify-between gap-[22px]">
-          <div className="flex flex-col gap-[8px]">
-            <div className="line-clamp-2 break-all text-14 font-normal leading-[18px] text-gray-500">
-              {place.address}
-            </div>
-            <div className="flex items-center">
-              <Link
-                to={`http://map.naver.com/?dlevel=7&pinType=site&pinId=13490999&x=${place.longitude}&y=${place.latitude}&enc=b64`}
-                className="text-12 font-bold text-primary-500"
-              >
-                지도보기
-              </Link>
-            </div>
-          </div>
-          <div className="flex items-center">
-            <SVGIcon name="FullStar" width={14} height={14} active={false} color="#9070CF" />
-            <span className="text-12 font-normal text-gray-900">{place.score}</span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

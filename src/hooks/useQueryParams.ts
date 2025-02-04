@@ -11,6 +11,10 @@ export function useQueryParams() {
   const { pathname, search } = useLocation();
   const searchParams = new URLSearchParams(search);
 
+  const getQueryParam = (key: string) => {
+    return searchParams.get(key);
+  };
+
   const updateQueryParam = (key: string, value: string, navigateOptions: NavigateOptions = {}) => {
     searchParams.set(key, value);
     navigate(
@@ -32,5 +36,5 @@ export function useQueryParams() {
       navigateOptions,
     );
   };
-  return { searchParams, updateQueryParam, deleteQueryParam };
+  return { searchParams, getQueryParam, updateQueryParam, deleteQueryParam };
 }
