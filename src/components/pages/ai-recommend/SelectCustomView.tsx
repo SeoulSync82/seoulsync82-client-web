@@ -11,6 +11,7 @@ const LINE_COLORS = {
   5: '#F04F09',
   6: '#705F30',
 };
+
 export const PLACE_TYPES = {
   RESTAURANT: '음식점',
   CAFE: '카페',
@@ -30,15 +31,24 @@ export default forwardRef(function SelectCustomView(
   },
   ref,
 ) {
-  const [isPlaceOpen, setIsPlaceOpen] = useState(true);
   const { customPlaceList, setCustomPlaceList } = useBoundStore((state) => state);
+  const [openStates, setOpenStates] = useState<{ [uuid: string]: boolean }>({});
 
   const onClickDeletePlace = (uuid: string) => {
     const filteredList = customPlaceList.filter((item) => item.uuid !== uuid);
     setCustomPlaceList(filteredList);
+    setOpenStates((prev) => {
+      const newState = { ...prev };
+      delete newState[uuid];
+      return newState;
+    });
   };
-  const onClickPlaceToggle = () => {
-    setIsPlaceOpen(!isPlaceOpen);
+
+  const onClickPlaceToggle = (uuid: string) => {
+    setOpenStates((prev) => ({
+      ...prev,
+      [uuid]: !(prev[uuid] ?? true),
+    }));
   };
 
   return (
@@ -56,83 +66,88 @@ export default forwardRef(function SelectCustomView(
             <p className="text-12 font-medium text-primary-500">다른 장소 추천받기</p>
           </div>
         </div>
-        {customPlaceList?.map((place, idx) => (
-          <div key={idx} className="mb-[16px] flex w-full items-center justify-between ">
-            {isPlaceOpen ? (
-              <div className="flex w-full">
-                <div className="flex flex-col items-center justify-center">
-                  <div className="relative mr-2 h-fit w-fit">
-                    <SVGIcon name="Line" width={33} height={33} active={false} />
-                    <p className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-2 text-10 text-white">
-                      {place.sort}
-                    </p>
-                  </div>
-                  <hr className="mr-[8px] mt-[4px] h-[calc(100%-8px)] w-0 border-[1px] border-dashed" />
-                </div>
-                <div className="w-full">
-                  <div className="flex w-full justify-between">
-                    <div className="mb-[14px] mt-[5px] text-14 font-normal text-gray-300">
-                      {PLACE_TYPES[place.place_type as keyof typeof PLACE_TYPES]}
+        {customPlaceList?.map((place) => {
+          // 각 항목의 열림 상태를 openStates 객체에서 가져옵니다.
+          // 상태가 정의되지 않은 경우 기본값 true로 간주합니다.
+          const isPlaceOpen = openStates[place.uuid] ?? true;
+          return (
+            <div key={place.uuid} className="mb-[16px] flex w-full items-center justify-between">
+              {isPlaceOpen ? (
+                <div className="flex w-full">
+                  <div className="flex flex-col items-center justify-center">
+                    <div className="relative mr-2 h-fit w-fit">
+                      <SVGIcon name="Line" width={33} height={33} active={false} />
+                      <p className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-2 text-10 text-white">
+                        {place.sort}
+                      </p>
                     </div>
-                    <Tag
-                      size="small"
-                      color="gray100"
-                      content="삭제"
-                      onClick={() => onClickDeletePlace(place.uuid)}
-                    />
+                    <hr className="mr-[8px] mt-[4px] h-[calc(100%-8px)] w-0 border-[1px] border-dashed" />
                   </div>
-                  <div className="flex w-full items-center justify-between">
-                    <div ref={ref} className="w-full rounded-lg bg-gray-50 p-4">
-                      <div className="mb-3 flex w-full items-center justify-between">
-                        <p className="text-16 text-1620 font-bold text-black">{place.place_name}</p>
-                        <SVGIcon
-                          name="Arrow"
-                          width={16}
-                          height={16}
-                          active={false}
-                          className="rotate-[90deg]"
-                          onClick={onClickPlaceToggle}
-                        />
+                  <div className="w-full">
+                    <div className="flex w-full justify-between">
+                      <div className="mb-[14px] mt-[5px] text-14 font-normal text-gray-300">
+                        {PLACE_TYPES[place.place_type as keyof typeof PLACE_TYPES]}
                       </div>
-                      <div className="flex items-center gap-[10px]">
-                        <img
-                          src={place.thumbnail}
-                          className="size-[68px] min-w-[68px] rounded-lg object-cover"
-                        />
-                        <div className="flex w-full items-center justify-between gap-[22px]">
-                          <div className="flex flex-col gap-[8px]">
-                            <div className="line-clamp-2 break-all text-14 font-normal leading-[18px] text-gray-500">
-                              {place.address}
+                      <Tag
+                        size="small"
+                        color="gray100"
+                        content="삭제"
+                        onClick={() => onClickDeletePlace(place.uuid)}
+                      />
+                    </div>
+                    <div className="flex w-full items-center justify-between">
+                      <div ref={ref} className="w-full rounded-lg bg-gray-50 p-4">
+                        <div className="mb-3 flex w-full items-center justify-between">
+                          <p className="text-16 text-1620 font-bold text-black">
+                            {place.place_name}
+                          </p>
+                          <SVGIcon
+                            name="Arrow"
+                            width={16}
+                            height={16}
+                            active={false}
+                            className="rotate-[90deg]"
+                            onClick={() => onClickPlaceToggle(place.uuid)}
+                          />
+                        </div>
+                        <div className="flex items-center gap-[10px]">
+                          <img
+                            src={place.thumbnail}
+                            className="size-[68px] min-w-[68px] rounded-lg object-cover"
+                          />
+                          <div className="flex w-full items-center justify-between gap-[22px]">
+                            <div className="flex flex-col gap-[8px]">
+                              <div className="line-clamp-2 break-all text-14 font-normal leading-[18px] text-gray-500">
+                                {place.address}
+                              </div>
+                              <div className="flex items-center">
+                                <p className="text-12 font-bold text-primary-500">지도보기</p>
+                                <SVGIcon
+                                  name="Arrow"
+                                  width={12}
+                                  height={12}
+                                  className="rotate-[270deg]"
+                                  onClick={() => onClickPlaceToggle(place.uuid)}
+                                />
+                              </div>
                             </div>
                             <div className="flex items-center">
-                              <p className="text-12 font-bold text-primary-500">지도보기</p>
                               <SVGIcon
-                                name="Arrow"
-                                width={12}
-                                height={12}
-                                className="rotate-[270deg]"
-                                onClick={onClickPlaceToggle}
+                                name="FullStar"
+                                width={14}
+                                height={14}
+                                active={false}
+                                color={'#9070CF'}
                               />
+                              <p className="text-12 font-normal text-gray-900">{place.score}</p>
                             </div>
-                          </div>
-                          <div className="flex items-center">
-                            <SVGIcon
-                              name="FullStar"
-                              width={14}
-                              height={14}
-                              active={false}
-                              color={'#9070CF'}
-                            />
-                            <p className="text-12 font-normal text-gray-900">{place.score}</p>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <>
+              ) : (
                 <div className="mb-[16px] flex w-full">
                   <div className="flex flex-col items-center justify-center">
                     <div className="relative mr-2 h-fit w-fit">
@@ -148,7 +163,12 @@ export default forwardRef(function SelectCustomView(
                       <div className="mt-[5px] text-14 font-normal text-gray-300">
                         {PLACE_TYPES[place.place_type as keyof typeof PLACE_TYPES]}
                       </div>
-                      <Tag size="small" color="gray100" content="삭제" />
+                      <Tag
+                        size="small"
+                        color="gray100"
+                        content="삭제"
+                        onClick={() => onClickDeletePlace(place.uuid)}
+                      />
                     </div>
                     <div className="mt-[16px] flex items-center justify-between">
                       <div className="text-16 font-semibold text-gray-900">{place.place_name}</div>
@@ -156,16 +176,16 @@ export default forwardRef(function SelectCustomView(
                         name="Arrow"
                         width={16}
                         height={16}
-                        onClick={onClickPlaceToggle}
+                        onClick={() => onClickPlaceToggle(place.uuid)}
                         className="mr-[8px] rotate-[270deg]"
                       />
                     </div>
                   </div>
                 </div>
-              </>
-            )}
-          </div>
-        ))}
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
