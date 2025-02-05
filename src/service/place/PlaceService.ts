@@ -9,10 +9,6 @@ class PlaceService extends Service {
     return await this.service.get(`/place/culture?size=${size}&last_id=${last_id}`);
   }
 
-  async getPlaceCultureDetail(uuid: string) {
-    return await this.service.get(`/place/culture/${uuid}`);
-  }
-
   async getPlaceExhibition(
     size: number,
     last_id: number = 0,

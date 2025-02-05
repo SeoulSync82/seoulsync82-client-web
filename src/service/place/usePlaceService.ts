@@ -5,10 +5,6 @@ export const usePlaceCulture = (size: number = 10, last_id: number = 0) => {
   return useQuery(queryOptions.getPlaceCulture(size, last_id));
 };
 
-export const usePlaceCultureDetail = (uuid: string) => {
-  return useQuery(queryOptions.getPlaceCultureDetail(uuid));
-};
-
 export const usePlaceExhibition = (
   size: number = 10,
   last_id: number = 0,

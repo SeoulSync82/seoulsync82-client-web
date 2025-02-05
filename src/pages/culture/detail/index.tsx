@@ -1,5 +1,5 @@
 import NaverMap from '@/components/map/NaverMap';
-import { usePlaceCultureDetail } from '@/service/place/usePlaceService';
+import { usePlaceDetail } from '@/service/place/usePlaceService';
 import { convertDateToYMD } from '@/utils';
 import { useParams } from 'react-router';
 
@@ -7,13 +7,13 @@ export default function CultureDetail() {
   const { type, id } = useParams();
   console.log(123, type, id);
 
-  const { data } = usePlaceCultureDetail(id as string);
-  console.log(123, data);
+  const { data } = usePlaceDetail(id as string);
+  console.log(123, data?.data);
 
   return (
     <div className="page w-full">
       <div className="relative w-full">
-        <img className="h-[212px] w-full object-cover" src={data?.data?.thumbnail} />
+        <img className="aspect-[2/1] w-full object-cover" src={data?.data?.thumbnail} />
         <div className="absolute bottom-[16px] right-[20px] flex h-[25px] w-fit items-center rounded-[100px] bg-[rgba(0,0,0,0.5)] px-[16px] text-14 font-medium text-white">
           {data?.data?.top_level_address} · {data?.data?.place_type}
         </div>
