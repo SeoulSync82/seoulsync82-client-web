@@ -32,11 +32,11 @@ const SelectCustomView = forwardRef<HTMLDivElement, SelectCustomViewProps>(
       <div className="flex overflow-y-hidden">
         <div className="mb-[76px] h-full w-full bg-white px-[20px]">
           {/* 추가 버튼 영역 */}
-          <div className="my-4 flex h-[77px] w-full items-center rounded-lg bg-gray-50 px-5 shadow-[2px_2px_8px_0_rgba(0,0,0,0.1)]">
-            <div
-              onClick={() => onClickAddCustomPlace('openAddPlaceModal')}
-              className="flex size-[36px] cursor-pointer items-center justify-center rounded-full bg-primary-500"
-            >
+          <div
+            onClick={() => onClickAddCustomPlace('openAddPlaceModal')}
+            className="my-4 flex h-[77px] w-full cursor-pointer items-center rounded-lg bg-gray-50 px-5 shadow-[2px_2px_8px_0_rgba(0,0,0,0.1)]"
+          >
+            <div className="flex size-[36px] cursor-pointer items-center justify-center rounded-full bg-primary-500">
               <SVGIcon name="Plus" width={24} height={24} active={false} />
             </div>
             <div className="ml-3 text-black">
@@ -91,8 +91,8 @@ const CustomPlaceItem = forwardRef<HTMLDivElement, CustomPlaceItemProps>(functio
           <div
             className={`${expanded ? 'mt-[16px] bg-gray-50 p-[16px]' : ''} flex max-h-[128px] w-full flex-col gap-[8px] rounded-[8px]`}
           >
-            {/* */}
-            <div
+            <button
+              onClick={handleToggle}
               className={`${expanded ? '' : 'mt-[16px] px-[16px]'} flex w-full items-center justify-between`}
             >
               <div className="text-16 font-semibold text-gray-900">{place.place_name}</div>
@@ -100,11 +100,9 @@ const CustomPlaceItem = forwardRef<HTMLDivElement, CustomPlaceItemProps>(functio
                 name="Arrow"
                 width={16}
                 height={16}
-                onClick={handleToggle}
                 className={`${expanded ? 'rotate-[90deg]' : 'rotate-[270deg]'} cursor-pointer transition-all duration-300 ease-in-out`}
               />
-            </div>
-            {/*  */}
+            </button>
             {expanded && (
               <div className="flex w-full items-center gap-[10px]">
                 <img
