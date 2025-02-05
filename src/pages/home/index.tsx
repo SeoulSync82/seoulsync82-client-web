@@ -64,6 +64,20 @@ function SectionSwiper({ children }: { children: React.ReactNode }) {
   );
 }
 
+const getDummyImage = () => {
+  const dummyImages = [
+    '/images/c01.png',
+    '/images/c02.png',
+    '/images/c03.png',
+    '/images/c04.png',
+    '/images/c05.png',
+    '/images/c06.png',
+    '/images/c07.png',
+    '/images/c08.png',
+  ];
+  return dummyImages[Math.floor(Math.random() * (dummyImages.length - 1) + 1)];
+};
+
 export default function Home() {
   const [{ data: cultureData }, { data: communityPostsData }] = useQueries({
     queries: [placeQueryOptions.getPlaceCulture(), communityQueryOptions.getCommunityPostList()],
@@ -113,7 +127,7 @@ export default function Home() {
           {communityPostsData?.data?.items?.map((item: CommunityPostItem, idx: number) => (
             <SwiperCard
               key={idx}
-              background={`linear-gradient(180deg, rgba(63, 63, 63, 0) 43.43%, rgba(63, 63, 63, 0) 100%), url(${item?.course_image || 'https://picsum.photos/138/184'})`}
+              background={`linear-gradient(180deg, rgba(63, 63, 63, 0) 43.43%, #181616 100%), url(${item?.course_image || getDummyImage()})`}
               minWidth="clamp(120px, 32vw, 138px)"
               className="rounded-[4px]"
               link={`/course/${item?.uuid}`}
@@ -126,7 +140,7 @@ export default function Home() {
                   WebkitLineClamp: 2,
                   textOverflow: 'ellipsis',
                 }}
-                className="mb-[8px] flex h-fit w-full px-[8px] text-[12px] font-semibold leading-[18px] text-white"
+                className="mb-[10px] flex h-fit w-full px-[8px] text-[12px] font-semibold leading-[18px] text-white"
               >
                 {item?.customs
                   .split(',')
