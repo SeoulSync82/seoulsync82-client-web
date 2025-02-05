@@ -64,7 +64,7 @@ function SectionSwiper({ children }: { children: React.ReactNode }) {
   );
 }
 
-const getDummyImage = () => {
+export const getDummyImage = () => {
   const dummyImages = [
     '/images/c01.png',
     '/images/c02.png',
