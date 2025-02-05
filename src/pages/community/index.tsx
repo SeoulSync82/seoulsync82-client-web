@@ -3,7 +3,7 @@ import { useQueryParams } from '@/hooks/useQueryParams';
 import { CommunityPostItem } from '@/service/community/types';
 import { useCommunityPostList } from '@/service/community/useCommunityService';
 import { convertDateToYMD } from '@/utils';
-import { Link } from 'react-router';
+import { Link, Links } from 'react-router';
 
 export default function Community() {
   const { data } = useCommunityPostList();
@@ -13,7 +13,7 @@ export default function Community() {
 
   return (
     <div className="page w-full">
-      <div className="flex w-full h-[calc(100dvh-146px)] overflow-y-scroll flex-col justify-between px-[20px]">
+      <div className="flex h-[calc(100dvh-146px)] w-full flex-col justify-between overflow-y-scroll px-[20px]">
         <div className="flex w-full items-center justify-between py-4">
           <div className="flex items-center gap-[2px] text-14">
             <span className="font-semibold text-gray-300">콘텐츠</span>
@@ -33,7 +33,11 @@ export default function Community() {
         </div>
         <div className="flex w-full flex-wrap gap-x-[10px] gap-y-[20px]">
           {data?.data?.items.map((item: any) => (
-            <div key={item.course_uuid} className="w-[calc((100%-10px)/2)]">
+            <Link
+              to={`/course/${item.course_uuid}`}
+              key={item.course_uuid}
+              className="w-[calc((100%-10px)/2)]"
+            >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-[2px]">
                   <div className="h-[20px] w-[20px] overflow-hidden rounded-[100px]">
@@ -66,7 +70,7 @@ export default function Community() {
               <div className="mt-[4px] text-12 font-semibold text-gray-300">
                 {convertDateToYMD(item.created_at)}
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
