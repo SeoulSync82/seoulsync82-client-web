@@ -49,7 +49,7 @@ export const useSaveRecommendCourse = () => {
     mutationFn: (data: SaveCourseRecommendReqData) => CourseService.saveCourseRecommend(data),
     onSuccess: ({ data }) => {
       alert('toast: 코스 생성을 완료했어요!');
-      window.location.replace(`/my-course/${data.items}`);
+      window.location.replace(`/course/${data.items}`);
     },
   });
 };

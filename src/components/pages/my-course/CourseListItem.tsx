@@ -18,7 +18,7 @@ export default function CourseListItem({
   course_uuid,
 }: CourseListItemProps) {
   return (
-    <Link to={`/my-course/${course_uuid}`} className="flex h-[100px] w-full px-[20px]">
+    <Link to={`/course/${course_uuid}`} className="flex h-[100px] w-full px-[20px]">
       <div className="flex w-full items-center gap-[10px] border-b-[1px] border-gray-200">
         <img
           src={course_image ?? 'https://dummyimage.com/70x70'}
