@@ -5,8 +5,20 @@ class CommunityService extends Service {
     super();
   }
 
-  async getCommunityPostList(size: number = 10, last_id: number = 0, me: boolean = false) {
-    return await this.service.get(`/community?size=${size}&last_id=${last_id}&me=${me}`);
+  async getCommunityPostList(
+    size: number = 10,
+    next_page: string = '',
+    me: boolean = false,
+    order: 'latest' | 'popular',
+  ) {
+    return await this.service.get(`/community`, {
+      params: {
+        next_page,
+        size,
+        me,
+        order,
+      },
+    });
   }
   async getCommunityPostDetail(uuid: string) {
     return await this.service.get(`/community/${uuid}`);

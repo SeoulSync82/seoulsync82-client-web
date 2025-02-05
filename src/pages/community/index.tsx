@@ -1,15 +1,25 @@
 import SVGIcon from '@/components/svg-icon/SVGIcon';
 import { useQueryParams } from '@/hooks/useQueryParams';
-import { CommunityPostItem } from '@/service/community/types';
 import { useCommunityPostList } from '@/service/community/useCommunityService';
 import { convertDateToYMD } from '@/utils';
-import { Link, Links } from 'react-router';
+import { Link } from 'react-router';
+import { getDummyImage } from '../home';
+
+const orderTypes = [
+  {
+    type: 'popular',
+    label: '인기순',
+  },
+  {
+    type: 'latest',
+    label: '최신순',
+  },
+];
 
 export default function Community() {
-  const { data } = useCommunityPostList();
-  console.log(111, data?.data.items);
   const { getQueryParam } = useQueryParams();
-  const type = getQueryParam('type');
+  const order: 'latest' | 'popular' = getQueryParam('order') ?? 'popular';
+  const { data } = useCommunityPostList({ size: 10, next_page: '', me: false, order });
 
   return (
     <div className="page w-full">
@@ -20,15 +30,15 @@ export default function Community() {
             <span className="font-bold text-primary-500">{data?.data?.items.length}</span>
           </div>
           <div className="flex items-center text-14">
-            <Link
-              to="/community?type=hot"
-              className={`border-r-[1px] border-[#d9d9d9] pr-[10px] ${type === 'hot' ? 'font-bold text-black' : 'font-medium text-gray-300'}`}
-            >
-              인기순
-            </Link>
-            <Link to="/community?type=recent" className={`pl-[10px] font-medium text-gray-300`}>
-              최신순
-            </Link>
+            {orderTypes.map((item: { type: string; label: string }, idx: number) => (
+              <Link
+                key={item.type}
+                to={`/community?order=${item.type}`}
+                className={`${idx === 0 ? 'border-r-[1px] border-[#d9d9d9] pr-[10px]' : ''} ${idx === 1 ? 'pl-[10px]' : ''} ${order === item.type ? 'font-bold text-black' : 'font-medium text-gray-300'}`}
+              >
+                {item.label}
+              </Link>
+            ))}
           </div>
         </div>
         <div className="flex w-full flex-wrap gap-x-[10px] gap-y-[20px]">
@@ -54,9 +64,9 @@ export default function Community() {
                 </div>
               </div>
               <img
-                src={item.course_image || 'https://dummyimage.com/164x220'}
+                src={item.course_image || getDummyImage()}
                 alt="course image"
-                className="mt-[10px] aspect-[4/5] min-h-[220px] w-full min-w-[164px] rounded-[4px]"
+                className="mt-[10px] aspect-[4/5] min-h-[220px] w-full min-w-[164px] rounded-[4px] object-cover"
               />
               <div className="mt-[10px] truncate text-14 font-bold leading-[20px]">
                 {item.course_name}
