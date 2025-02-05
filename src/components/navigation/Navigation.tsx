@@ -54,7 +54,7 @@ export default function Navigation() {
 
   const navbarMenu: Record<NavbarIcon, MenuItem> = {
     Home: { name: '홈', size: 24, path: '/' },
-    MyCourse: { name: '내 코스', size: 24, path: '/my-course' },
+    MyCourse: { name: '내 코스', size: 24, path: '/course' },
     AiRecommend: {
       name: 'AI 추천',
       size: 66,
