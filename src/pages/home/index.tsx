@@ -77,7 +77,7 @@ export default function Home() {
           {cultureData?.data?.items?.map((item: PlaceItem, idx: number) => (
             <SwiperCard
               key={idx}
-              link={`/culture`}
+              link={`/culture/${item.place_type === '전시' ? 'exhibition' : 'popup'}/${item?.uuid}`}
               background={`linear-gradient(180deg, rgba(63, 63, 63, 0) 43.43%, #181616 100%), url(${item.thumbnail})`}
               minWidth="clamp(240px, 64vw, 275px)"
               className="rounded-[8px]"
@@ -113,9 +113,10 @@ export default function Home() {
           {communityPostsData?.data?.items?.map((item: CommunityPostItem, idx: number) => (
             <SwiperCard
               key={idx}
-              background={`linear-gradient(180deg, rgba(63, 63, 63, 0) 43.43%, rgba(63, 63, 63, 0) 100%), url(${item?.course_image || 'https://dummyimage.com/138x184'})`}
+              background={`linear-gradient(180deg, rgba(63, 63, 63, 0) 43.43%, rgba(63, 63, 63, 0) 100%), url(${item?.course_image || 'https://picsum.photos/138/184'})`}
               minWidth="clamp(120px, 32vw, 138px)"
               className="rounded-[4px]"
+              link={`/course/${item?.uuid}`}
             >
               <div
                 style={{

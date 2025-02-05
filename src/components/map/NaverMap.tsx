@@ -38,7 +38,7 @@ export default function NaverMap({
 
     loadNaverMapScript()
       .then(() => {
-        if (mapElement.current && window.naver && window.naver.maps) {
+        if (mapElement.current && window.naver && window.naver.maps && latitude && longitude) {
           const map = new window.naver.maps.Map(mapElement.current, {
             center: new window.naver.maps.LatLng(latitude, longitude),
             zoom,
@@ -51,7 +51,7 @@ export default function NaverMap({
         }
       })
       .catch((error) => console.error(error));
-  }, [latitude, longitude]);
+  }, []);
 
-  return <div ref={mapElement} className={'h-[200px] w-full'} />;
+  return <div ref={mapElement} className={clsx('h-[200px] w-full', className)} />;
 }
