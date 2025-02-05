@@ -2,7 +2,7 @@ import NaverMap from '@/components/map/NaverMap';
 import { useCourseDetail } from '@/service/course/useCourseService';
 import { useParams } from 'react-router';
 
-export default function MyCourseDetail() {
+export default function CourseDetail() {
   const { id } = useParams();
   const { data } = useCourseDetail(id as string);
   return (

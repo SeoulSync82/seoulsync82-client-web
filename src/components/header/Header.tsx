@@ -25,21 +25,24 @@ export default function Header() {
   const pageName = useMemo(() => {
     const pageTitles: Record<string, string> = {
       '/login': '로그인',
-      '/my-course': '내 코스',
+      '/course': '내 코스',
       '/ai-recommend': 'AI 추천',
       '/community': '커뮤니티',
       '/my-page': '마이페이지',
       '/culture': '큐레이션',
-      '/culture/popups': '큐레이션',
-      '/culture/exhibitions': '큐레이션',
       '/notifications': '알림',
+      '/culture/exhibition/:id': '전시',
+      '/culture/popup/:id': '팝업',
     };
 
-    if (pathname.startsWith('/my-course/') && id) {
+    if (pathname.startsWith('/course/') && id) {
       return '코스 상세';
     }
-    if (pathname.startsWith('/place/') && id) {
-      return '장소 상세';
+    if (pathname.startsWith('/culture/exhibition/') && id) {
+      return '전시';
+    }
+    if (pathname.startsWith('/culture/popup/') && id) {
+      return '팝업';
     }
 
     return pageTitles[pathname] ?? '';
