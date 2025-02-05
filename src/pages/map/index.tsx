@@ -7,8 +7,8 @@ export default function Map() {
   const longitude = getQueryParam('longitude') || '';
 
   return (
-    <div className="w-full">
-      <NaverMap latitude={latitude} longitude={longitude} />
+    <div className="h-screen w-full">
+      <NaverMap height={'100dvh'} latitude={latitude} longitude={longitude} />
     </div>
   );
 }

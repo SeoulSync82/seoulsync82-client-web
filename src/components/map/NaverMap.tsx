@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 export default function NaverMap({
   latitude,
   longitude,
-  zoom = 14,
+  zoom = 15,
   height = 198,
   width,
   className,
@@ -45,13 +45,19 @@ export default function NaverMap({
           });
           // TODO: 마커, 이벤트 등 추가 설정
           const marker = new window.naver.maps.Marker({
-            position: new window.naver.maps.LatLng(latitude, longitude),
+            position: new window.naver.maps.LatLng(Number(latitude), Number(longitude)),
             map,
           });
         }
       })
       .catch((error) => console.error(error));
-  }, []);
+  }, [latitude, longitude]);
 
-  return <div ref={mapElement} className={clsx('h-[200px] w-full', className)} />;
+  return (
+    <div
+      ref={mapElement}
+      style={{ height: isNaN(height) ? height : height + 'px', width: width }}
+      className={clsx('w-full', className)}
+    />
+  );
 }

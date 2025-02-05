@@ -46,6 +46,7 @@ export default function CultureDetail() {
         {/* TODO: 공간정보 위도, 경도 필요 */}
         <NaverMap
           className="mt-[20px]"
+          height={'50dvh'}
           latitude={data?.data?.latitude}
           longitude={data?.data?.longitude}
         />
