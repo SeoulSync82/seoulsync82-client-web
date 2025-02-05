@@ -1,5 +1,5 @@
 import TabButton from '@/components/buttons/tab';
-import CourseListItem, { CourseListItemProps } from '@/components/pages/course/CourseListItem';
+import CourseListItem from '@/components/pages/course/CourseListItem';
 import {
   useBookmarkedCourseList,
   useCourseRecommendHistory,
