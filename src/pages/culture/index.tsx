@@ -82,7 +82,7 @@ export default function Culture() {
             key={`tab-${idx}`}
             title={item.label}
             active={type === item.type}
-            href={`${pathname}?type=${item.type}`}
+            href={`${pathname}?type=${item.type}&order=${order}`}
             className={clsx('flex-1')}
           />
         ))}
