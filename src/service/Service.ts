@@ -44,11 +44,7 @@ export default class Service {
       switch (error.response.status) {
         case 401:
           const token = getAccessToken();
-          console.log('token: ', token);
-          // window.location.href = '/login';
-          if (!token) {
-            // window.location.href = '/login';
-          } else if (checkTokenExpired(token)) {
+          if (checkTokenExpired(token)) {
             try {
               // TODO: http cookie 이슈 (samesite) - AWS 이관 후 주석 해제!
               // const response = await this.silentTokenRefresh();
