@@ -1,5 +1,7 @@
 import TabButton from '@/components/buttons/tab';
-import CourseListItem from '@/components/pages/course/CourseListItem';
+import CourseListItem, { CourseListItemProps } from '@/components/pages/course/CourseListItem';
+import withAuthGuard from '@/hoc/withAuthGuard';
+
 import {
   useBookmarkedCourseList,
   useCourseRecommendHistory,
@@ -8,7 +10,7 @@ import clsx from 'clsx';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
-export default function MyCourse() {
+function MyCoursePage() {
   const tabItems = [
     {
       label: '좋아요 한 코스',
@@ -64,3 +66,5 @@ export default function MyCourse() {
     </div>
   );
 }
+
+export default withAuthGuard(MyCoursePage);

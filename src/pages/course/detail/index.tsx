@@ -1,8 +1,9 @@
 import NaverMap from '@/components/map/NaverMap';
+import withAuthGuard from '@/hoc/withAuthGuard';
 import { useCourseDetail } from '@/service/course/useCourseService';
 import { useParams } from 'react-router';
 
-export default function CourseDetail() {
+function CourseDetailPage() {
   const { id } = useParams();
   const { data } = useCourseDetail(id as string);
   return (
@@ -34,3 +35,5 @@ export default function CourseDetail() {
     </div>
   );
 }
+
+export default withAuthGuard(CourseDetailPage);

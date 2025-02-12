@@ -4,6 +4,7 @@ import { useCommunityPostList } from '@/service/community/useCommunityService';
 import { convertDateToYMD } from '@/utils';
 import { Link } from 'react-router';
 import { getDummyImage } from '../home';
+import withAuthGuard from '@/hoc/withAuthGuard';
 
 const orderTypes = [
   {
@@ -16,9 +17,9 @@ const orderTypes = [
   },
 ];
 
-export default function Community() {
+function CommunityPage() {
   const { getQueryParam } = useQueryParams();
-  const order: 'latest' | 'popular' = getQueryParam('order') ?? 'popular';
+  const order = getQueryParam('order') ?? 'popular';
   const { data } = useCommunityPostList({ size: 10, next_page: '', me: false, order });
 
   return (
@@ -87,3 +88,5 @@ export default function Community() {
     </div>
   );
 }
+
+export default withAuthGuard(CommunityPage);
