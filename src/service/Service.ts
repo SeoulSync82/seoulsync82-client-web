@@ -45,7 +45,7 @@ export default class Service {
         case 401:
           const token = getAccessToken();
           console.log('token: ', token);
-          window.location.href = '/login';
+          // window.location.href = '/login';
           if (!token) {
             // window.location.href = '/login';
           } else if (checkTokenExpired(token)) {
