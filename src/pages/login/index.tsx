@@ -1,12 +1,12 @@
 import SVGIcon from '@/components/svg-icon/SVGIcon';
 import Tooltip from '@/components/tooltip/Tooltip';
-import SocialLoginButton from '@/components/buttons/social-login/SocialLoginButton';
+import SocialLoginButton from '@/components/buttons/SocialLoginButton';
 import Service from '@/service/Service';
 
 export default function Login() {
   const onClickLogin = (authType: 'kakao' | 'naver' | 'google') => {
     const serviceInstance = new Service();
-    const socialLoginUrl = `${serviceInstance.service.defaults.baseURL}/user/login/${authType}`;
+    const socialLoginUrl = `${serviceInstance.service.defaults.baseURL}/auth/login/${authType}`;
     window.location.href = socialLoginUrl;
   };
 
