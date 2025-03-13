@@ -7,7 +7,17 @@ export default defineConfig({
   build: {
     target: 'esnext',
     chunkSizeWarningLimit: 1200,
-    sourcemap: 'hidden',
+    sourcemap: false,
+    cssCodeSplit: true,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        },
+      },
+    },
   },
   plugins: [
     react(),
@@ -16,7 +26,7 @@ export default defineConfig({
         icon: true,
         exportType: 'default',
         ref: true,
-        svgo: false,
+        svgo: true,
         titleProp: true,
         prettier: false,
       },
@@ -29,11 +39,11 @@ export default defineConfig({
   server: {
     host: '127.0.0.1',
     port: 7011,
+    strictPort: true,
     proxy: {
       '/api': {
         target: 'http://sunggu.myqnapcloud.com:7008',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
         secure: false,
       },
     },
