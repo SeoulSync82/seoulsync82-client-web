@@ -1,9 +1,7 @@
 import { cn } from '@/utils/clsx';
-
-import Button, { ButtonProps } from '../Button';
-import { tabButtonVariants, TabButtonVariantsProps } from './variants';
-
-interface TabButtonProps extends Omit<ButtonProps, 'active' | 'disabled'>, TabButtonVariantsProps {}
+import { TabButtonProps } from '../types';
+import { Button } from '..';
+import { tabButtonVariants } from './variants';
 
 export default function TabButton({
   active,

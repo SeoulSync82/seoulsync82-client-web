@@ -1,41 +1,20 @@
-export type ButtonProps = {
-  size?: ButtonSize;
-  bgColor?: ButtonColor;
-  textColor?: ButtonColor;
-  borderPosition?: ButtonBorderPosition;
-  borderSize?: ButtonBorderSize;
-  borderColor?: ButtonColor;
-  rounded?: ButtonBorderRounded;
-  isActive?: boolean;
-  onClick?: () => void | ((e: MouseEvent) => void);
-  disabled?: boolean;
-  href?: string;
-  children?: React.ReactNode;
-  className?: string;
-};
+import { ButtonHTMLAttributes } from 'react';
+import { ButtonVariantsProps } from './variants';
+import { TabButtonVariantsProps } from './TabButton/variants';
+import { SNSType } from '../SvgIcon/type';
 
-export type ButtonSize = 'small' | 'medium' | 'large';
+export interface ButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement>,
+    Omit<ButtonVariantsProps, 'disabled'> {}
 
-export type ButtonBorderRounded = 'small' | 'medium' | 'large' | 'xlarge';
+export interface TabButtonProps
+  extends Omit<ButtonProps, 'active' | 'disabled'>,
+    TabButtonVariantsProps {}
 
-export type ButtonBorderPosition = 'top' | 'left' | 'right' | 'bottom' | 'x' | 'y';
-export type ButtonBorderSize = 'thin' | 'medium' | 'bold';
-export type ButtonBorder =
-  | 'top-thin'
-  | 'top-medium'
-  | 'top-bold'
-  | 'x-thin'
-  | 'x-medium'
-  | 'x-bold';
+export interface SocialLoginButtonProps extends ButtonProps {
+  snsName: SNSType;
+}
 
-export type ButtonColor =
-  | 'primary'
-  | 'naverGreen'
-  | 'kakaoYellow'
-  | 'googleGray'
-  | 'white'
-  | 'gray900'
-  | 'gray100'
-  | 'gray200'
-  | 'gray300'
-  | 'gray400';
+export interface BottomButtonProps extends ButtonProps {}
+export interface SelectSubwayButtonProps extends ButtonProps {}
+export interface SelectStationButtonProps extends ButtonProps {}

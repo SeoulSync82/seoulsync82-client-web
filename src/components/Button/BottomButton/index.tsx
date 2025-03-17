@@ -1,7 +1,6 @@
 import { cn } from '@/utils/clsx';
-import Button, { ButtonProps } from '../Button';
-
-interface BottomButtonProps extends ButtonProps {}
+import { Button } from '..';
+import { BottomButtonProps } from '../types';
 
 export default function BottomButton({
   disabled,

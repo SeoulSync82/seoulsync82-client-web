@@ -1,12 +1,8 @@
-import { ButtonHTMLAttributes } from 'react';
 import { cn } from '@/utils/clsx';
-import { buttonVariants, ButtonVariantsProps } from './variants';
+import { buttonVariants } from './variants';
+import { ButtonProps } from './types';
 
-export interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
-    Omit<ButtonVariantsProps, 'disabled'> {}
-
-export default function Button({
+const Button = ({
   fullWidth,
   height,
   bgColor,
@@ -23,7 +19,7 @@ export default function Button({
   children,
   className,
   ...rest
-}: ButtonProps) {
+}: ButtonProps) => {
   const buttonStyles = cn(
     buttonVariants({
       fullWidth,
@@ -47,4 +43,5 @@ export default function Button({
       {children}
     </button>
   );
-}
+};
+export default Button;

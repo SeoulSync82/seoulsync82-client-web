@@ -1,4 +1,5 @@
-import Button, { ButtonProps } from '../Button';
+import { Button } from '..';
+import { SocialLoginButtonProps } from '../types';
 import { ButtonVariantsProps } from '../variants';
 import SVGIcon from '@/components/SvgIcon';
 import { SNSType } from '@/components/SvgIcon/type';
@@ -15,10 +16,6 @@ const snsStyles: Record<
   naver: { label: '네이버', bgColor: 'naverGreen', textColor: 'white' },
   google: { label: '구글', bgColor: 'googleGray', textColor: 'gray900' },
 };
-
-interface SocialLoginButtonProps extends ButtonProps {
-  snsName: keyof typeof snsStyles;
-}
 
 export default function SocialLoginButton({ snsName, ...rest }: SocialLoginButtonProps) {
   const { label, bgColor, textColor } = snsStyles[snsName];

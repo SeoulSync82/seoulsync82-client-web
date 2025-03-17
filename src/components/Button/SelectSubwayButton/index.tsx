@@ -1,6 +1,5 @@
-import Button, { ButtonProps } from '../Button';
-
-interface SelectSubwayButtonProps extends ButtonProps {}
+import { Button } from '..';
+import { SelectSubwayButtonProps } from '../types';
 
 export default function SelectSubwayButton({ children, ...rest }: SelectSubwayButtonProps) {
   return (
