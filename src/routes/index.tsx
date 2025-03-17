@@ -8,8 +8,8 @@ import Community from '@/pages/Community';
 import MyPage from '@/pages/MyPage';
 import Culture from '@/pages/Culture';
 import Notifications from '@/pages/Notifications';
-import CultureDetail from '@/pages/Culture/detail';
-import CourseDetail from '@/pages/Course/detail';
+import CultureDetail from '@/pages/Culture/CultureDetail';
+import CourseDetail from '@/pages/Course/CourseDetail';
 import Map from '@/pages/Map';
 
 export const router = createBrowserRouter([
