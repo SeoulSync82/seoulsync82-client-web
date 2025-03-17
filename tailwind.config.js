@@ -84,7 +84,7 @@ module.exports = {
         '.max-container': {
           margin: '0 auto',
           width: '100%',
-          maxWidth: theme('screens.sm'),
+          maxWidth: '430px',
         },
         '.hide-scroll': {
           '-ms-overflow-style': 'none',
