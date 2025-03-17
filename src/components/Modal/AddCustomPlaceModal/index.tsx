@@ -1,7 +1,7 @@
-import SVGIcon from '@/components/SvgIcon';
+import { Modal } from '..';
+import SvgIcon from '@/components/SvgIcon';
 import { useBoundStore } from '@/stores';
-import ModalOuter from '../ModalOuter';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { cva } from 'class-variance-authority';
 import clsx from 'clsx';
 import { useSubwayStationCustomCount } from '@/service/subway/useSubwayService';
@@ -48,7 +48,7 @@ export default function AddCustomPlaceModal({ onClose }: { onClose: () => void }
   };
 
   return (
-    <ModalOuter close={onClose}>
+    <Modal className="w-full">
       <div className="custom-clip-path absolute bottom-0 flex h-[252px] w-full flex-col justify-center bg-white p-5 shadow-md">
         {placeTypes.map(({ label, type, position }) => (
           <PlaceTypeButton
@@ -61,7 +61,7 @@ export default function AddCustomPlaceModal({ onClose }: { onClose: () => void }
             onClick={() => onClickPlaceTypeButton(type)}
           />
         ))}
-        <SVGIcon
+        <SvgIcon
           onClick={onSelectCustomPlaceType}
           name="AiRecommend"
           width={126}
@@ -69,7 +69,7 @@ export default function AddCustomPlaceModal({ onClose }: { onClose: () => void }
           className="absolute bottom-[4px] left-1/2 flex -translate-x-1/2 flex-col items-center"
         />
       </div>
-    </ModalOuter>
+    </Modal>
   );
 }
 
@@ -102,7 +102,7 @@ const PlaceTypeButton = ({
   return (
     // TODO: Button 컴포넌트 확장 적용
     <div className={clsx(placeTypeButtonVariants({ isSelected }), position)} onClick={onClick}>
-      <SVGIcon name={type} width={35} height={35} active={isIconActive} />
+      <SvgIcon name={type} width={35} height={35} active={isIconActive} />
       <span className={clsx('mt-[8px]', isIconActive ? 'text-primary-500' : 'text-gray-400')}>
         {label}
       </span>
