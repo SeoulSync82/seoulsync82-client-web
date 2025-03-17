@@ -57,6 +57,7 @@ export const buttonVariants = cva('flex items-center justify-center', {
     },
     rounded: {
       4: 'rounded-[4px]',
+      8: 'rounded-[8px]',
       16: 'rounded-[16px]',
       24: 'rounded-[24px]',
       none: '',
@@ -94,6 +95,7 @@ export const buttonVariants = cva('flex items-center justify-center', {
       gray200: 'border-gray-200',
       gray300: 'border-gray-300',
       gray400: 'border-gray-400',
+      none: 'border-none',
     },
     active: {
       true: 'active:opacity-90',
@@ -115,7 +117,7 @@ export const buttonVariants = cva('flex items-center justify-center', {
     borderPosition: 'top',
     borderWidth: 1,
     borderStyle: 'solid',
-    borderColor: 'primary',
+    borderColor: 'none',
     active: false,
     disabled: false,
   },

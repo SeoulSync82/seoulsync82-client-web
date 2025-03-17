@@ -21,7 +21,15 @@ export default function SocialLoginButton({ snsName, ...rest }: SocialLoginButto
   const { label, bgColor, textColor } = snsStyles[snsName];
 
   return (
-    <Button height={48} rounded={16} bgColor={bgColor} textColor={textColor} {...rest}>
+    <Button
+      fullWidth
+      height={48}
+      rounded={8}
+      borderColor="none"
+      bgColor={bgColor}
+      textColor={textColor}
+      {...rest}
+    >
       <SvgIcon name={snsName} width={22} height={22} />
       <span className="ml-2 font-bold">{label} 로그인</span>
     </Button>
