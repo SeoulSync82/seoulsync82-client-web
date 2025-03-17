@@ -4,20 +4,16 @@ import {
   usePlaceCustomize,
   useSaveRecommendCourse,
 } from '@/service/course/useCourseService';
-import { useEffect, useState } from 'react';
-import {
-  useSubwayLines,
-  useSubwayStationCustomCount,
-  useSubwayStations,
-} from '@/service/subway/useSubwayService';
+import { useEffect } from 'react';
+import { useSubwayLines, useSubwayStations } from '@/service/subway/useSubwayService';
 import { useThemesList } from '@/service/theme/useThemeService';
 import { useQueryParams } from '@/hooks/useQueryParams';
-import TabButton from '@/components/Button/TabButton';
-import BottomButton from '@/components/Button/BottomButton';
+import { TabButton } from '@/components/Button';
+import { BottomButton } from '@/components/Button';
 import SelectSubwayView from '@/components/pages/ai-recommend/SelectSubwayView';
 import SelectThemeView from '@/components/pages/ai-recommend/SelectThemeView';
 import SelectCustomView from '@/components/pages/ai-recommend/SelectCustomView';
-import AddCustomPlaceModal from '@/components/modals/add-custom-place/AddCustomPlaceModal';
+import AddCustomPlaceModal from '@/components/Modal/AddCustomPlaceModal';
 import useModal from '@/hooks/useModal';
 import { DEFAULT_LINE_UUID, useBoundStore } from '@/stores';
 
@@ -144,12 +140,13 @@ export default function AiRecommend() {
         {TAB_ITEMS.map((tab, idx) => (
           <TabButton
             key={`tab-${idx}`}
-            title={tab.label}
             active={type === tab.type}
             className={clsx('flex-1')}
-            onClick={() => onClickTabButton(tab)}
             disabled={isTabButtonDisabled(tab)}
-          />
+            onClick={() => onClickTabButton(tab)}
+          >
+            {tab.label}
+          </TabButton>
         ))}
       </div>
       <div className="h-[calc(100dvh-162px)] w-full overflow-y-scroll">
