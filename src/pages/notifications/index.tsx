@@ -23,4 +23,4 @@ function NotificationPage() {
   );
 }
 
-export default withAuthGuard(NotificationPage);
+export default NotificationPage;

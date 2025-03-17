@@ -13,6 +13,7 @@ import CultureDetail from '@/pages/Culture/CultureDetail';
 import CourseDetail from '@/pages/Course/CourseDetail';
 import Map from '@/pages/Map';
 import Loading from '@/components/Loading';
+import { authLoader } from './loader';
 
 const Root = () => {
   return (
@@ -32,11 +33,12 @@ const routes = [
       { index: true, element: <Home /> },
       { path: '/login', element: <Login /> },
       { path: '/community', element: <Community /> },
-      { path: '/my-page', element: <MyPage /> },
-      { path: '/course', element: <MyCourse /> },
+      { path: '/my-page', element: MyPage, loader: authLoader },
+      { path: '/course', element: MyCourse, loader: authLoader },
       {
         path: '/course/:id',
-        element: <CourseDetail />,
+        element: CourseDetail,
+        loader: authLoader,
       },
       { path: '/ai-recommend', element: <AiRecommend /> },
       {
@@ -49,7 +51,8 @@ const routes = [
       },
       {
         path: '/notifications',
-        element: <Notifications />,
+        element: Notifications,
+        loader: authLoader,
       },
     ],
   },

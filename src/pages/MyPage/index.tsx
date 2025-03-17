@@ -4,4 +4,4 @@ function MyPage() {
   return <div>MyPage</div>;
 }
 
-export default withAuthGuard(MyPage);
+export default MyPage;

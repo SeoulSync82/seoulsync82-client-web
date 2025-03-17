@@ -36,4 +36,4 @@ function CourseDetailPage() {
   );
 }
 
-export default withAuthGuard(CourseDetailPage);
+export default CourseDetailPage;

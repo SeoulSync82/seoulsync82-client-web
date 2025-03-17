@@ -89,4 +89,4 @@ function CommunityPage() {
   );
 }
 
-export default withAuthGuard(CommunityPage);
+export default CommunityPage;

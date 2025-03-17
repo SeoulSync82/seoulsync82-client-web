@@ -67,4 +67,4 @@ function MyCoursePage() {
   );
 }
 
-export default withAuthGuard(MyCoursePage);
+export default MyCoursePage;

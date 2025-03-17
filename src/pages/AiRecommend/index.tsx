@@ -15,7 +15,8 @@ import SelectThemeView from '@/components/pages/ai-recommend/SelectThemeView';
 import SelectCustomView from '@/components/pages/ai-recommend/SelectCustomView';
 import AddCustomPlaceModal from '@/components/Modal/AddCustomPlaceModal';
 import useModal from '@/hooks/useModal';
-import { DEFAULT_LINE_UUID, useBoundStore } from '@/stores';
+import { useBoundStore } from '@/stores';
+import { DEFAULT_LINE_UUID } from '@/constants';
 
 const TAB_TYPES = {
   SUBWAY: 'subway',
