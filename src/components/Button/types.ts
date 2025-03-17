@@ -2,6 +2,7 @@ import { ButtonHTMLAttributes } from 'react';
 import { ButtonVariantsProps } from './variants';
 import { TabButtonVariantsProps } from './TabButton/variants';
 import { SNSType } from '../SvgIcon/type';
+import { SelectStationButtonVariantsProps } from './SelectStationButton/variants';
 
 export interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
@@ -32,4 +33,4 @@ export interface SocialLoginButtonProps extends ButtonProps {
 
 export interface BottomButtonProps extends ButtonProps {}
 export interface SelectSubwayButtonProps extends ButtonProps {}
-export interface SelectStationButtonProps extends ButtonProps {}
+export interface SelectStationButtonProps extends ButtonProps, SelectStationButtonVariantsProps {}

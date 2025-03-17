@@ -1,7 +1,6 @@
 import { cn } from '@/utils/clsx';
 import { buttonVariants, combineBorderStyles } from './variants';
 import { ButtonProps } from './types';
-import clsx from 'clsx';
 
 const Button = ({
   fullWidth,
@@ -21,7 +20,7 @@ const Button = ({
   className,
   ...rest
 }: ButtonProps) => {
-  const buttonStyles = clsx(
+  const buttonStyles = cn(
     buttonVariants({
       fullWidth,
       height,

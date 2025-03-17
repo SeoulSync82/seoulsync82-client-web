@@ -9,6 +9,7 @@ export default function SelectSubwayButton({ children, active, ...rest }: Select
       bgColor="gray-100"
       textColor="gray-400"
       fontSize={14}
+      fontWeight="normal"
       borderPosition="bottom"
       borderWidth={1}
       borderStyle="solid"

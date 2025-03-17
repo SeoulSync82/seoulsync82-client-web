@@ -11,7 +11,7 @@ export default function BottomButton({
   return (
     <Button
       height={60}
-      bgColor={disabled ? 'gray300' : 'primary'}
+      bgColor={disabled ? 'gray-300' : 'primary'}
       textColor="white"
       fontSize={18}
       fontWeight="semibold"

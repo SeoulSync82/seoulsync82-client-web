@@ -1,16 +1,24 @@
 import { Button } from '..';
 import { SelectStationButtonProps } from '../types';
+import { selectStationButtonVariants } from './variants';
 
-export default function SelectStationButton({ children, ...rest }: SelectStationButtonProps) {
+export default function SelectStationButton({
+  children,
+  active,
+  ...rest
+}: SelectStationButtonProps) {
   return (
     <Button
       height={48}
       bgColor="white"
-      textColor="gray400"
+      textColor="gray-400"
+      fontSize={16}
+      fontWeight="normal"
       borderPosition="bottom"
       borderWidth={1}
       borderStyle="solid"
-      borderColor="gray200"
+      borderColor="gray-200"
+      className={selectStationButtonVariants({ active })}
       {...rest}
     >
       {children}
