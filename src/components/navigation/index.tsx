@@ -1,6 +1,7 @@
 import SVGIcon from '../SvgIcon';
 import { Link, useLocation } from 'react-router-dom';
 import { NavbarIcon } from './types';
+import { cn } from '@/utils/clsx';
 import { cva } from 'class-variance-authority';
 
 const listItemVariants = cva(

@@ -1,8 +1,7 @@
-import { cva } from 'class-variance-authority';
-import clsx from 'clsx';
+import { cn } from '@/utils/clsx';
 import { useEffect, useRef } from 'react';
 
-export default function NaverMap({
+export default function Map({
   latitude,
   longitude,
   zoom = 15,
@@ -57,7 +56,7 @@ export default function NaverMap({
     <div
       ref={mapElement}
       style={{ height: isNaN(height) ? height : height + 'px', width: width }}
-      className={clsx('w-full', className)}
+      className={cn('w-full', className)}
     />
   );
 }
