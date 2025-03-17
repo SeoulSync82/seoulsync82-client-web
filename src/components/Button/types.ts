@@ -5,7 +5,22 @@ import { SNSType } from '../SvgIcon/type';
 
 export interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
-    Omit<ButtonVariantsProps, 'disabled'> {}
+    Omit<ButtonVariantsProps, 'disabled'> {
+  borderPosition?: 'top' | 'bottom' | 'left' | 'right';
+  borderWidth?: 1 | 2 | 3 | 4;
+  borderStyle?: 'solid' | 'dashed' | 'dotted' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset';
+  borderColor?:
+    | 'primary'
+    | 'naver-green'
+    | 'kakao-yellow'
+    | 'google-gray'
+    | 'white'
+    | 'gray-900'
+    | 'gray-100'
+    | 'gray-200'
+    | 'gray-300'
+    | 'gray-400';
+}
 
 export interface TabButtonProps
   extends Omit<ButtonProps, 'active' | 'disabled'>,

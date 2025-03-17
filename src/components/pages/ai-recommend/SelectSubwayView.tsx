@@ -28,24 +28,26 @@ export default function SelectSubwayView({
         {subwayLineData?.data?.items.map((item) => (
           <SelectSubwayButton
             key={item.uuid}
-            content={item.line}
-            textColor={lineUuid === item.uuid ? 'primary' : 'gray400'}
-            isActive={lineUuid === item.uuid}
+            // textColor={lineUuid === item.uuid ? 'primary' : 'gray-400'}
+            active={lineUuid === item.uuid}
             onClick={() => onClickSubwayLine(item)}
-          />
+          >
+            {item.line}
+          </SelectSubwayButton>
         ))}
       </div>
       <div className="hide-scroll flex grow basis-2/3 flex-col overflow-y-auto">
         {subwayStationData?.data?.items.map((item) => (
           <SelectStationButton
             key={item.station_uuid}
-            content={item.station}
             bgColor={stationUuid === item.uuid ? 'primary' : 'white'}
-            textColor={stationUuid === item.uuid ? 'white' : 'gray400'}
-            isActive={stationUuid === item.uuid}
+            textColor={stationUuid === item.uuid ? 'white' : 'gray-400'}
+            active={stationUuid === item.uuid}
             onClick={() => onClickSubwayStation(item)}
             className="border-b border-gray-200 text-16 font-normal"
-          />
+          >
+            {item.station}
+          </SelectStationButton>
         ))}
       </div>
     </div>

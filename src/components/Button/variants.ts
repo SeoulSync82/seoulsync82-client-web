@@ -14,27 +14,27 @@ export const buttonVariants = cva('flex items-center justify-center', {
     },
     bgColor: {
       primary: 'bg-primary-500',
-      naverGreen: 'bg-naver-green',
-      kakaoYellow: 'bg-kakao-yellow',
-      googleGray: 'bg-google-gray',
+      'naver-green': 'bg-naver-green',
+      'kakao-yellow': 'bg-kakao-yellow',
+      'google-gray': 'bg-google-gray',
+      'gray-900': 'bg-gray-900',
+      'gray-100': 'bg-gray-100',
+      'gray-200': 'bg-gray-200',
+      'gray-300': 'bg-gray-300',
+      'gray-400': 'bg-gray-400',
       white: 'bg-white',
-      gray900: 'bg-gray-900',
-      gray100: 'bg-gray-100',
-      gray200: 'bg-gray-200',
-      gray300: 'bg-gray-300',
-      gray400: 'bg-gray-400',
     },
     textColor: {
       primary: 'text-primary-500',
-      naverGreen: 'text-naver-green',
-      kakaoYellow: 'text-kakao-yellow',
-      googleGray: 'text-google-gray',
       white: 'text-white',
-      gray900: 'text-gray-900',
-      gray100: 'text-gray-100',
-      gray200: 'text-gray-200',
-      gray300: 'text-gray-300',
-      gray400: 'text-gray-400',
+      'naver-green': 'text-naver-green',
+      'kakao-yellow': 'text-kakao-yellow',
+      'google-gray': 'text-google-gray',
+      'gray-900': 'text-gray-900',
+      'gray-100': 'text-gray-100',
+      'gray-200': 'text-gray-200',
+      'gray-300': 'text-gray-300',
+      'gray-400': 'text-gray-400',
     },
     fontSize: {
       10: 'text-[10px]',
@@ -62,41 +62,6 @@ export const buttonVariants = cva('flex items-center justify-center', {
       24: 'rounded-[24px]',
       none: '',
     },
-    borderPosition: {
-      top: 'border-t',
-      bottom: 'border-b',
-      left: 'border-l',
-      right: 'border-r',
-    },
-    borderWidth: {
-      1: 'border-[1px]',
-      2: 'border-[2px]',
-      3: 'border-[3px]',
-      4: 'border-[4px]',
-    },
-    borderStyle: {
-      solid: 'border-solid',
-      dashed: 'border-dashed',
-      dotted: 'border-dotted',
-      double: 'border-double',
-      groove: 'border-groove',
-      ridge: 'border-ridge',
-      inset: 'border-inset',
-      outset: 'border-outset',
-    },
-    borderColor: {
-      primary: 'border-primary-500',
-      naverGreen: 'border-naver-green',
-      kakaoYellow: 'border-kakao-yellow',
-      googleGray: 'border-google-gray',
-      white: 'border-white',
-      gray900: 'border-gray-900',
-      gray100: 'border-gray-100',
-      gray200: 'border-gray-200',
-      gray300: 'border-gray-300',
-      gray400: 'border-gray-400',
-      none: 'border-none',
-    },
     active: {
       true: 'active:opacity-90',
       false: '',
@@ -114,13 +79,28 @@ export const buttonVariants = cva('flex items-center justify-center', {
     fontSize: 16,
     fontWeight: 'bold',
     rounded: 'none',
-    borderPosition: 'top',
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: 'none',
     active: false,
     disabled: false,
   },
 });
 
 export type ButtonVariantsProps = VariantProps<typeof buttonVariants>;
+
+export const combineBorderStyles = (
+  borderPosition: 'top' | 'bottom' | 'left' | 'right',
+  borderWidth: 1 | 2 | 3 | 4,
+  borderStyle: 'solid' | 'dashed' | 'dotted' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset',
+  borderColor:
+    | 'primary'
+    | 'naver-green'
+    | 'kakao-yellow'
+    | 'google-gray'
+    | 'white'
+    | 'gray-900'
+    | 'gray-100'
+    | 'gray-200'
+    | 'gray-300'
+    | 'gray-400',
+) => {
+  return `border-${borderPosition.slice(0, 1)}-[${borderWidth}px] border-${borderStyle} border-${borderColor}`;
+};

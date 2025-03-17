@@ -1,6 +1,7 @@
 import { cn } from '@/utils/clsx';
-import { buttonVariants } from './variants';
+import { buttonVariants, combineBorderStyles } from './variants';
 import { ButtonProps } from './types';
+import clsx from 'clsx';
 
 const Button = ({
   fullWidth,
@@ -20,7 +21,7 @@ const Button = ({
   className,
   ...rest
 }: ButtonProps) => {
-  const buttonStyles = cn(
+  const buttonStyles = clsx(
     buttonVariants({
       fullWidth,
       height,
@@ -30,11 +31,10 @@ const Button = ({
       fontWeight,
       rounded,
       active,
-      borderPosition,
-      borderWidth,
-      borderStyle,
-      borderColor,
     }),
+    borderPosition && borderWidth && borderStyle && borderColor
+      ? combineBorderStyles(borderPosition, borderWidth, borderStyle, borderColor)
+      : '',
     className,
   );
 
