@@ -1,4 +1,4 @@
-import { ExhibitionItem, PopupItem } from '@/pages/culture';
+import { ExhibitionItem, PopupItem } from '@/pages/Culture';
 import { convertDateToYMD } from '@/utils';
 import { Link } from 'react-router';
 

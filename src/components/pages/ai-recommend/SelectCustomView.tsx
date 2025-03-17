@@ -1,9 +1,9 @@
-import React, { forwardRef, ReactNode, useState } from 'react';
+import React, { forwardRef, useState } from 'react';
 import { Link } from 'react-router';
 import { useBoundStore } from '@/stores';
 import { CustomPlaceItem as CustomPlaceItemType } from '@/service/course/types';
-import SVGIcon from '@/components/svg-icon/SVGIcon';
-import Tag from '@/components/tag/Tag';
+import SVGIcon from '@/components/SvgIcon';
+import Tag from '@/components/Tag';
 
 export const PLACE_TYPES = {
   RESTAURANT: '음식점',
