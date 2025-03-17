@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useBoundStore } from '@/stores';
+import { useEffect } from 'react';
 
 export const useCheckLoginStatus = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn } = useBoundStore((state) => state);
+  const { setLoggedIn } = useBoundStore((state) => state);
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
-    setIsLoggedIn(!!token);
+    setLoggedIn(!!token);
   }, [isLoggedIn]);
 
   return { isLoggedIn };
