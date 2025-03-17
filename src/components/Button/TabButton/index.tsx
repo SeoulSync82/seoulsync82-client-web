@@ -1,6 +1,6 @@
 import { cn } from '@/utils/clsx';
-import Button from '../Button';
-import { ButtonProps } from '../Button';
+
+import Button, { ButtonProps } from '../Button';
 import { tabButtonVariants, TabButtonVariantsProps } from './variants';
 
 interface TabButtonProps extends Omit<ButtonProps, 'active' | 'disabled'>, TabButtonVariantsProps {}
