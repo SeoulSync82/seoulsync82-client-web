@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import {
   IcoMyPage,
   IcoAiRecommend,
@@ -39,8 +38,9 @@ import {
   IcoShoppingActive,
   IcoCultureActive,
   IcoEntertainmentActive,
-} from '../icons';
+} from '../Icon';
 import { IconProps, SVGName } from './type';
+import { cn } from '@/utils/clsx';
 
 export default function SVGIcon({
   width = 24,
@@ -91,7 +91,7 @@ export default function SVGIcon({
           color={color}
           height={height}
           onClick={onClick}
-          className={clsx(onClick && 'cursor-pointer', className)}
+          className={cn(onClick && 'cursor-pointer', className)}
         />
       )}
     </>

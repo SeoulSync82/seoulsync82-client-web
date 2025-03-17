@@ -1,4 +1,3 @@
-import { ButtonColor } from '../buttons/types';
 import SVGIcon from '../SvgIcon';
 
 export type ChipPropsType = {
@@ -12,7 +11,7 @@ export type ChipPropsType = {
 export type TagPropsType = {
   size: 'small' | 'medium';
   content: string;
-  color: ButtonColor;
+  color: string;
 };
 
 export default function Chip({ size, content, active, onClick, onClickCancel }: ChipPropsType) {

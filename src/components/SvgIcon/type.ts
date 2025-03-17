@@ -1,9 +1,9 @@
-import { NavbarIcon, NavbarIconActive } from '../navigation/types';
+import { NavbarIcon, NavbarIconActive } from '../Navigation/types';
 
 export type SVGName =
   | NavbarIcon
   | NavbarIconActive
-  | SNSIcon
+  // | SNSIcon
   | 'Alarm'
   | 'Search'
   | 'MenuLogo'

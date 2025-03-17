@@ -1,4 +1,4 @@
-import SVGIcon from '@/components/SvgIcon';
+import SvgIcon from '@/components/SvgIcon';
 import { useLocation, useNavigate } from 'react-router';
 
 export default function DefaultHeader({ pageName }: { pageName: string }) {
@@ -14,7 +14,7 @@ export default function DefaultHeader({ pageName }: { pageName: string }) {
 
   return (
     <div className="relative flex h-[60px] w-full items-center">
-      <SVGIcon
+      <SvgIcon
         name="ArrowLeft"
         width={24}
         height={24}

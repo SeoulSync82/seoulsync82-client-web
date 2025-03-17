@@ -1,8 +1,13 @@
-import SVGIcon from '../SvgIcon';
-import { TooltipProps } from './types';
-import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/utils/clsx';
-import clsx from 'clsx';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { HTMLAttributes } from 'react';
+
+export interface TooltipProps
+  extends VariantProps<typeof TooltipVariants>,
+    HTMLAttributes<HTMLDivElement> {
+  message: string;
+  className?: string;
+}
 
 export const TooltipVariants = cva('relative h-[41px]', {
   variants: {
@@ -18,7 +23,7 @@ export const TooltipVariants = cva('relative h-[41px]', {
       bottomMiddle: 'left-[50%] bottom-0 -translate-x-1/2',
       bottomRight: 'right-[50px] bottom-0',
     },
-    isBubble: {
+    hasBottomTip: {
       true: '',
       false: '',
     },
@@ -26,24 +31,26 @@ export const TooltipVariants = cva('relative h-[41px]', {
   defaultVariants: {
     size: 'medium',
     direction: 'bottomMiddle',
-    isBubble: true,
+    hasBottomTip: false,
   },
 });
 
 export default function Tooltip({
-  size = 'medium',
-  direction = 'bottomMiddle',
   message,
-  isBubble = true,
   className,
+  size,
+  direction,
+  hasBottomTip,
+  ...rest
 }: TooltipProps) {
   const containerClassName = cn(
-    TooltipVariants({ size, direction }),
+    TooltipVariants({ size, direction, hasBottomTip }),
     'flex w-full items-center justify-center rounded-2xl font-semibold text-[#101010] shadow-[2px_2px_8px_rgba(0,0,0,0.1)]',
+    className,
   );
 
   return (
-    <div className={clsx(TooltipVariants({ size, direction }), className)}>
+    <div className={containerClassName} {...rest}>
       <div className={containerClassName}>{message}</div>
       {/* TODO: implement isBubble */}
       {/* {isBubble && (
