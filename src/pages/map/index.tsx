@@ -1,4 +1,4 @@
-import NaverMap from '@/components/map/NaverMap';
+import NaverMap from '@/components/Map';
 import { useQueryParams } from '@/hooks/useQueryParams';
 
 export default function Map() {

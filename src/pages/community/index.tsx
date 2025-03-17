@@ -3,7 +3,7 @@ import { useQueryParams } from '@/hooks/useQueryParams';
 import { useCommunityPostList } from '@/service/community/useCommunityService';
 import { convertDateToYMD } from '@/utils';
 import { Link } from 'react-router';
-import { getDummyImage } from '../home';
+import { getDummyImage } from '../Home';
 import withAuthGuard from '@/hoc/withAuthGuard';
 
 const orderTypes = [
