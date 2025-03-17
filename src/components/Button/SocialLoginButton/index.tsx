@@ -1,8 +1,7 @@
-import { Button } from '..';
+import Button, { ButtonProps } from '../Button';
+import { ButtonVariantsProps } from '../variants';
 import SVGIcon from '@/components/SvgIcon';
 import { SNSType } from '@/components/SvgIcon/type';
-import { ButtonProps } from '../Button';
-import { ButtonVariantsProps } from '../variants';
 
 const snsStyles: Record<
   SNSType,

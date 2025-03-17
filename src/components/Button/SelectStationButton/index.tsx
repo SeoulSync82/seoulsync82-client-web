@@ -1,5 +1,4 @@
-import { ButtonProps } from '../Button';
-import { Button } from '..';
+import Button, { ButtonProps } from '../Button';
 
 interface SelectStationButtonProps extends ButtonProps {}
 

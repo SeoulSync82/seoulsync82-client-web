@@ -1,6 +1,5 @@
 import { cn } from '@/utils/clsx';
-import { Button } from '..';
-import { ButtonProps } from '../Button';
+import Button, { ButtonProps } from '../Button';
 
 interface BottomButtonProps extends ButtonProps {}
 
