@@ -2,7 +2,7 @@ import React, { forwardRef, ReactNode, useState } from 'react';
 import { Link } from 'react-router';
 import { useBoundStore } from '@/stores';
 import { CustomPlaceItem as CustomPlaceItemType } from '@/service/course/types';
-import SVGIcon from '@/components/svg-icon/SVGIcon';
+import SVGIcon from '@/components/SvgIcon';
 import Tag from '@/components/tag/Tag';
 
 export const PLACE_TYPES = {

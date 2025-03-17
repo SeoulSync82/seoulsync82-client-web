@@ -1,4 +1,4 @@
-import Button from '@/components/buttons/Button';
+import { Button } from '@/components/Button';
 import ModalOuter from '../ModalOuter';
 
 export default function BottomModal({

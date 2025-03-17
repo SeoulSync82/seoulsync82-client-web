@@ -1,4 +1,4 @@
-import SVGIcon from '../svg-icon/SVGIcon';
+import SVGIcon from '../SvgIcon';
 import { TooltipProps } from './types';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/utils/clsx';

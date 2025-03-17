@@ -1,5 +1,5 @@
 import { ButtonColor } from '../buttons/types';
-import SVGIcon from '../svg-icon/SVGIcon';
+import SVGIcon from '../SvgIcon';
 
 export type ChipPropsType = {
   size: 'small' | 'medium';

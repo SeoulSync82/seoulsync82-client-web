@@ -1,4 +1,4 @@
-import SVGIcon from '@/components/svg-icon/SVGIcon';
+import SVGIcon from '@/components/SvgIcon';
 import { useLocation, useNavigate } from 'react-router';
 
 export default function DefaultHeader({ pageName }: { pageName: string }) {

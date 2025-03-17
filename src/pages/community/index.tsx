@@ -1,4 +1,4 @@
-import SVGIcon from '@/components/svg-icon/SVGIcon';
+import SVGIcon from '@/components/SvgIcon';
 import { useQueryParams } from '@/hooks/useQueryParams';
 import { useCommunityPostList } from '@/service/community/useCommunityService';
 import { convertDateToYMD } from '@/utils';

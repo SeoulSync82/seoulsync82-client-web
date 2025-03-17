@@ -1,4 +1,4 @@
-import SVGIcon from '@/components/svg-icon/SVGIcon';
+import SVGIcon from '@/components/SvgIcon';
 import { useBoundStore } from '@/stores';
 import ModalOuter from '../ModalOuter';
 import { useEffect, useState } from 'react';

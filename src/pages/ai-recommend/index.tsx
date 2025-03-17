@@ -4,16 +4,11 @@ import {
   usePlaceCustomize,
   useSaveRecommendCourse,
 } from '@/service/course/useCourseService';
-import { useEffect, useState } from 'react';
-import {
-  useSubwayLines,
-  useSubwayStationCustomCount,
-  useSubwayStations,
-} from '@/service/subway/useSubwayService';
+import { useEffect } from 'react';
+import { useSubwayLines, useSubwayStations } from '@/service/subway/useSubwayService';
 import { useThemesList } from '@/service/theme/useThemeService';
 import { useQueryParams } from '@/hooks/useQueryParams';
-import TabButton from '@/components/buttons/tab';
-import BottomButton from '@/components/buttons/bottom/BottomButton';
+import { TabButton, BottomButton } from '@/components/Button';
 import SelectSubwayView from '@/components/pages/ai-recommend/SelectSubwayView';
 import SelectThemeView from '@/components/pages/ai-recommend/SelectThemeView';
 import SelectCustomView from '@/components/pages/ai-recommend/SelectCustomView';

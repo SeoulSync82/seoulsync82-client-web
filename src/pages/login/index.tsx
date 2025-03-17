@@ -1,6 +1,6 @@
-import SVGIcon from '@/components/svg-icon/SVGIcon';
+import SVGIcon from '@/components/SvgIcon';
 import Tooltip from '@/components/tooltip/Tooltip';
-import SocialLoginButton from '@/components/buttons/SocialLoginButton';
+import { SocialLoginButton } from '@/components/Button';
 import Service from '@/service/Service';
 
 export default function Login() {

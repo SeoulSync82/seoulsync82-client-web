@@ -1,4 +1,4 @@
-import SVGIcon from '@/components/svg-icon/SVGIcon';
+import SVGIcon from '@/components/SvgIcon';
 import { getDummyImage } from '@/pages/home';
 import { convertDateToYMD } from '@/utils';
 import { Link } from 'react-router';

@@ -1,5 +1,5 @@
-import SelectStationButton from '@/components/buttons/select-station/SelecStationButton';
-import SelectSubwayButton from '@/components/buttons/select-subway/SelectSubwayButton';
+import { SelectStationButton } from '@/components/Button';
+import { SelectSubwayButton } from '@/components/Button';
 import { useBoundStore } from '@/stores';
 import { AxiosResponse } from 'axios';
 
