@@ -30,9 +30,9 @@ module.exports = {
           900: '#212529',
         },
         black: '#101010',
-        kakao: '#F5DA35',
-        naver: '#4DA524',
-        google: '#F3F3F3',
+        'kakao-yellow': '#F5DA35',
+        'naver-green': '#4DA524',
+        'google-gray': '#F3F3F3',
       },
       fontSize: {
         30: ['30px', '100%'],
