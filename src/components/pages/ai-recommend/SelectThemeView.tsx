@@ -1,4 +1,4 @@
-import Chip from '@/components/chip/Chip';
+import Chip from '@/components/Chip';
 import { useBoundStore } from '@/stores';
 
 interface SelectThemeViewProps {

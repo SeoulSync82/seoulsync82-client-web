@@ -1,5 +1,5 @@
-import Header from '@/components/header/Header';
-import Navigation from '@/components/navigation/Navigation';
+import { Header } from '@/components/Header';
+import Navigation from '@/components/Navigation';
 import { Outlet, useLocation } from 'react-router';
 
 export default function Layout() {
