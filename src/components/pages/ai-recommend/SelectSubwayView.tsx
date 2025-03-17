@@ -23,7 +23,7 @@ export default function SelectSubwayView({
   };
 
   return (
-    <div className="flex h-[calc(100vh-162px)] w-full bg-white">
+    <div className="flex w-full bg-white">
       <div className="hide-scroll flex basis-1/3 flex-col overflow-y-auto bg-gray-100">
         {subwayLineData?.data?.items.map((item) => (
           <SelectSubwayButton
