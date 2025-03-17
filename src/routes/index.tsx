@@ -1,4 +1,5 @@
-import { createBrowserRouter } from 'react-router';
+import { Suspense } from 'react';
+import { createBrowserRouter, Navigate, Outlet, ScrollRestoration } from 'react-router';
 import Layout from '@/layouts/default';
 import Home from '@/pages/Home';
 import Login from '@/pages/Login';
@@ -11,11 +12,22 @@ import Notifications from '@/pages/Notifications';
 import CultureDetail from '@/pages/Culture/CultureDetail';
 import CourseDetail from '@/pages/Course/CourseDetail';
 import Map from '@/pages/Map';
+import Loading from '@/components/Loading';
 
-export const router = createBrowserRouter([
-  { path: '/map', element: <Map /> },
+const Root = () => {
+  return (
+    <Layout>
+      <Suspense fallback={<Loading />}>
+        <Outlet />
+      </Suspense>
+      <ScrollRestoration />
+    </Layout>
+  );
+};
+
+const routes = [
   {
-    element: <Layout />,
+    element: <Root />,
     children: [
       { index: true, element: <Home /> },
       { path: '/login', element: <Login /> },
@@ -41,4 +53,8 @@ export const router = createBrowserRouter([
       },
     ],
   },
-]);
+  { path: '/map', element: <Map /> },
+  { path: '*', element: <Navigate to="/" /> },
+];
+
+export const router = createBrowserRouter(routes);
