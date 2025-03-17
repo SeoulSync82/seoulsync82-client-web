@@ -1,7 +1,7 @@
-import { Button } from '..';
+import Button from '../Button';
 import { SocialLoginButtonProps } from '../types';
 import { ButtonVariantsProps } from '../variants';
-import SVGIcon from '@/components/SvgIcon';
+import SvgIcon from '@/components/SvgIcon';
 import { SNSType } from '@/components/SvgIcon/type';
 
 const snsStyles: Record<
@@ -22,7 +22,7 @@ export default function SocialLoginButton({ snsName, ...rest }: SocialLoginButto
 
   return (
     <Button height={48} rounded={16} bgColor={bgColor} textColor={textColor} {...rest}>
-      <SVGIcon name={snsName} width={22} height={22} />
+      <SvgIcon name={snsName} width={22} height={22} />
       <span className="ml-2 font-bold">{label} 로그인</span>
     </Button>
   );
