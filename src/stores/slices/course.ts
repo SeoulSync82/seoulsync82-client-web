@@ -13,7 +13,7 @@ const initialCustomCourseData = {
 
 export interface CourseSlice {
   customCourseData: {
-    lineUuid: string;
+    lineUuid: string | string[];
     stationUuid: string;
     themeUuid: string;
     placeList: string[];
@@ -22,7 +22,7 @@ export interface CourseSlice {
     courseName: string;
   };
   setCustomCourseData: (courseData: {
-    lineUuid: string;
+    lineUuid: string | string[];
     stationUuid: string;
     themeUuid: string;
     placeList: string[];
@@ -36,7 +36,7 @@ export interface CourseSlice {
 export const createCourseSlice: StateCreator<CourseSlice> = (set) => ({
   customCourseData: initialCustomCourseData,
   setCustomCourseData: (courseData: {
-    lineUuid: string;
+    lineUuid: string | string[];
     stationUuid: string;
     themeUuid: string;
     placeList: string[];
