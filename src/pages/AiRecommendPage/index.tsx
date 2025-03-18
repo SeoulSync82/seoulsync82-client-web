@@ -49,13 +49,6 @@ export default function AiRecommendPage() {
   );
   const { mutate: saveAiRecommendCourse } = useSaveRecommendCourse();
 
-  const currentStepData = getCurrentStepData(currentStepIdx, {
-    subwayLineData,
-    subwayStationData,
-    themeData,
-    aiRecommendCourseData,
-  });
-
   const isBottomButtonDisabled =
     (currentStepIdx === 0 && (!customCourseData.lineUuid || !customCourseData.stationUuid)) ||
     (currentStepIdx === 1 &&
@@ -87,6 +80,12 @@ export default function AiRecommendPage() {
   };
 
   const CurrentStepView = aiRecommendSteps[currentStepIdx].component;
+  const currentStepData = getCurrentStepData(currentStepIdx, {
+    subwayLineData,
+    subwayStationData,
+    themeData,
+    aiRecommendCourseData,
+  });
 
   return (
     <>
