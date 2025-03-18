@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import CourseService from './CourseService';
 import { PlaceCustomParams } from './types';
 
@@ -18,6 +17,8 @@ export const queryOptions = {
     queryKey: queryKeys.getCourseRecommend(station_uuid, theme_uuid),
     queryFn: () => CourseService.getCourseRecommend(station_uuid, theme_uuid),
     enabled,
+    retryOnWindowFocus: false,
+    retryOnMount: false,
   }),
   getPlaceCustomize: (
     { place_uuids, place_type, station_uuid, theme_uuid = '' }: PlaceCustomParams,

@@ -12,7 +12,7 @@ export const useSubwayStations = (
   return useQuery(queryOptions.getSubwayStations(line_uuid, { enabled: !!line_uuid }));
 };
 
-export const useSubwayStationCustomCount = ({
+export const useStationCustomCheck = ({
   line_uuid,
   station_uuid,
   place_uuids,

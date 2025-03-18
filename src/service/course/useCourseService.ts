@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryOptions } from './queries';
-import { PlaceCustomParams, SaveAiRecommendCourseRequest, SaveCourseRecommendReqData } from './types';
+import { PlaceCustomParams, SaveAiRecommendCourseRequest } from './types';
 import CourseService from './CourseService';
 
 export const useAiCourseRecommend = (
