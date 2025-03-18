@@ -1,19 +1,20 @@
-import { Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { createBrowserRouter, Navigate, Outlet, ScrollRestoration } from 'react-router';
 import Layout from '@/layouts/default';
-import Home from '@/pages/Home';
 import Login from '@/pages/Login';
-import MyCourse from '@/pages/Course';
-import AiRecommend from '@/pages/AiRecommend';
-import Community from '@/pages/Community';
-import MyPage from '@/pages/MyPage';
-import Culture from '@/pages/Culture';
-import Notifications from '@/pages/Notifications';
-import CultureDetail from '@/pages/Culture/CultureDetail';
-import CourseDetail from '@/pages/Course/CourseDetail';
-import Map from '@/pages/Map';
 import Loading from '@/components/Loading';
 import { authLoader } from './loader';
+
+const Home = React.lazy(() => import('@/pages/Home'));
+const MyPage = React.lazy(() => import('@/pages/MyPage'));
+const MyCourse = React.lazy(() => import('@/pages/Course'));
+const CourseDetail = React.lazy(() => import('@/pages/Course/CourseDetail'));
+const AiRecommend = React.lazy(() => import('@/pages/AiRecommend'));
+const Culture = React.lazy(() => import('@/pages/Culture'));
+const CultureDetail = React.lazy(() => import('@/pages/Culture/CultureDetail'));
+const Notifications = React.lazy(() => import('@/pages/Notifications'));
+const Map = React.lazy(() => import('@/pages/Map'));
+const Community = React.lazy(() => import('@/pages/Community'));
 
 const Root = () => {
   return (
@@ -33,11 +34,11 @@ const routes = [
       { index: true, element: <Home /> },
       { path: '/login', element: <Login /> },
       { path: '/community', element: <Community /> },
-      { path: '/my-page', element: MyPage, loader: authLoader },
-      { path: '/course', element: MyCourse, loader: authLoader },
+      { path: '/my-page', element: <MyPage />, loader: authLoader },
+      { path: '/course', element: <MyCourse />, loader: authLoader },
       {
         path: '/course/:id',
-        element: CourseDetail,
+        element: <CourseDetail />,
         loader: authLoader,
       },
       { path: '/ai-recommend', element: <AiRecommend /> },
@@ -51,7 +52,7 @@ const routes = [
       },
       {
         path: '/notifications',
-        element: Notifications,
+        element: <Notifications />,
         loader: authLoader,
       },
     ],
