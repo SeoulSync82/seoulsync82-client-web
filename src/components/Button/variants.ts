@@ -30,11 +30,11 @@ export const buttonVariants = cva('flex items-center justify-center', {
       'naver-green': 'text-naver-green',
       'kakao-yellow': 'text-kakao-yellow',
       'google-gray': 'text-google-gray',
-      'gray-900': 'text-gray-900',
       'gray-100': 'text-gray-100',
       'gray-200': 'text-gray-200',
       'gray-300': 'text-gray-300',
       'gray-400': 'text-gray-400',
+      'gray-900': 'text-gray-900',
     },
     fontSize: {
       10: 'text-[10px]',

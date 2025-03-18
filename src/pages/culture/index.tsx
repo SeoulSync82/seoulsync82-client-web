@@ -79,11 +79,14 @@ export default function Culture() {
         {tabItems.map((item, idx) => (
           <TabButton
             key={`tab-${idx}`}
-            title={item.label}
             active={type === item.type}
-            href={`${pathname}?type=${item.type}&order=${order}`}
+            onClick={() => {
+              navigate(`${pathname}?type=${item.type}&order=${order}`);
+            }}
             className={clsx('flex-1')}
-          />
+          >
+            {item.label}
+          </TabButton>
         ))}
       </div>
       <div className="flex h-[46px] w-full items-center justify-between px-[20px]">

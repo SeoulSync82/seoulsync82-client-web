@@ -49,11 +49,14 @@ function MyCoursePage() {
         {tabItems.map((item, idx) => (
           <TabButton
             key={`tab-${idx}`}
-            title={item.label}
             active={search.split('=')[1] === item.type}
-            href={`${pathname}?type=${item.type}`}
+            onClick={() => {
+              navigate(`${pathname}?type=${item.type}`);
+            }}
             className={clsx('flex-1')}
-          />
+          >
+            {item.label}
+          </TabButton>
         ))}
       </div>
       <div className="h-[calc(100dvh-192px)] w-full overflow-y-scroll">

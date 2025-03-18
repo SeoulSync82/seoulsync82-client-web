@@ -16,13 +16,13 @@ export default function TabButton({
       fullWidth
       height={44}
       bgColor="white"
-      textColor="gray300"
+      textColor="gray-300"
       fontSize={16}
       fontWeight="medium"
       rounded="none"
       borderWidth={1}
       borderStyle="solid"
-      borderColor="gray200"
+      borderColor="gray-200"
       className={cn(tabButtonStyle, className)}
       {...rest}
     >
