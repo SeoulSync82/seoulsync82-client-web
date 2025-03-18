@@ -43,7 +43,7 @@ const SelectSubwayStep = ({ data }: SelectSubwayStepProps) => {
       <div className="hide-scroll flex basis-2/3 flex-col overflow-y-auto">
         {data?.stationData?.items?.map((item: any) => (
           <SelectStationButton
-            key={item.station_uuid}
+            key={item.uuid}
             active={customCourseData.stationUuid === item.uuid}
             onClick={() => onClickSubwayStation(item)}
           >
