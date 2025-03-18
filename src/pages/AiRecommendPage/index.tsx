@@ -28,10 +28,8 @@ const aiRecommendSteps = [
 
 export default function AiRecommendPage() {
   const navigate = useNavigate();
-  const { customCourseData, resetCustomCourseData } = useBoundStore((state) => ({
-    customCourseData: state.customCourseData,
-    resetCustomCourseData: state.resetCustomCourseData,
-  }));
+  const customCourseData = useBoundStore((state) => state.customCourseData);
+  const resetCustomCourseData = useBoundStore((state) => state.resetCustomCourseData);
 
   const [currentStepIdx, setCurrentStepIdx] = useState(0);
 
