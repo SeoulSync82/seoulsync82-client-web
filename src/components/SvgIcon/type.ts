@@ -1,4 +1,4 @@
-import { NavbarIcon, NavbarIconActive } from '../_Navigation/types';
+import { NavbarIcon, NavbarIconActive } from '../Navigation/types';
 
 export type SVGName =
   | NavbarIcon
