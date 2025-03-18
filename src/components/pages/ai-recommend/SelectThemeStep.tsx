@@ -1,30 +1,34 @@
 import Chip from '@/components/Chip';
 import { useBoundStore } from '@/stores';
 
-interface SelectThemeViewProps {
-  themeData: any;
+interface SelectThemeStepProps {
+  data: {
+    themeData: any;
+  };
 }
-export default function SelectThemeView({ themeData }: SelectThemeViewProps) {
-  const { themeUuid, setThemeUuid } = useBoundStore((state) => state);
-  const selectedThemeName = themeData?.data.items.find(
-    (item) => item.uuid === themeUuid,
+
+const SelectThemeStep = ({ data }: SelectThemeStepProps) => {
+  const { customCourseData, setCustomCourseData } = useBoundStore((state) => state);
+  const selectedThemeName = data?.themeData?.items?.find(
+    (item: any) => item.uuid === customCourseData.themeUuid,
   )?.theme_name;
 
+  console.log(333, data?.themeData);
   return (
     <div className="flex h-[calc(100vh-162px)] w-full bg-white">
       <div className="flex flex-col">
-        {themeUuid && (
+        {customCourseData.themeUuid && (
           <div className="flex h-fit w-full flex-col">
             <div className="font ml-5 flex h-[60px] items-center text-16 font-semibold">
               내가 선택한 테마
             </div>
             <div className="ml-5 flex flex-row flex-wrap gap-2">
-              {themeUuid && (
+              {customCourseData.themeUuid && (
                 <Chip
                   size={'medium'}
-                  active={!!themeUuid}
+                  active={!!customCourseData.themeUuid}
                   content={selectedThemeName}
-                  onClickCancel={() => setThemeUuid('')}
+                  onClickCancel={() => setCustomCourseData({ ...customCourseData, themeUuid: '' })}
                 />
               )}
             </div>
@@ -35,14 +39,14 @@ export default function SelectThemeView({ themeData }: SelectThemeViewProps) {
             테마 선택하기
           </div>
           <div className="ml-5 flex flex-row flex-wrap gap-2">
-            {themeData?.data.items.map((item: any) => (
+            {data?.themeData?.items?.map((item: any) => (
               <Chip
                 size="medium"
                 content={item.theme_name}
                 key={item.uuid}
-                active={item.uuid === themeUuid}
-                onClick={() => setThemeUuid(item.uuid)}
-                onClickCancel={() => setThemeUuid('')}
+                active={item.uuid === customCourseData.themeUuid}
+                onClick={() => setCustomCourseData({ ...customCourseData, themeUuid: item.uuid })}
+                onClickCancel={() => setCustomCourseData({ ...customCourseData, themeUuid: '' })}
               />
             ))}
           </div>
@@ -50,4 +54,5 @@ export default function SelectThemeView({ themeData }: SelectThemeViewProps) {
       </div>
     </div>
   );
-}
+};
+export default SelectThemeStep;
