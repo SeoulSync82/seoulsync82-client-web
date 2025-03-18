@@ -1,13 +1,3 @@
-export type SubwayItem = {
-  uuid: string;
-  station?: string;
-};
-
-export type ThemeItem = {
-  uuid: string;
-  theme?: string;
-};
-
 export type CustomPlaceItem = {
   sort: number;
   uuid: string;
@@ -21,9 +11,9 @@ export type CustomPlaceItem = {
   place_detail: string;
 };
 
-export interface SaveCourseRecommendReqData {
-  subway: SubwayItem;
-  theme: ThemeItem;
+export interface SaveAiRecommendCourseRequest {
+  station_uuid: string;
+  theme_uuid: string;
   course_uuid: string;
   course_name: string;
   places: CustomPlaceItem[];

@@ -2,13 +2,15 @@ import { cn } from '@/utils/clsx';
 import { GlobalPortal } from '../GlobalPortal';
 import { HTMLAttributes } from 'react';
 
-interface ModalProps extends HTMLAttributes<HTMLDivElement> {
+export interface ModalProps extends HTMLAttributes<HTMLDivElement> {
+  isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
   renderActions?: () => React.ReactNode;
 }
 
-const Modal = ({ onClose, onConfirm, renderActions, children, ...rest }: ModalProps) => {
+const Modal = ({ isOpen, onClose, onConfirm, renderActions, children, ...rest }: ModalProps) => {
+  if (!isOpen) return null;
   return (
     <GlobalPortal.Consumer>
       <Modal.Backdrop onClick={onClose} />

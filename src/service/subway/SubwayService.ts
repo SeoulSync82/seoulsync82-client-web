@@ -9,9 +9,9 @@ class SubwayService extends Service {
     return await this.service.get(`/subway/${line_uuid}`);
   }
   async getSubwayStationCustom(line_uuid: string, station_uuid: string, place_uuids: string) {
-    return await this.service.get(
-      `/subway/${line_uuid}/${station_uuid}/customs-check?place_uuids=${place_uuids}`,
-    );
+    return await this.service.get(`/subway/${line_uuid}/${station_uuid}/customs-check`, {
+      params: { place_uuids },
+    });
   }
 }
 

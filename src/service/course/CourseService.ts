@@ -1,5 +1,5 @@
 import Service from '../Service';
-import { PlaceCustomParams, SaveCourseRecommendReqData } from './types';
+import { PlaceCustomParams } from './types';
 class CourseService extends Service {
   async getCourseRecommend(station_uuid: string, theme_uuid?: string) {
     return await this.service.get('/course/recommend', {
@@ -18,7 +18,7 @@ class CourseService extends Service {
     });
   }
 
-  async saveCourseRecommend(data: SaveCourseRecommendReqData) {
+  async saveCourseRecommend(data: any) {
     return await this.service.post('/course/recommend/save', data);
   }
 

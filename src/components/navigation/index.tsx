@@ -58,7 +58,7 @@ export default function Navigation() {
     AiRecommend: {
       name: 'AI 추천',
       size: 66,
-      path: '/ai-recommend?type=subway',
+      path: '/ai-recommend',
     },
     Community: { name: '커뮤니티', size: 24, path: '/community' },
     MyPage: { name: '마이페이지', size: 24, path: '/my-page' },
