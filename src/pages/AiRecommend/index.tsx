@@ -1,168 +1,156 @@
-import clsx from 'clsx';
-import {
-  useCourseRecommend,
-  usePlaceCustomize,
-  useSaveRecommendCourse,
-} from '@/service/course/useCourseService';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSubwayLines, useSubwayStations } from '@/service/subway/useSubwayService';
 import { useThemesList } from '@/service/theme/useThemeService';
-import { useQueryParams } from '@/hooks/useQueryParams';
 import { TabButton } from '@/components/Button';
 import { BottomButton } from '@/components/Button';
 import SelectSubwayView from '@/components/pages/ai-recommend/SelectSubwayView';
 import SelectThemeView from '@/components/pages/ai-recommend/SelectThemeView';
 import SelectCustomView from '@/components/pages/ai-recommend/SelectCustomView';
-import AddCustomPlaceModal from '@/components/Modal/AddCustomPlaceModal';
-import useModal from '@/hooks/useModal';
 import { useBoundStore } from '@/stores';
-import { DEFAULT_LINE_UUID } from '@/constants';
+import { useAiCourseRecommend, useSaveRecommendCourse } from '@/service/course/useCourseService';
 
-const TAB_TYPES = {
-  SUBWAY: 'subway',
-  THEME: 'theme',
-  CUSTOM: 'custom',
-};
-const TAB_ITEMS: TabItem[] = [
+const THEME_UUID_OVER_THREE_POINT_FIVE_STARS = 'c4ca35dff1a85b6788f66e864f58958a'; // 별점 3.5이상
+const aiRecommendSteps = [
   {
-    label: '역주변',
-    type: TAB_TYPES.SUBWAY,
+    name: '역 주변',
+    component: SelectSubwayView,
   },
   {
-    label: '테마선택',
-    type: TAB_TYPES.THEME,
+    name: '테마선택',
+    component: SelectThemeView,
   },
   {
-    label: '커스텀',
-    type: TAB_TYPES.CUSTOM,
+    name: '커스텀',
+    component: SelectCustomView,
   },
 ];
-const THREE_POINT_FIVE_STARS_THEME_UUID = 'c4ca35dff1a85b6788f66e864f58958a'; // 별점 3.5이상
-
-export type TabItem = { label: string; type: string; disabled?: boolean };
 
 export default function AiRecommend() {
-  const { searchParams, updateQueryParam } = useQueryParams();
-  const { isModalOpen, openModal, closeModal: closeAddCustomPlaceModal } = useModal();
-  const {
-    lineUuid,
-    stationUuid,
-    themeUuid,
-    customPlaceList,
-    customPlaceType,
-    setLineUuid,
-    setStationUuid,
-    setThemeUuid,
-    setCustomPlaceList,
-    setCustomPlaceType,
-  } = useBoundStore((state) => state);
+  const customCourseData = useBoundStore((state) => state.customCourseData);
+  const setCustomCourseData = useBoundStore((state) => state.setCustomCourseData);
+  const resetCustomCourseData = useBoundStore((state) => state.resetCustomCourseData);
 
-  const resetUUidData = () => {
-    setLineUuid(DEFAULT_LINE_UUID);
-    setStationUuid('');
-    setThemeUuid('');
-  };
-
-  const type = searchParams.get('type');
+  const [currentStepIdx, setCurrentStepIdx] = useState(0);
 
   const { data: subwayLineData } = useSubwayLines();
-  const { data: subwayStationData } = useSubwayStations(lineUuid as string, {
-    enabled: !!lineUuid,
+  const { data: subwayStationData } = useSubwayStations(customCourseData.lineUuid as string, {
+    enabled: !!customCourseData.lineUuid,
   });
   const { data: themeData } = useThemesList();
-  const { data: courseRecommendData } = useCourseRecommend(
-    stationUuid as string,
-    themeUuid !== THREE_POINT_FIVE_STARS_THEME_UUID ? (themeUuid as string) : '',
+  const { data: aiRecommendCourseData } = useAiCourseRecommend(
+    customCourseData.stationUuid as string,
+    customCourseData.themeUuid !== THEME_UUID_OVER_THREE_POINT_FIVE_STARS
+      ? (customCourseData.themeUuid as string)
+      : '',
     {
-      enabled: !!stationUuid && !!themeUuid,
+      enabled: !!customCourseData.stationUuid && !!customCourseData.themeUuid,
     },
   );
-  const { data: customPlaceData } = usePlaceCustomize(
-    {
-      place_uuids: customPlaceList?.map((place: any) => place?.uuid).join(','),
-      place_type: customPlaceType.toUpperCase(),
-      station_uuid: stationUuid,
-      theme_uuid: themeUuid,
-    },
-    {
-      enabled: !!customPlaceType,
-    },
-  );
-  const { mutate: saveRecommendCourse } = useSaveRecommendCourse();
+  // const { data: customPlaceData } = usePlaceCustomize(
+  //   {
+  //     place_uuids: customCourseData.placeList?.map((place: any) => place?.uuid).join(','),
+  //     place_type: customCourseData.placeType.toUpperCase(),
+  //     station_uuid: customCourseData.stationUuid,
+  //     theme_uuid: customCourseData.themeUuid,
+  //     course_uuid: customCourseData.courseUuid,
+  //     course_name: customCourseData.courseName,
+  //   },
+  //   {
+  //     enabled: !!customCourseData.placeType,
+  //   },
+  // );
+  const { mutate: saveAiRecommendCourse } = useSaveRecommendCourse();
 
-  useEffect(() => {
-    const recommendPlaceList = courseRecommendData?.data?.items?.places || [];
-    const customPlace = customPlaceData?.data?.items ? [customPlaceData?.data?.items] : [];
-    setCustomPlaceList([...recommendPlaceList, ...customPlace]);
-  }, [courseRecommendData, customPlaceData]);
+  // useEffect(() => {
+  //   const recommendPlaceList = courseRecommendData?.data?.items?.places || [];
+  //   const customPlace = customPlaceData?.data?.items ? [customPlaceData?.data?.items] : [];
+  //   setCustomCourseData({
+  //     ...customCourseData,
+  //     placeList: [...recommendPlaceList, ...customPlace],
+  //   });
+  // }, [courseRecommendData, customPlaceData]);
 
-  useEffect(() => {
-    console.log('## custom place list: ', customPlaceList);
-  }, [customPlaceList]);
+  // useEffect(() => {
+  //   console.log('## custom place list: ', customCourseData.placeList);
+  // }, [customCourseData.placeList]);
 
-  const isTabButtonDisabled = (tab: TabItem) =>
-    type === TAB_TYPES.SUBWAY || (type === TAB_TYPES.THEME && tab.type === TAB_TYPES.CUSTOM);
-  const isBottomButtonDisabled =
-    (type === TAB_TYPES.SUBWAY && (!lineUuid || !stationUuid)) ||
-    (type === TAB_TYPES.THEME && (!lineUuid || !stationUuid || !themeUuid));
+  // const isBottomButtonDisabled =
+  //   (currentStepIdx === 0 && (!customCourseData.lineUuid || !customCourseData.stationUuid)) ||
+  //   (currentStepIdx === 1 &&
+  //     (!customCourseData.lineUuid || !customCourseData.stationUuid || !customCourseData.themeUuid));
 
-  const onClickTabButton = (item: TabItem) => {
-    updateQueryParam('type', item.type);
-  };
   const onClickBottomButton = () => {
-    if (type === TAB_TYPES.SUBWAY && lineUuid && stationUuid) {
-      updateQueryParam('type', TAB_TYPES.THEME);
-    } else if (type === TAB_TYPES.THEME && lineUuid && stationUuid && themeUuid) {
-      updateQueryParam('type', TAB_TYPES.CUSTOM);
-    } else if (type === TAB_TYPES.CUSTOM) {
-      const data = {
-        station_uuid: stationUuid,
-        theme_uuid: themeUuid,
-        course_uuid: courseRecommendData?.data?.items.course_uuid,
-        course_name: courseRecommendData?.data?.items.course_name,
-        places: customPlaceList,
+    if (currentStepIdx === 0 && customCourseData.lineUuid && customCourseData.stationUuid) {
+    } else if (
+      currentStepIdx === 1 &&
+      customCourseData.lineUuid &&
+      customCourseData.stationUuid &&
+      customCourseData.themeUuid
+    ) {
+    } else if (currentStepIdx === 2) {
+      const aiRecommendCourseData = {
+        subway: { uuid: customCourseData.lineUuid, station: customCourseData.stationUuid },
+        theme: { uuid: customCourseData.themeUuid, theme: 'customCourseData.themeName' },
+        course_uuid: customCourseData.courseUuid,
+        course_name: customCourseData.courseName,
+        places: customCourseData.placeList,
       };
-      if (customPlaceList.length < 3) {
+      if (customCourseData.placeList.length < 3) {
         alert('toast: 3개 이상의 장소를 추가해주세요.');
         return;
       }
-      saveRecommendCourse(data);
+      saveAiRecommendCourse(aiRecommendCourseData);
     }
-  };
-  const handleClickAddCustomPlace = (message: string) => {
-    if (message === 'openAddPlaceModal') {
-      openModal();
-    }
+    setCurrentStepIdx((prev) => prev + 1);
   };
 
-  return (
-    <div className="page w-full">
+  const TabButtonGroup = () => {
+    const isTabButtonDisabled = (idx: number) => idx > currentStepIdx;
+    const onClickTabButton = (idx: number) => {
+      if (isTabButtonDisabled(idx)) return;
+      setCurrentStepIdx(idx);
+    };
+
+    return (
       <div className="flex w-full">
-        {TAB_ITEMS.map((tab, idx) => (
+        {aiRecommendSteps.map(({ name }, idx) => (
           <TabButton
             key={`tab-${idx}`}
-            active={type === tab.type}
-            className={clsx('flex-1')}
-            disabled={isTabButtonDisabled(tab)}
-            onClick={() => onClickTabButton(tab)}
+            active={currentStepIdx === idx}
+            disabled={isTabButtonDisabled(idx)}
+            onClick={() => onClickTabButton(idx)}
           >
-            {tab.label}
+            {name}
           </TabButton>
         ))}
       </div>
-      <div className="h-[calc(100dvh-162px)] w-full overflow-y-scroll">
-        {type === TAB_TYPES.SUBWAY && (
-          <SelectSubwayView subwayLineData={subwayLineData} subwayStationData={subwayStationData} />
-        )}
-        {type === TAB_TYPES.THEME && <SelectThemeView themeData={themeData} />}
-        {type === TAB_TYPES.CUSTOM && (
-          <SelectCustomView onClickAddCustomPlace={handleClickAddCustomPlace} />
-        )}
-      </div>
-      <BottomButton disabled={isBottomButtonDisabled} onClick={onClickBottomButton}>
-        {type !== TAB_TYPES.CUSTOM ? '선택하기' : '완료'}
+    );
+  };
+
+  const CurrentStepView = aiRecommendSteps[currentStepIdx].component;
+  const currentStepData = (() => {
+    switch (currentStepIdx) {
+      case 0: // subway
+        return {
+          lineData: subwayLineData?.data,
+          stationData: subwayStationData?.data,
+        };
+      case 1: // theme
+        return {
+          themeData: themeData?.data,
+        };
+      default:
+        return undefined;
+    }
+  })();
+
+  return (
+    <>
+      <TabButtonGroup />
+      <CurrentStepView data={currentStepData} />
+      <BottomButton onClick={onClickBottomButton}>
+        {currentStepIdx === 2 ? '완료' : '선택하기'}
       </BottomButton>
-      {isModalOpen && <AddCustomPlaceModal onClose={closeAddCustomPlaceModal} />}
-    </div>
+    </>
   );
 }

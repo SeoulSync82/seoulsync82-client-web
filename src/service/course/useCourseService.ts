@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryOptions } from './queries';
-import { PlaceCustomParams, SaveCourseRecommendReqData } from './types';
+import { PlaceCustomParams, SaveAiRecommendCourseRequest, SaveCourseRecommendReqData } from './types';
 import CourseService from './CourseService';
 
-export const useCourseRecommend = (
+export const useAiCourseRecommend = (
   station_uuid: string,
   theme_uuid: string,
   { enabled }: any = {},
@@ -46,7 +46,7 @@ export const useCourseDetail = (uuid: string) => {
 // mutations
 export const useSaveRecommendCourse = () => {
   return useMutation({
-    mutationFn: (data: SaveCourseRecommendReqData) => CourseService.saveCourseRecommend(data),
+    mutationFn: (data: SaveAiRecommendCourseRequest) => CourseService.saveCourseRecommend(data),
     onSuccess: ({ data }) => {
       alert('toast: 코스 생성을 완료했어요!');
       window.location.replace(`/course/${data.items}`);
