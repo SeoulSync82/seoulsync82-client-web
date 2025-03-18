@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
 import { createBrowserRouter, Navigate, Outlet, ScrollRestoration } from 'react-router';
 import Layout from '@/layouts/default';
-import Login from '@/pages/Login';
 import Loading from '@/components/Loading';
 import { authLoader } from './loader';
 
@@ -15,6 +14,7 @@ const CultureDetail = React.lazy(() => import('@/pages/Culture/CultureDetail'));
 const Notifications = React.lazy(() => import('@/pages/Notifications'));
 const Map = React.lazy(() => import('@/pages/Map'));
 const Community = React.lazy(() => import('@/pages/Community'));
+const Login = React.lazy(() => import('@/pages/Login'));
 
 const Root = () => {
   return (
