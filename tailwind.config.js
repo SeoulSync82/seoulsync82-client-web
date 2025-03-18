@@ -76,7 +76,7 @@ module.exports = {
     plugin(function ({ addComponents, theme }) {
       addComponents({
         '.page': {
-          display: 'inline-flex',
+          display: 'flex',
           flex: '1 1 0%',
           flexDirection: 'column',
           alignItems: 'flex-start',
