@@ -1,16 +1,16 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { useSubwayLines, useSubwayStations } from '@/service/subway/useSubwayService';
 import { useThemesList } from '@/service/theme/useThemeService';
-import { TabButton } from '@/components/Button';
-import { BottomButton } from '@/components/Button';
+import { TabButton, BottomButton } from '@/components/Button';
 import SelectSubwayStep from '@/components/pages/ai-recommend/SelectSubwayStep';
 import SelectThemeStep from '@/components/pages/ai-recommend/SelectThemeStep';
 import CustomCourseStep from '@/components/pages/ai-recommend/CustomCourseStep';
 import { useBoundStore } from '@/stores';
 import { useAiCourseRecommend, useSaveRecommendCourse } from '@/service/course/useCourseService';
-import { useNavigate } from 'react-router';
 
-const THEME_UUID_OVER_THREE_POINT_FIVE_STARS = 'c4ca35dff1a85b6788f66e864f58958a'; // 별점 3.5이상
+const THEME_UUID_OVER_THREE_POINT_FIVE_STARS = 'c4ca35dff1a85b6788f66e864f58958a'; // 별점 3.5 이상
+
 const aiRecommendSteps = [
   {
     name: '역 주변',
@@ -26,10 +26,12 @@ const aiRecommendSteps = [
   },
 ];
 
-export default function AiRecommend() {
+export default function AiRecommendPage() {
   const navigate = useNavigate();
-  const customCourseData = useBoundStore((state) => state.customCourseData);
-  const resetCustomCourseData = useBoundStore((state) => state.resetCustomCourseData);
+  const { customCourseData, resetCustomCourseData } = useBoundStore((state) => ({
+    customCourseData: state.customCourseData,
+    resetCustomCourseData: state.resetCustomCourseData,
+  }));
 
   const [currentStepIdx, setCurrentStepIdx] = useState(0);
 
@@ -49,28 +51,12 @@ export default function AiRecommend() {
   );
   const { mutate: saveAiRecommendCourse } = useSaveRecommendCourse();
 
-  const TabButtonGroup = () => {
-    const isTabButtonDisabled = (idx: number) => idx > currentStepIdx;
-    const onClickTabButton = (idx: number) => {
-      if (isTabButtonDisabled(idx)) return;
-      setCurrentStepIdx(idx);
-    };
-
-    return (
-      <div className="flex w-full">
-        {aiRecommendSteps.map(({ name }, idx) => (
-          <TabButton
-            key={`tab-${idx}`}
-            active={currentStepIdx === idx}
-            disabled={isTabButtonDisabled(idx)}
-            onClick={() => onClickTabButton(idx)}
-          >
-            {name}
-          </TabButton>
-        ))}
-      </div>
-    );
-  };
+  const currentStepData = getCurrentStepData(currentStepIdx, {
+    subwayLineData,
+    subwayStationData,
+    themeData,
+    aiRecommendCourseData,
+  });
 
   const isBottomButtonDisabled =
     (currentStepIdx === 0 && (!customCourseData.lineUuid || !customCourseData.stationUuid)) ||
@@ -78,12 +64,12 @@ export default function AiRecommend() {
       (!customCourseData.lineUuid ||
         !customCourseData.stationUuid ||
         !customCourseData.themeUuid)) ||
-    (currentStepIdx === 2 && customCourseData?.placeList?.length < 3);
+    (currentStepIdx === 2 && customCourseData.placeList.length < 3);
 
   const onClickBottomButton = () => {
     if (currentStepIdx === 2) {
-      // custom course step
-      if (customCourseData?.placeList?.length < 3) {
+      // Custom course step
+      if (customCourseData.placeList.length < 3) {
         alert('toast: 3개 이상의 장소를 추가해주세요.');
         return;
       }
@@ -97,34 +83,19 @@ export default function AiRecommend() {
       saveAiRecommendCourse(data);
       resetCustomCourseData();
       navigate(`/course/${customCourseData.courseUuid}`);
+      return;
     }
     setCurrentStepIdx((prev) => prev + 1);
   };
 
   const CurrentStepView = aiRecommendSteps[currentStepIdx].component;
-  const currentStepData = (() => {
-    switch (currentStepIdx) {
-      case 0: // subway
-        return {
-          lineData: subwayLineData?.data,
-          stationData: subwayStationData?.data,
-        };
-      case 1: // theme
-        return {
-          themeData: themeData?.data,
-        };
-      case 2: // custom
-        return {
-          aiRecommendCourseData: aiRecommendCourseData?.data,
-        };
-      default:
-        return undefined;
-    }
-  })();
 
   return (
     <>
-      <TabButtonGroup />
+      <TabButtonGroup
+        currentStepIdx={currentStepIdx}
+        onTabClick={(idx) => setCurrentStepIdx(idx)}
+      />
       <CurrentStepView data={currentStepData} />
       <BottomButton disabled={isBottomButtonDisabled} onClick={onClickBottomButton}>
         {currentStepIdx === 2 ? '완료' : '선택하기'}
@@ -132,3 +103,60 @@ export default function AiRecommend() {
     </>
   );
 }
+
+const TabButtonGroup = ({
+  currentStepIdx,
+  onTabClick,
+}: {
+  currentStepIdx: number;
+  onTabClick: (idx: number) => void;
+}) => {
+  const isTabButtonDisabled = (idx: number) => idx > currentStepIdx;
+  return (
+    <div className="flex w-full">
+      {aiRecommendSteps.map(({ name }, idx) => (
+        <TabButton
+          key={`tab-${idx}`}
+          active={currentStepIdx === idx}
+          disabled={isTabButtonDisabled(idx)}
+          onClick={() => onTabClick(idx)}
+        >
+          {name}
+        </TabButton>
+      ))}
+    </div>
+  );
+};
+
+const getCurrentStepData = (
+  stepIdx: number,
+  {
+    subwayLineData,
+    subwayStationData,
+    themeData,
+    aiRecommendCourseData,
+  }: {
+    subwayLineData?: any;
+    subwayStationData?: any;
+    themeData?: any;
+    aiRecommendCourseData?: any;
+  },
+) => {
+  switch (stepIdx) {
+    case 0: // Subway step
+      return {
+        lineData: subwayLineData?.data,
+        stationData: subwayStationData?.data,
+      };
+    case 1: // Theme step
+      return {
+        themeData: themeData?.data,
+      };
+    case 2: // Custom step
+      return {
+        aiRecommendCourseData: aiRecommendCourseData?.data,
+      };
+    default:
+      return undefined;
+  }
+};
