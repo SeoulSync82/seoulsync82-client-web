@@ -1,11 +1,9 @@
-import { queryOptions as communityQueryOptions } from '@/service/community/queries';
-import { queryOptions as placeQueryOptions } from '@/service/place/queries';
 import { CommunityPostItem } from '@/service/community/types';
 import { PlaceItem } from '@/service/place/types';
 import { convertDateToYMD } from '@/utils';
-import { useQueries } from '@tanstack/react-query';
-import { Link, Links } from 'react-router';
-import clsx from 'clsx';
+import { Link } from 'react-router';
+import { usePlaceCulture } from '@/service/place/usePlaceService';
+import { cn } from '@/utils/clsx';
 
 function SectionHeader({
   title,
@@ -48,7 +46,7 @@ function SwiperCard({
         backgroundRepeat: 'no-repeat',
         minWidth,
       }}
-      className={clsx('flex aspect-[3/4] flex-col justify-end', className)}
+      className={cn('flex aspect-[3/4] flex-col justify-end', className)}
       to={link}
     >
       {children}
@@ -79,9 +77,7 @@ export const getDummyImage = () => {
 };
 
 export default function Home() {
-  const [{ data: cultureData }, { data: communityPostsData }] = useQueries({
-    queries: [placeQueryOptions.getPlaceCulture(), communityQueryOptions.getCommunityPostList()],
-  });
+  const { data: cultureData } = usePlaceCulture();
 
   return (
     <div className="page gap-[10px] overflow-y-auto pb-[109px]">
@@ -123,7 +119,7 @@ export default function Home() {
       </div>
       <div className="w-full">
         <SectionHeader title="인기코스 모아보기" link="/community" linkText="더보기" />
-        <SectionSwiper>
+        {/* <SectionSwiper>
           {communityPostsData?.data?.items?.map((item: CommunityPostItem, idx: number) => (
             <SwiperCard
               key={idx}
@@ -150,7 +146,7 @@ export default function Home() {
               </div>
             </SwiperCard>
           ))}
-        </SectionSwiper>
+        </SectionSwiper> */}
       </div>
     </div>
   );
