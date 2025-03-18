@@ -1,5 +1,4 @@
 import NaverMap from '@/components/Map';
-import withAuthGuard from '@/hoc/withAuthGuard';
 import { useCourseDetail } from '@/service/course/useCourseService';
 import { useParams } from 'react-router';
 
