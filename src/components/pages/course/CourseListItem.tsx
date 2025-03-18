@@ -1,5 +1,5 @@
 import SVGIcon from '@/components/SvgIcon';
-import { getDummyImage } from '@/pages/Home';
+import { getDummyImage } from '@/pages/HomePage';
 import { convertDateToYMD } from '@/utils';
 import { Link } from 'react-router';
 

@@ -6,21 +6,21 @@ import {
   RouteObject,
   ScrollRestoration,
 } from 'react-router';
-import Layout from '@/layouts/default';
-import Loading from '@/components/Loading';
 import { authLoader } from './loader';
-// TODO: lazy loading
-import HomePage from '@/pages/Home';
-import MyPage from '@/pages/MyPage';
-import MyCoursePage from '@/pages/Course';
-import CourseDetailPage from '@/pages/Course/CourseDetail';
-import AiRecommendPage from '@/pages/AiRecommendPage';
-import CulturePage from '@/pages/Culture';
-import CultureDetailPage from '@/pages/Culture/CultureDetail';
-import NotificationsPage from '@/pages/Notifications';
-import MapPage from '@/pages/Map';
-import CommunityPage from '@/pages/Community';
-import LoginPage from '@/pages/Login';
+// TODO: lazy loading, alias 적용
+import Layout from '../layouts/default';
+import Loading from '../components/Loading';
+import LoginPage from '../pages/LoginPage';
+import HomePage from '../pages/HomePage';
+import MyPage from '../pages/MyPage';
+import MyCoursePage from '../pages/MyCoursePage';
+import CourseDetailPage from '../pages/CourseDetailPage';
+import AiRecommendPage from '../pages/AiRecommendPage';
+import CulturePage from '../pages/CulturePage';
+import CultureDetailPage from '../pages/CultureDetailPage';
+import NotificationsPage from '../pages/NotificationsPage';
+import MapPage from '../pages/MapPage';
+import CommunityPage from '../pages/CommunityPage';
 
 const Root = () => {
   return (
