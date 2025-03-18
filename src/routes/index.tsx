@@ -9,18 +9,18 @@ import {
 import Layout from '@/layouts/default';
 import Loading from '@/components/Loading';
 import { authLoader } from './loader';
-
-const Home = React.lazy(() => import('@/pages/Home'));
-const MyPage = React.lazy(() => import('@/pages/MyPage'));
-const MyCourse = React.lazy(() => import('@/pages/Course'));
-const CourseDetail = React.lazy(() => import('@/pages/Course/CourseDetail'));
-const AiRecommendPage = React.lazy(() => import('@/pages/AiRecommendPage'));
-const Culture = React.lazy(() => import('@/pages/Culture'));
-const CultureDetail = React.lazy(() => import('@/pages/Culture/CultureDetail'));
-const Notifications = React.lazy(() => import('@/pages/Notifications'));
-const Map = React.lazy(() => import('@/pages/Map'));
-const Community = React.lazy(() => import('@/pages/Community'));
-const Login = React.lazy(() => import('@/pages/Login'));
+// TODO: lazy loading
+import HomePage from '@/pages/Home';
+import MyPage from '@/pages/MyPage';
+import MyCoursePage from '@/pages/Course';
+import CourseDetailPage from '@/pages/Course/CourseDetail';
+import AiRecommendPage from '@/pages/AiRecommendPage';
+import CulturePage from '@/pages/Culture';
+import CultureDetailPage from '@/pages/Culture/CultureDetail';
+import NotificationsPage from '@/pages/Notifications';
+import MapPage from '@/pages/Map';
+import CommunityPage from '@/pages/Community';
+import LoginPage from '@/pages/Login';
 
 const Root = () => {
   return (
@@ -37,33 +37,33 @@ const routes: RouteObject[] = [
   {
     element: <Root />,
     children: [
-      { index: true, element: <Home /> },
-      { path: '/login', element: <Login /> },
-      { path: '/community', element: <Community /> },
+      { index: true, element: <HomePage /> },
+      { path: '/login', element: <LoginPage /> },
+      { path: '/community', element: <CommunityPage /> },
       { path: '/my-page', element: <MyPage />, loader: authLoader },
-      { path: '/course', element: <MyCourse />, loader: authLoader },
+      { path: '/course', element: <MyCoursePage />, loader: authLoader },
       {
         path: '/course/:id',
-        element: <CourseDetail />,
+        element: <CourseDetailPage />,
         loader: authLoader,
       },
       { path: '/ai-recommend', element: <AiRecommendPage /> },
       {
         path: '/culture',
-        element: <Culture />,
+        element: <CulturePage />,
       },
       {
         path: '/culture/:type/:id',
-        element: <CultureDetail />,
+        element: <CultureDetailPage />,
       },
       {
         path: '/notifications',
-        element: <Notifications />,
+        element: <NotificationsPage />,
         loader: authLoader,
       },
     ],
   },
-  { path: '/map', element: <Map /> },
+  { path: '/map', element: <MapPage /> },
   { path: '*', element: <Navigate to="/" /> },
 ];
 
