@@ -1,4 +1,4 @@
-import Chip from '@/components/Chip';
+import { CapsuleButton } from '@/components/Button';
 import { useBoundStore } from '@/stores';
 
 interface SelectThemeStepProps {
@@ -24,12 +24,12 @@ const SelectThemeStep = ({ data }: SelectThemeStepProps) => {
           </div>
           <div className="ml-5 flex flex-row flex-wrap gap-2">
             {customCourseData.themeUuid && (
-              <Chip
-                size={'medium'}
+              <CapsuleButton
                 active={!!customCourseData.themeUuid}
-                content={selectedThemeName}
                 onClickCancel={() => setCustomCourseData({ ...customCourseData, themeUuid: '' })}
-              />
+              >
+                {selectedThemeName}
+              </CapsuleButton>
             )}
           </div>
         </div>
@@ -40,14 +40,14 @@ const SelectThemeStep = ({ data }: SelectThemeStepProps) => {
         </div>
         <div className="ml-5 flex flex-row flex-wrap gap-2">
           {data?.themeData?.items?.map((item: any) => (
-            <Chip
-              size="medium"
-              content={item.theme_name}
+            <CapsuleButton
               key={item.uuid}
               active={item.uuid === customCourseData.themeUuid}
               onClick={() => setCustomCourseData({ ...customCourseData, themeUuid: item.uuid })}
               onClickCancel={() => setCustomCourseData({ ...customCourseData, themeUuid: '' })}
-            />
+            >
+              {item.theme_name}
+            </CapsuleButton>
           ))}
         </div>
       </div>

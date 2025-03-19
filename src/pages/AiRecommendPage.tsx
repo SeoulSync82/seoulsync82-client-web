@@ -5,7 +5,7 @@ import { useThemesList } from '@/service/theme/useThemeService';
 import { TabButton, BottomButton } from '@/components/Button';
 import SelectSubwayStep from '@/components/pages/ai-recommend/SelectSubwayStep';
 import SelectThemeStep from '@/components/pages/ai-recommend/SelectThemeStep';
-import CustomCourseStep from '@/components/pages/ai-recommend/CustomCourseStep';
+import CustomCourseStep from '@/components/pages/ai-recommend/custom-course-step/CustomCourseStep';
 import { useBoundStore } from '@/stores';
 import { useAiCourseRecommend, useSaveRecommendCourse } from '@/service/course/useCourseService';
 
