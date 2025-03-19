@@ -3,7 +3,7 @@ import { PlaceItem } from '@/service/place/types';
 import { convertDateToYMD } from '@/utils';
 import { Link } from 'react-router';
 import { usePlaceCulture } from '@/service/place/usePlaceService';
-import { cn } from '@/utils/clsx';
+import { cn } from '@/utils/tailwindcss';
 
 function SectionHeader({
   title,
