@@ -5,8 +5,7 @@ import {
   Outlet,
   RouteObject,
   ScrollRestoration,
-} from 'react-router';
-import { authLoader } from './loader';
+} from 'react-router-dom';
 import Layout from '@/layouts/default';
 import Loading from '@/components/Loading';
 import { ErrorBoundaryWrapper } from '@/components/ErrorBoundary';
@@ -43,12 +42,11 @@ const routes: RouteObject[] = [
       { index: true, element: <HomePage /> },
       { path: '/login', element: <LoginPage /> },
       { path: '/community', element: <CommunityPage /> },
-      { path: '/my-page', element: <MyPage />, loader: authLoader },
-      { path: '/course', element: <MyCoursePage />, loader: authLoader },
+      { path: '/my-page', element: <MyPage /> },
+      { path: '/course', element: <MyCoursePage /> },
       {
         path: '/course/:id',
         element: <CourseDetailPage />,
-        loader: authLoader,
       },
       { path: '/ai-recommend', element: <AiRecommendPage /> },
       {
@@ -62,7 +60,6 @@ const routes: RouteObject[] = [
       {
         path: '/notifications',
         element: <NotificationsPage />,
-        loader: authLoader,
       },
     ],
   },

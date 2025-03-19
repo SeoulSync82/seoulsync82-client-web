@@ -1,13 +1,13 @@
 import NotificationItem, {
   NotificationItemProps,
 } from '@/components/pages/notifications/NotificationItem';
-import withAuthGuard from '@/hoc/withAuthGuard';
+import withAuthGuard from '@/components/WithAuthGuard';
 import {
   useNotificationList,
   useSetReadNotification,
 } from '@/service/notification/useNotificationService';
 
-function NotificationPage() {
+const NotificationPage = () => {
   const { data: notificationData } = useNotificationList();
   const { mutate: readNotification } = useSetReadNotification();
 
@@ -21,6 +21,6 @@ function NotificationPage() {
       ))}
     </div>
   );
-}
+};
 
-export default NotificationPage;
+export default withAuthGuard(NotificationPage);
