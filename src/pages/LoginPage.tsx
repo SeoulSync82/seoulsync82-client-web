@@ -9,7 +9,7 @@ const SNS_LIST = ['kakao', 'naver', 'google'];
 export default function Login() {
   const onClickLogin = (authType: (typeof SNS_LIST)[number]) => {
     const service = new Service();
-    const socialLoginUrl = `${service.service.defaults.baseURL}/api/auth/login/${authType}`;
+    const socialLoginUrl = `${service.service.defaults.baseURL}/auth/login/${authType}`;
     window.location.href = socialLoginUrl;
   };
 
