@@ -7,28 +7,30 @@ import {
   ScrollRestoration,
 } from 'react-router';
 import { authLoader } from './loader';
-// TODO: lazy loading, alias 적용
-import Layout from '../layouts/default';
-import Loading from '../components/Loading';
-import HomePage from '../pages/HomePage';
-import MyPage from '../pages/MyPage';
-import MyCoursePage from '../pages/MyCoursePage';
-import CourseDetailPage from '../pages/CourseDetailPage';
-import AiRecommendPage from '../pages/AiRecommendPage';
-import CulturePage from '../pages/CulturePage';
-import CultureDetailPage from '../pages/CultureDetailPage';
-import NotificationsPage from '../pages/NotificationsPage';
-import MapPage from '../pages/MapPage';
-import CommunityPage from '../pages/CommunityPage';
+import Layout from '@/layouts/default';
+import Loading from '@/components/Loading';
+import { ErrorBoundaryWrapper } from '@/components/ErrorBoundary';
 
+const HomePage = React.lazy(() => import('@/pages/HomePage'));
+const MyPage = React.lazy(() => import('@/pages/MyPage'));
+const MyCoursePage = React.lazy(() => import('@/pages/MyCoursePage'));
+const CourseDetailPage = React.lazy(() => import('@/pages/CourseDetailPage'));
+const AiRecommendPage = React.lazy(() => import('@/pages/AiRecommendPage'));
+const CulturePage = React.lazy(() => import('@/pages/CulturePage'));
+const CultureDetailPage = React.lazy(() => import('@/pages/CultureDetailPage'));
+const NotificationsPage = React.lazy(() => import('@/pages/NotificationsPage'));
+const MapPage = React.lazy(() => import('@/pages/MapPage'));
+const CommunityPage = React.lazy(() => import('@/pages/CommunityPage'));
 const LoginPage = React.lazy(() => import('@/pages/LoginPage'));
 
 const Root = () => {
   return (
     <Layout>
-      <Suspense fallback={<Loading />}>
-        <Outlet />
-      </Suspense>
+      <ErrorBoundaryWrapper>
+        <Suspense fallback={<Loading />}>
+          <Outlet />
+        </Suspense>
+      </ErrorBoundaryWrapper>
       <ScrollRestoration />
     </Layout>
   );
