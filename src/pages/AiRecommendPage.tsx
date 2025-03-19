@@ -6,7 +6,7 @@ import { TabButton, BottomButton } from '@/components/Button';
 import SelectSubwayStep from '@/components/pages/ai-recommend/SelectSubwayStep';
 import SelectThemeStep from '@/components/pages/ai-recommend/SelectThemeStep';
 import CustomCourseStep from '@/components/pages/ai-recommend/custom-course-step/CustomCourseStep';
-import { useBoundStore } from '@/stores';
+import { useAppStore } from '@/stores';
 import { useAiCourseRecommend, useSaveRecommendCourse } from '@/service/course/useCourseService';
 
 const THEME_UUID_OVER_THREE_POINT_FIVE_STARS = 'c4ca35dff1a85b6788f66e864f58958a'; // 별점 3.5 이상
@@ -28,8 +28,8 @@ const aiRecommendSteps = [
 
 export default function AiRecommendPage() {
   const navigate = useNavigate();
-  const customCourseData = useBoundStore((state) => state.customCourseData);
-  const resetCustomCourseData = useBoundStore((state) => state.resetCustomCourseData);
+  const customCourseData = useAppStore((state) => state.customCourseData);
+  const resetCustomCourseData = useAppStore((state) => state.resetCustomCourseData);
 
   const [currentStepIdx, setCurrentStepIdx] = useState(0);
 

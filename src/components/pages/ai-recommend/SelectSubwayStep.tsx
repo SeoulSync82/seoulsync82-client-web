@@ -1,6 +1,6 @@
 import { SelectStationButton } from '@/components/Button';
 import { SelectSubwayButton } from '@/components/Button';
-import { useBoundStore } from '@/stores';
+import { useAppStore } from '@/stores';
 import { AxiosResponse } from 'axios';
 
 interface SelectSubwayStepProps {
@@ -11,7 +11,7 @@ interface SelectSubwayStepProps {
 }
 
 const SelectSubwayStep = ({ data }: SelectSubwayStepProps) => {
-  const { customCourseData, setCustomCourseData } = useBoundStore((state) => state);
+  const { customCourseData, setCustomCourseData } = useAppStore((state) => state);
 
   const handleSelectSubwayLine = (lineUuid: string) => {
     setCustomCourseData({

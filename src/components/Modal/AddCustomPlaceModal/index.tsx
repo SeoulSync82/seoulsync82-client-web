@@ -1,6 +1,6 @@
 import { Modal } from '..';
 import SvgIcon from '@/components/SvgIcon';
-import { useBoundStore } from '@/stores';
+import { useAppStore } from '@/stores';
 import { useState } from 'react';
 import { cva } from 'class-variance-authority';
 import clsx from 'clsx';
@@ -28,8 +28,8 @@ export interface AddCustomPlaceModalProps extends ModalProps {}
 export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
   const { onClose, ...rest } = props;
   const [selectedPlaceType, selectPlaceType] = useState('');
-  const customCourseData = useBoundStore((state) => state.customCourseData);
-  const setCustomCourseData = useBoundStore((state) => state.setCustomCourseData);
+  const customCourseData = useAppStore((state) => state.customCourseData);
+  const setCustomCourseData = useAppStore((state) => state.setCustomCourseData);
 
   // const { data: checkCustomPlaceCount } = useCheckUsedCustomPlaces({
   //   line_uuid: customCourseData.lineUuid as string,

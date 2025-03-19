@@ -1,5 +1,5 @@
 import { CapsuleButton } from '@/components/Button';
-import { useBoundStore } from '@/stores';
+import { useAppStore } from '@/stores';
 
 interface SelectThemeStepProps {
   data: {
@@ -8,8 +8,8 @@ interface SelectThemeStepProps {
 }
 
 const SelectThemeStep = ({ data }: SelectThemeStepProps) => {
-  const customCourseData = useBoundStore((state) => state.customCourseData);
-  const setCustomCourseData = useBoundStore((state) => state.setCustomCourseData);
+  const customCourseData = useAppStore((state) => state.customCourseData);
+  const setCustomCourseData = useAppStore((state) => state.setCustomCourseData);
 
   const selectedThemeName = data?.themeData?.items?.find(
     (item: any) => item.uuid === customCourseData.themeUuid,

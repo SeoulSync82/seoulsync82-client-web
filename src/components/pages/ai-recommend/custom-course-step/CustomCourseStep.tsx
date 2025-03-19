@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from 'react';
-import { useBoundStore } from '@/stores';
+import { useAppStore } from '@/stores';
 import useModal from '@/hooks/useModal';
 import CustomPlaceItem from './CustomPlaceItem';
 import AddPlaceButton from './AddPlaceButton';
@@ -17,8 +17,8 @@ interface CustomCourseStepProps {
 }
 
 const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
-  const customCourseData = useBoundStore((state) => state.customCourseData);
-  const setCustomCourseData = useBoundStore((state) => state.setCustomCourseData);
+  const customCourseData = useAppStore((state) => state.customCourseData);
+  const setCustomCourseData = useAppStore((state) => state.setCustomCourseData);
   const { isModalOpen, openModal, closeModal } = useModal();
 
   useEffect(() => {
