@@ -1,6 +1,6 @@
 import { TabButton } from '@/components/Button';
 import CourseListItem, { CourseListItemProps } from '@/components/pages/course/CourseListItem';
-import withAuthGuard from '@/components/WithAuthGuard';
+import withAuthGuard from '@/hoc/withAuthGuard';
 
 import {
   useBookmarkedCourseList,

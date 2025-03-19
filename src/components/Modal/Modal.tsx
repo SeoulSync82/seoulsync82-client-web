@@ -1,5 +1,5 @@
 import { cn } from '@/utils/clsx';
-import { GlobalPortal } from '../GlobalPortal';
+import { GlobalPortal } from '@/context/GlobalPortal';
 import { HTMLAttributes } from 'react';
 
 export interface ModalProps extends HTMLAttributes<HTMLDivElement> {

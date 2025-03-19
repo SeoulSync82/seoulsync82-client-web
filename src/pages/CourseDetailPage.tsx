@@ -1,7 +1,7 @@
 import NaverMap from '@/components/Map';
 import { useCourseDetail } from '@/service/course/useCourseService';
 import { useParams } from 'react-router';
-import withAuthGuard from '@/components/WithAuthGuard';
+import withAuthGuard from '@/hoc/withAuthGuard';
 
 const CourseDetailPage = () => {
   const { id } = useParams();

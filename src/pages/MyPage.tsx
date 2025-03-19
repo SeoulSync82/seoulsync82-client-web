@@ -1,4 +1,4 @@
-import withAuthGuard from '@/components/WithAuthGuard';
+import withAuthGuard from '@/hoc/withAuthGuard';
 
 function MyPage() {
   return <div>MyPage</div>;

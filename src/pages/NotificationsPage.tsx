@@ -1,7 +1,7 @@
 import NotificationItem, {
   NotificationItemProps,
 } from '@/components/pages/notifications/NotificationItem';
-import withAuthGuard from '@/components/WithAuthGuard';
+import withAuthGuard from '@/hoc/withAuthGuard';
 import {
   useNotificationList,
   useSetReadNotification,
