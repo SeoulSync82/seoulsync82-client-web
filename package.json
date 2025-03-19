@@ -13,6 +13,8 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@radix-ui/react-accordion": "^1.2.3",
+    "@radix-ui/react-slot": "^1.1.2",
     "@react-router/node": "^7.1.3",
     "@reduxjs/toolkit": "^2.5.0",
     "@storybook/addon-essentials": "^8.6.6",
@@ -25,6 +27,8 @@
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "immer": "^10.1.1",
+    "lucide-react": "^0.483.0",
     "query-string": "^9.1.1",
     "react": "19.0.0",
     "react-dom": "19.0.0",
@@ -34,8 +38,9 @@
     "react-router-dom": "^7.1.3",
     "react-spinners": "^0.15.0",
     "storybook": "^8.6.6",
-    "tailwind-merge": "^2.6.0",
+    "tailwind-merge": "^3.0.2",
     "tailwind-scrollbar-hide": "^2.0.0",
+    "tw-animate-css": "^1.2.4",
     "vite-tsconfig-paths": "^5.1.4",
     "zustand": "^5.0.3"
   },
