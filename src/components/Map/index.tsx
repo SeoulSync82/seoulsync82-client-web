@@ -1,4 +1,4 @@
-import { cn } from '@/utils/clsx';
+import { cn } from '@/utils/tailwindcss';
 import { useEffect, useRef } from 'react';
 
 export default function Map({

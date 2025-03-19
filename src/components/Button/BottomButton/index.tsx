@@ -1,4 +1,4 @@
-import { cn } from '@/utils/clsx';
+import { cn } from '@/utils/tailwindcss';
 import { Button } from '..';
 import { BottomButtonProps } from '../types';
 

@@ -1,4 +1,4 @@
-import { cn } from '@/utils/clsx';
+import { cn } from '@/utils/tailwindcss';
 import { TabButtonProps } from '../types';
 import { Button } from '..';
 import { tabButtonVariants } from './variants';
@@ -20,6 +20,7 @@ export default function TabButton({
       fontSize={16}
       fontWeight="medium"
       rounded="none"
+      borderPosition="bottom"
       borderWidth={1}
       borderStyle="solid"
       borderColor="gray-200"

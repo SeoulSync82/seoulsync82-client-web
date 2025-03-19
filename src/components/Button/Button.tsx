@@ -1,4 +1,4 @@
-import { cn } from '@/utils/clsx';
+import { cn } from '@/utils/tailwindcss';
 import { buttonVariants, combineBorderStyles } from './variants';
 import { ButtonProps } from './types';
 
@@ -31,9 +31,7 @@ const Button = ({
       rounded,
       active,
     }),
-    borderPosition && borderWidth && borderStyle && borderColor
-      ? combineBorderStyles(borderPosition, borderWidth, borderStyle, borderColor)
-      : '',
+    borderColor && combineBorderStyles(borderWidth, borderStyle, borderColor, borderPosition),
     className,
   );
 

@@ -40,9 +40,9 @@ import {
   IcoEntertainmentActive,
 } from '../Icon';
 import { IconProps, SVGName } from './type';
-import { cn } from '@/utils/clsx';
+import { cn } from '@/utils/tailwindcss';
 
-export default function SVGIcon({
+export default function SvgIcon({
   width = 24,
   height = 24,
   name,
