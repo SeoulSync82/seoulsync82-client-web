@@ -2,12 +2,14 @@ import SvgIcon from '@/components/SvgIcon';
 import Tooltip from '@/components/Tooltip';
 import { SNSType } from '@/components/SvgIcon/type';
 import { SocialLoginButton } from '@/components/Button';
+import Service from '@/service/Service';
 
 const SNS_LIST = ['kakao', 'naver', 'google'];
 
 export default function Login() {
   const onClickLogin = (authType: (typeof SNS_LIST)[number]) => {
-    const socialLoginUrl = `${import.meta.env.VITE_BASE_URL_STG}/api/auth/login/${authType}`;
+    const service = new Service();
+    const socialLoginUrl = `${service.service.defaults.baseURL}/api/auth/login/${authType}`;
     window.location.href = socialLoginUrl;
   };
 
