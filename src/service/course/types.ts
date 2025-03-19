@@ -1,4 +1,4 @@
-export type CustomPlaceItem = {
+export interface PlaceItemType {
   sort: number;
   uuid: string;
   place_name: string;
@@ -9,14 +9,14 @@ export type CustomPlaceItem = {
   longitude: string;
   score: number | string;
   place_detail: string;
-};
+}
 
 export interface SaveAiRecommendCourseRequest {
   station_uuid: string;
   theme_uuid: string;
   course_uuid: string;
   course_name: string;
-  places: CustomPlaceItem[];
+  places: PlaceItemType[];
 }
 
 export interface PlaceCustomParams {

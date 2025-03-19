@@ -34,6 +34,6 @@ export type IconProps = {
   height?: number;
   active?: boolean;
   style?: string;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent) => void;
   className?: string;
 };
