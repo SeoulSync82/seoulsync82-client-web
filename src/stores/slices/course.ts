@@ -1,5 +1,6 @@
 import { StateCreator } from 'zustand';
 import { DEFAULT_LINE_UUID } from '@/constants';
+import { PlaceItemType } from '@/service/course/types';
 
 const initialCustomCourseData = {
   lineUuid: DEFAULT_LINE_UUID,
@@ -16,7 +17,7 @@ export interface CourseSlice {
     lineUuid: string | string[];
     stationUuid: string;
     themeUuid: string;
-    placeList: string[];
+    placeList: PlaceItemType[];
     placeType: string;
     courseUuid: string;
     courseName: string;
@@ -25,7 +26,7 @@ export interface CourseSlice {
     lineUuid: string | string[];
     stationUuid: string;
     themeUuid: string;
-    placeList: string[];
+    placeList: PlaceItemType[];
     placeType: string;
     courseUuid: string;
     courseName: string;
@@ -39,7 +40,7 @@ export const createCourseSlice: StateCreator<CourseSlice> = (set) => ({
     lineUuid: string | string[];
     stationUuid: string;
     themeUuid: string;
-    placeList: string[];
+    placeList: PlaceItemType[];
     placeType: string;
     courseUuid: string;
     courseName: string;

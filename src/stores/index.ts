@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import { createCourseSlice, CourseSlice } from './slices/course';
-import { createUserSlice } from './slices/user';
+import { createUserSlice, UserSlice } from './slices/user';
 
-export type AppState = CourseSlice;
+export type AppState = CourseSlice & UserSlice;
 
 // TODO: zustand immer 사용
 export const useBoundStore = create<AppState>()((...args) => ({
