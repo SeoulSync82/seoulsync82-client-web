@@ -1,4 +1,5 @@
 import { cva, VariantProps } from 'class-variance-authority';
+import { ButtonBorderProps } from './types';
 
 export const buttonVariants = cva('flex items-center justify-center', {
   variants: {
@@ -7,13 +8,17 @@ export const buttonVariants = cva('flex items-center justify-center', {
       false: '',
     },
     height: {
+      24: 'h-[24px]',
+      36: 'h-[36px]',
       44: 'h-[44px]',
       48: 'h-[48px]',
       60: 'h-[60px]',
       72: 'h-[72px]',
+      76: 'h-[76px]',
     },
     bgColor: {
       primary: 'bg-primary-500',
+      'gray-50': 'bg-gray-50',
       'naver-green': 'bg-naver-green',
       'kakao-yellow': 'bg-kakao-yellow',
       'google-gray': 'bg-google-gray',
@@ -27,6 +32,7 @@ export const buttonVariants = cva('flex items-center justify-center', {
     textColor: {
       primary: 'text-primary-500',
       white: 'text-white',
+      black: 'text-black',
       'naver-green': 'text-naver-green',
       'kakao-yellow': 'text-kakao-yellow',
       'google-gray': 'text-google-gray',
@@ -60,6 +66,7 @@ export const buttonVariants = cva('flex items-center justify-center', {
       8: 'rounded-[8px]',
       16: 'rounded-[16px]',
       24: 'rounded-[24px]',
+      full: 'rounded-full',
       none: '',
     },
     active: {
@@ -74,8 +81,8 @@ export const buttonVariants = cva('flex items-center justify-center', {
   defaultVariants: {
     fullWidth: false,
     height: 48,
-    bgColor: 'primary',
-    textColor: 'white',
+    bgColor: 'white',
+    textColor: 'gray-900',
     fontSize: 16,
     fontWeight: 'bold',
     rounded: 'none',
@@ -87,20 +94,12 @@ export const buttonVariants = cva('flex items-center justify-center', {
 export type ButtonVariantsProps = VariantProps<typeof buttonVariants>;
 
 export const combineBorderStyles = (
-  borderPosition: 'top' | 'bottom' | 'left' | 'right',
-  borderWidth: 1 | 2 | 3 | 4,
-  borderStyle: 'solid' | 'dashed' | 'dotted' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset',
-  borderColor:
-    | 'primary'
-    | 'naver-green'
-    | 'kakao-yellow'
-    | 'google-gray'
-    | 'white'
-    | 'gray-900'
-    | 'gray-100'
-    | 'gray-200'
-    | 'gray-300'
-    | 'gray-400',
+  borderWidth: ButtonBorderProps['borderWidth'] = 1,
+  borderStyle: ButtonBorderProps['borderStyle'] = 'solid',
+  borderColor: ButtonBorderProps['borderColor'],
+  borderPosition: ButtonBorderProps['borderPosition'] = '',
 ) => {
-  return `border-${borderPosition.slice(0, 1)}-[${borderWidth}px] border-${borderStyle} border-${borderColor}`;
+  return borderPosition
+    ? `border-${borderStyle} border-${borderPosition.slice(0, 1)}-[${borderWidth}px]`
+    : `border-${borderStyle} border-[${borderWidth}px] border-${borderColor}`;
 };

@@ -4,3 +4,5 @@ export { default as TabButton } from './TabButton';
 export { default as BottomButton } from './BottomButton';
 export { default as SelectSubwayButton } from './SelectSubwayButton';
 export { default as SelectStationButton } from './SelectStationButton';
+export { default as CapsuleButton } from './CapsuleButton';
+export { default as ChipButton } from './ChipButton';

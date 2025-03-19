@@ -1,14 +1,18 @@
 import { ButtonHTMLAttributes } from 'react';
-import { ButtonVariantsProps } from './variants';
+import { buttonVariants } from './variants';
 import { TabButtonVariantsProps } from './TabButton/variants';
 import { SNSType } from '../SvgIcon/type';
-import { SelectStationButtonVariantsProps } from './SelectStationButton/variants';
+import { selectStationButtonVariants } from './SelectStationButton/variants';
+import { VariantProps } from 'class-variance-authority';
 
 export interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
-    Omit<ButtonVariantsProps, 'disabled'> {
-  borderPosition?: 'top' | 'bottom' | 'left' | 'right';
-  borderWidth?: 1 | 2 | 3 | 4;
+    Omit<VariantProps<typeof buttonVariants>, 'disabled'>,
+    ButtonBorderProps {}
+
+export interface ButtonBorderProps {
+  borderPosition?: 'top' | 'bottom' | 'left' | 'right' | '';
+  borderWidth?: number;
   borderStyle?: 'solid' | 'dashed' | 'dotted' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset';
   borderColor?:
     | 'primary'
@@ -33,4 +37,10 @@ export interface SocialLoginButtonProps extends ButtonProps {
 
 export interface BottomButtonProps extends ButtonProps {}
 export interface SelectSubwayButtonProps extends ButtonProps {}
-export interface SelectStationButtonProps extends ButtonProps, SelectStationButtonVariantsProps {}
+export interface SelectStationButtonProps
+  extends ButtonProps,
+    VariantProps<typeof selectStationButtonVariants> {}
+
+export interface CapsuleButtonProps extends ButtonProps {
+  onClickCancel?: () => void;
+}
