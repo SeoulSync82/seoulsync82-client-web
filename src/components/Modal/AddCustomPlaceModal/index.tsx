@@ -4,7 +4,8 @@ import { useBoundStore } from '@/stores';
 import { useState } from 'react';
 import { cva } from 'class-variance-authority';
 import clsx from 'clsx';
-import { useSubwayStationCustomCount } from '@/service/subway/useSubwayService';
+import { useCheckUsedCustomPlaces } from '@/service/course/useCourseService';
+import { ModalProps } from '../Modal';
 
 export type PlaceType = 'Restaurant' | 'Cafe' | 'Bar' | 'Shopping' | 'Culture' | 'Entertainment';
 export type PlaceTypeItem = {
@@ -22,34 +23,42 @@ const placeTypes: PlaceTypeItem[] = [
   { label: '놀거리', type: 'Entertainment', position: 'bottom-[7%] right-[4%]' },
 ];
 
-export default function AddCustomPlaceModal({ onClose }: { onClose: () => void }) {
-  const [selectedPlaceType, selectPlaceType] = useState('');
-  const { lineUuid, stationUuid, customPlaceList, setCustomPlaceType } = useBoundStore();
+export interface AddCustomPlaceModalProps extends ModalProps {}
 
-  const { data: checkCustomPlaceCount } = useSubwayStationCustomCount({
-    line_uuid: lineUuid as string,
-    station_uuid: stationUuid as string,
-    place_uuids: customPlaceList?.map((place: any) => place.uuid).join(','),
-  });
-  const checkHasPlaceType = (placeType: string) => {
-    return checkCustomPlaceCount?.data?.items?.[placeType.toUpperCase()] > 0;
-  };
-  const onClickPlaceTypeButton = (placeType: string) => {
-    const hasPlaceType = checkHasPlaceType(placeType);
-    if (!hasPlaceType) {
-      alert('toast: 앗.. 해당 장소에 적합한 곳이 없어요.');
-      return;
-    }
-    selectPlaceType(placeType);
-  };
+export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
+  const { onClose, ...rest } = props;
+  const [selectedPlaceType, selectPlaceType] = useState('');
+  const customCourseData = useBoundStore((state) => state.customCourseData);
+  const setCustomCourseData = useBoundStore((state) => state.setCustomCourseData);
+
+  // const { data: checkCustomPlaceCount } = useCheckUsedCustomPlaces({
+  //   line_uuid: customCourseData.lineUuid as string,
+  //   station_uuid: customCourseData.stationUuid as string,
+  //   place_uuids: customCourseData.placeList?.map((place: any) => place.uuid).join(','),
+  // });
+  // const onClickPlaceTypeButton = (placeType: string) => {
+  //   const hasPlaceType = checkCustomPlaceCount?.data?.items?.[placeType.toUpperCase()] > 0;
+  //   if (!hasPlaceType) {
+  //     alert('toast: 앗.. 해당 장소에 적합한 곳이 없어요.');
+  //     return;
+  //   }
+  //   selectPlaceType(placeType);
+  // };
   const onSelectCustomPlaceType = () => {
-    setCustomPlaceType(selectedPlaceType);
+    setCustomCourseData({
+      ...customCourseData,
+      placeType: selectedPlaceType,
+    });
     onClose();
   };
 
   return (
-    <Modal className="w-full">
-      <div className="custom-clip-path absolute bottom-0 flex h-[252px] w-full flex-col justify-center bg-white p-5 shadow-md">
+    <Modal
+      // className="w-full"
+      onClose={onClose}
+      {...rest}
+    >
+      <div className="max-container custom-clip-path absolute left-0 right-0 bottom-0 flex h-[252px] w-full flex-col justify-center bg-white p-5 shadow-md">
         {placeTypes.map(({ label, type, position }) => (
           <PlaceTypeButton
             key={type}
@@ -57,8 +66,8 @@ export default function AddCustomPlaceModal({ onClose }: { onClose: () => void }
             type={type}
             position={position}
             isSelected={selectedPlaceType === type}
-            isIconActive={checkCustomPlaceCount?.data?.items?.[type.toUpperCase()]}
-            onClick={() => onClickPlaceTypeButton(type)}
+            // isIconActive={checkCustomPlaceCount?.data?.items?.[type.toUpperCase()]}
+            // onClick={() => onClickPlaceTypeButton(type)}
           />
         ))}
         <SvgIcon
@@ -86,7 +95,7 @@ const PlaceTypeButton = ({
   position: string;
   isSelected?: boolean;
   isIconActive?: boolean;
-  onClick?: (place: any) => void;
+  onClick?: () => void;
 }) => {
   const placeTypeButtonVariants = cva(
     'absolute flex size-[71px] flex-col items-center justify-center text-12 font-normal',
