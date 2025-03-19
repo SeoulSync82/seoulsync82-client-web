@@ -10,7 +10,6 @@ import { authLoader } from './loader';
 // TODO: lazy loading, alias 적용
 import Layout from '../layouts/default';
 import Loading from '../components/Loading';
-import LoginPage from '../pages/LoginPage';
 import HomePage from '../pages/HomePage';
 import MyPage from '../pages/MyPage';
 import MyCoursePage from '../pages/MyCoursePage';
@@ -21,6 +20,8 @@ import CultureDetailPage from '../pages/CultureDetailPage';
 import NotificationsPage from '../pages/NotificationsPage';
 import MapPage from '../pages/MapPage';
 import CommunityPage from '../pages/CommunityPage';
+
+const LoginPage = React.lazy(() => import('@/pages/LoginPage'));
 
 const Root = () => {
   return (
