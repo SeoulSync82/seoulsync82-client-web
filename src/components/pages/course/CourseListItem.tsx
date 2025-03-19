@@ -1,5 +1,4 @@
 import SVGIcon from '@/components/SvgIcon';
-import { getDummyImage } from '@/pages/HomePage';
 import { convertDateToYMD } from '@/utils';
 import { Link } from 'react-router';
 
@@ -22,7 +21,7 @@ export default function CourseListItem({
     <Link to={`/course/${course_uuid}`} className="flex h-[100px] w-full px-[20px]">
       <div className="flex w-full items-center gap-[10px] border-b-[1px] border-gray-200">
         <img
-          src={course_image ?? getDummyImage()}
+          src={course_image ?? ''}
           alt=""
           className="h-[70px] min-w-[70px] rounded-[4px] object-cover"
         />

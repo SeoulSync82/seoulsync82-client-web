@@ -3,8 +3,6 @@ import { useQueryParams } from '@/hooks/useQueryParams';
 import { useCommunityPostList } from '@/service/community/useCommunityService';
 import { convertDateToYMD } from '@/utils';
 import { Link } from 'react-router';
-import { getDummyImage } from './HomePage';
-import withAuthGuard from '@/hoc/withAuthGuard';
 
 const orderTypes = [
   {
@@ -65,7 +63,7 @@ function CommunityPage() {
                 </div>
               </div>
               <img
-                src={item.course_image || getDummyImage()}
+                src={item.course_image || ''}
                 alt="course image"
                 className="mt-[10px] aspect-[4/5] min-h-[220px] w-full min-w-[164px] rounded-[4px] object-cover"
               />
