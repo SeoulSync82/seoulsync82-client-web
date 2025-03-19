@@ -27,7 +27,7 @@ export const useBookmarkedCourseList = (
   return useQuery(queryOptions.getBookmarkedCourseList({ enabled }, size, last_id));
 };
 
-export const usePlaceCustomize = (
+export const useCheckUsedCustomPlaces = (
   { place_uuids, place_type, station_uuid, theme_uuid = '' }: PlaceCustomParams,
   { enabled }: { enabled?: boolean } = {},
 ) => {
