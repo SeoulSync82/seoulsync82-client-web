@@ -35,7 +35,7 @@ export default function CapsuleButton({
       rounded="full"
       fontWeight="medium"
       textColor="gray-900"
-      borderWidth={1.5}
+      borderWidth={1}
       borderStyle="solid"
       borderColor="gray-200"
       bgColor="white"
