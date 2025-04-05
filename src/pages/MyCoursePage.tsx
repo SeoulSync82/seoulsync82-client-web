@@ -13,11 +13,11 @@ import { useLocation, useNavigate } from 'react-router';
 const MyCoursePage = () => {
   const tabItems = [
     {
-      label: '좋아요 한 코스',
+      label: '북마크',
       type: 'liked',
     },
     {
-      label: '추천 받은 코스',
+      label: '추천받은 코스',
       type: 'recommended',
     },
   ];
@@ -59,7 +59,7 @@ const MyCoursePage = () => {
           </TabButton>
         ))}
       </div>
-      <div className="h-[calc(100dvh-192px)] w-full overflow-y-scroll">
+      <div className="hide-scroll h-[calc(100dvh-192px)] w-full overflow-y-scroll">
         <div className="overflow-y-hidden">
           {courseList?.map((item: CourseListItemProps & { [key: string]: any }) => (
             <CourseListItem key={item.course_uuid} {...item} />
