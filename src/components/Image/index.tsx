@@ -7,46 +7,48 @@ interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   fallbackPath?: string;
 }
 
-const Image = ({
+const Image: React.FC<ImageProps> = ({
   src,
   fallbackPath = '/images/img-fallback.svg',
   alt,
   width,
   height,
   className,
-  ...props
-}: ImageProps) => {
-  const [imgSrc, setImgSrc] = useState(src);
+  ...rest
+}) => {
+  const [imgSrc, setImgSrc] = useState<string | undefined>(src);
 
   const handleError = () => {
-    if (imgSrc !== fallbackPath) {
-      setImgSrc(fallbackPath);
-    }
+    setImgSrc(fallbackPath);
   };
 
-  const ImageFallback = () => {
-    return (
-      <div
-        style={{
-          width: width,
-          height: height,
-        }}
-        className={cn('flex items-center justify-center border-[1px] border-gray-200', className)}
-      >
-        <img src={fallbackPath} alt="fallback" className="object-contain" />
-      </div>
-    );
-  };
-
-  if (!imgSrc) return <ImageFallback />;
-  return (
+  const renderImage = () => (
     <img
       src={imgSrc}
       alt={alt}
       onError={handleError}
-      className={cn(width && height && `w-[${width}px] h-[${height}px]`, className)}
-      {...props}
+      className={cn(
+        'aspect-[1/1] w-full',
+        width && height && `w-[${width}px] h-[${height}px]`,
+        className,
+      )}
+      {...rest}
     />
   );
+
+  const renderFallback = () => (
+    <div
+      style={{ width, height }}
+      className={cn(
+        'flex aspect-[1/1] items-center justify-center border-[1px] border-gray-200',
+        className,
+      )}
+    >
+      <img src={fallbackPath} alt="fallback" className="object-contain" />
+    </div>
+  );
+
+  return imgSrc ? renderImage() : renderFallback();
 };
+
 export default Image;
