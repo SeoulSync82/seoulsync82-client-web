@@ -13,7 +13,7 @@ const initialCustomCourseData = {
   courseName: '',
 };
 
-export interface AppState {
+export interface CustomCourseState {
   customCourseData: {
     lineUuid: string | string[];
     stationUuid: string;
@@ -37,7 +37,7 @@ export interface AppState {
 
 // TODO: zustand immer 사용
 export const useAppStore = create(
-  persist<AppState>(
+  persist<CustomCourseState>(
     (set) => ({
       customCourseData: initialCustomCourseData,
       setCustomCourseData: (courseData: {
@@ -52,7 +52,7 @@ export const useAppStore = create(
       resetCustomCourseData: () => set({ customCourseData: initialCustomCourseData }),
     }),
     {
-      name: 'app-storage',
+      name: 'course-storage',
       storage: createJSONStorage(() => sessionStorage),
     },
   ),
