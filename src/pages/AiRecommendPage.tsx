@@ -26,10 +26,12 @@ const aiRecommendSteps = [
   },
 ];
 
-export default function AiRecommendPage() {
+const AiRecommendPage = () => {
   const navigate = useNavigate();
   const customCourseData = useAppStore((state) => state.customCourseData);
   const resetCustomCourseData = useAppStore((state) => state.resetCustomCourseData);
+
+  console.log('## AI 추천 데이터: ', customCourseData);
 
   const [currentStepIdx, setCurrentStepIdx] = useState(0);
 
@@ -43,10 +45,12 @@ export default function AiRecommendPage() {
     customCourseData.themeUuid !== THEME_UUID_OVER_THREE_POINT_FIVE_STARS
       ? customCourseData.themeUuid
       : '',
+    customCourseData.placeType,
     {
       enabled: !!customCourseData.stationUuid && !!customCourseData.themeUuid,
     },
   );
+
   const { mutate: saveAiRecommendCourse } = useSaveRecommendCourse();
 
   const isBottomButtonDisabled =
@@ -59,7 +63,7 @@ export default function AiRecommendPage() {
 
   const onClickBottomButton = () => {
     if (currentStepIdx === 2) {
-      // Custom course step
+      // Custom step
       if (customCourseData.placeList.length < 3) {
         alert('toast: 3개 이상의 장소를 추가해주세요.');
         return;
@@ -99,7 +103,9 @@ export default function AiRecommendPage() {
       </BottomButton>
     </>
   );
-}
+};
+
+export default AiRecommendPage;
 
 const TabButtonGroup = ({
   currentStepIdx,
