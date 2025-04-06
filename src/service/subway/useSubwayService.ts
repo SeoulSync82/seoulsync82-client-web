@@ -21,5 +21,5 @@ export const useCheckRemainingCustomPlaces = ({
   station_uuid: string;
   place_uuids: string;
 }) => {
-  return useQuery(queryOptions.getSubwayStationCustom(line_uuid, station_uuid, place_uuids));
+  return useQuery(queryOptions.checkCountSubwayStationCustom(line_uuid, station_uuid, place_uuids));
 };

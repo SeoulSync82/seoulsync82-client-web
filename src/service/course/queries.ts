@@ -14,7 +14,7 @@ const queryKeys = {
 
 export const queryOptions = {
   getCourseRecommend: (station_uuid: string, theme_uuid: string = '', { enabled }: any) => ({
-    queryKey: queryKeys.getCourseRecommend(station_uuid, theme_uuid),
+    queryKey: ['courseRecommend', station_uuid, theme_uuid],
     queryFn: () => CourseService.getCourseRecommend(station_uuid, theme_uuid),
     enabled,
     retryOnWindowFocus: false,
