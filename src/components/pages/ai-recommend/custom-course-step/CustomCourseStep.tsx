@@ -1,9 +1,9 @@
 import React, { Suspense, useEffect } from 'react';
-import { useAppStore } from '@/stores'; // zustand store
-import useModal from '@/hooks/useModal'; // 모달 open/close 훅
-import CustomPlaceItem from './CustomPlaceItem'; // 커스텀 장소 아이템 컴포넌트
-import AddPlaceButton from './AddPlaceButton'; // "장소추가" 버튼
-import Loading from '@/components/Loading'; // 로딩 컴포넌트
+import { useAppStore } from '@/stores';
+import useModal from '@/hooks/useModal';
+import CustomPlaceItem from './CustomPlaceItem';
+import AddPlaceButton from './AddPlaceButton';
+import Loading from '@/components/Loading';
 
 const AddPlaceModal = React.lazy(() => import('@/components/Modal/AddCustomPlaceModal'));
 
