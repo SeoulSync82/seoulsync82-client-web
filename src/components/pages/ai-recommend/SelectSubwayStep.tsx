@@ -30,7 +30,7 @@ const SelectSubwayStep = ({ data }: SelectSubwayStepProps) => {
 
   return (
     <div className="flex w-full">
-      <div className="hide-scroll flex basis-1/3 flex-col overflow-y-auto">
+      <div className="hide-scroll flex h-[calc(100vh-164px)] basis-1/3 flex-col overflow-y-auto">
         {data?.lineData?.items?.map((item) => (
           <SelectSubwayButton
             key={item.uuid}
@@ -41,7 +41,7 @@ const SelectSubwayStep = ({ data }: SelectSubwayStepProps) => {
           </SelectSubwayButton>
         ))}
       </div>
-      <div className="hide-scroll flex basis-2/3 flex-col overflow-y-auto">
+      <div className="hide-scroll flex h-[calc(100vh-164px)] basis-2/3 flex-col overflow-y-auto">
         {data?.stationData?.items?.map((item) => (
           <SelectStationButton
             key={item.uuid}
