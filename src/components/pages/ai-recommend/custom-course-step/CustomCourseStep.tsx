@@ -1,86 +1,65 @@
 import React, { Suspense, useEffect } from 'react';
-import { useAppStore } from '@/stores';
-import useModal from '@/hooks/useModal';
-import CustomPlaceItem from './CustomPlaceItem';
-import AddPlaceButton from './AddPlaceButton';
-import { useCheckUsedCustomPlaces } from '@/service/course/useCourseService';
-import { useCheckRemainingCustomPlaces } from '@/service/subway/useSubwayService';
-import { PlaceItemType } from '@/service/course/types';
-import Loading from '@/components/Loading';
+import { useAppStore } from '@/stores'; // zustand store
+import useModal from '@/hooks/useModal'; // 모달 open/close 훅
+import CustomPlaceItem from './CustomPlaceItem'; // 커스텀 장소 아이템 컴포넌트
+import AddPlaceButton from './AddPlaceButton'; // "장소추가" 버튼
+import Loading from '@/components/Loading'; // 로딩 컴포넌트
 
-const AddCustomPlaceModal = React.lazy(() => import('@/components/Modal/AddCustomPlaceModal'));
+const AddPlaceModal = React.lazy(() => import('@/components/Modal/AddCustomPlaceModal'));
 
 interface CustomCourseStepProps {
   data?: {
-    aiRecommendCourseData: any;
+    aiRecommendCourseData?: any;
   };
 }
 
 const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
   const customCourseData = useAppStore((state) => state.customCourseData);
   const setCustomCourseData = useAppStore((state) => state.setCustomCourseData);
+
   const { isModalOpen, openModal, closeModal } = useModal();
 
   useEffect(() => {
     if (!data?.aiRecommendCourseData) return;
+
+    // 이미 동일한 코스 uuid이면 종료 (무한루프 방지)
+    if (customCourseData.courseUuid === data.aiRecommendCourseData.course_uuid) {
+      return;
+    }
+
     setCustomCourseData({
       ...customCourseData,
-      lineUuid: data?.aiRecommendCourseData?.line_uuid,
-      stationUuid: data?.aiRecommendCourseData?.station_uuid,
-      themeUuid: data?.aiRecommendCourseData?.theme_uuid,
-      courseUuid: data?.aiRecommendCourseData?.course_uuid,
-      courseName: data?.aiRecommendCourseData?.course_name,
-      placeList: data?.aiRecommendCourseData?.places,
+      // lineUuid: data.aiRecommendCourseData.line?.[0]?.uuid ?? '',
+      // stationUuid: data.aiRecommendCourseData.subway.uuid ?? '',
+      courseUuid: data.aiRecommendCourseData.course_uuid,
+      courseName: data.aiRecommendCourseData.course_name,
+      placeList: data.aiRecommendCourseData.places ?? [],
     });
-  }, [data, customCourseData]);
+  }, [data]);
 
-  // const { data: checkUsedPlaceResultData } = useCheckUsedCustomPlaces(
-  //   {
-  //     place_uuids: customCourseData.placeList?.map((place: PlaceItemType) => place?.uuid).join(','),
-  //     place_type: customCourseData.placeType.toUpperCase(),
-  //     station_uuid: customCourseData.stationUuid,
-  //     theme_uuid: customCourseData.themeUuid,
-  //   },
-  //   {
-  //     enabled: !!customCourseData.placeType,
-  //   },
-  // );
-
-  const { data: checkRemainingPlaceData } = useCheckRemainingCustomPlaces({
-    line_uuid: customCourseData.lineUuid as string,
-    station_uuid: customCourseData.stationUuid as string,
-    place_uuids: customCourseData.placeList?.map((place: any) => place.uuid).join(','),
-  });
-
-  const CustomPlaceList = () => {
-    const handleDeletePlace = (uuid: string) => {
-      const filteredList = customCourseData.placeList.filter(
-        (item: PlaceItemType) => item.uuid !== uuid,
-      );
-      setCustomCourseData({
-        ...customCourseData,
-        placeList: filteredList,
-      });
-    };
-    return (
-      <>
-        {customCourseData?.placeList?.map((place: PlaceItemType) => (
-          <CustomPlaceItem key={place.uuid} place={place} onDelete={handleDeletePlace} />
-        ))}
-      </>
-    );
+  const handleDeletePlace = (uuid: string) => {
+    const filteredList = customCourseData.placeList.filter((item) => item.uuid !== uuid);
+    setCustomCourseData({
+      ...customCourseData,
+      placeList: filteredList,
+    });
   };
+
+  console.log('## customCourseData', customCourseData);
 
   return (
     <div className="flex w-full overflow-y-hidden">
-      <div className="mb-19 h-full w-full bg-white px-5">
-        <AddPlaceButton onClick={() => openModal()} />
-        <CustomPlaceList />
+      <div className="h-full w-full overflow-y-auto bg-white px-5 pb-[60px]">
+        <AddPlaceButton onClick={openModal} />
+        {customCourseData?.placeList?.map((place) => (
+          <CustomPlaceItem key={place?.uuid} place={place} onDelete={handleDeletePlace} />
+        ))}
       </div>
       <Suspense fallback={<Loading />}>
-        <AddCustomPlaceModal isOpen={isModalOpen} onConfirm={closeModal} onClose={closeModal} />
+        <AddPlaceModal isOpen={isModalOpen} onConfirm={closeModal} onClose={closeModal} />
       </Suspense>
     </div>
   );
 };
+
 export default CustomCourseStep;
