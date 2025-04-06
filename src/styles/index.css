@@ -4,6 +4,7 @@
 
 * {
   font-family: 'Apple SD Gothic Neo';
+  box-sizing: border-box;
 }
 
 span {
