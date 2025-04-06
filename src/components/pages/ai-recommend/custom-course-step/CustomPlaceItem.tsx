@@ -22,9 +22,10 @@ enum CustomPlaceTypes {
 interface CustomPlaceItemProps {
   place: any;
   onDelete: (uuid: string) => void;
+  idx: number;
 }
 
-const CustomPlaceItem = ({ place, onDelete }: CustomPlaceItemProps) => {
+const CustomPlaceItem = ({ place, onDelete, idx }: CustomPlaceItemProps) => {
   const CustomPlaceHeader = () => {
     return (
       <div className="flex w-full items-center justify-between pl-4">
@@ -42,7 +43,7 @@ const CustomPlaceItem = ({ place, onDelete }: CustomPlaceItemProps) => {
         <AccordionItem value={place.uuid}>
           <AccordionTrigger>{place.place_name}</AccordionTrigger>
           <AccordionContent>
-            <div className="flex items-center gap-[10px] rounded-lg bg-gray-50 p-4">
+            <div className="flex w-full items-center gap-[10px] rounded-lg bg-gray-50 p-4">
               <img
                 src={place.thumbnail}
                 alt={place.place_name}
@@ -78,7 +79,7 @@ const CustomPlaceItem = ({ place, onDelete }: CustomPlaceItemProps) => {
   return (
     <div className="mb-4 flex min-h-[70px] w-full items-start">
       <div className="flex w-full">
-        <CustomPlaceFlag>{place.sort}</CustomPlaceFlag>
+        <CustomPlaceFlag number={idx + 1} />
         <div className="flex w-full flex-col items-center justify-start">
           <CustomPlaceHeader />
           <CustomPlaceContent />
@@ -89,13 +90,13 @@ const CustomPlaceItem = ({ place, onDelete }: CustomPlaceItemProps) => {
 };
 export default CustomPlaceItem;
 
-const CustomPlaceFlag = ({ children }: { children: React.ReactNode }) => {
+const CustomPlaceFlag = ({ number }: { number: number }) => {
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="relative h-fit w-fit">
         <SvgIcon name="Line" width={33} height={33} active={false} />
         <div className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-2 text-10 text-white">
-          {children}
+          {number}
         </div>
       </div>
       <hr className="mt-1 h-full w-0 border-[1px] border-dashed" />

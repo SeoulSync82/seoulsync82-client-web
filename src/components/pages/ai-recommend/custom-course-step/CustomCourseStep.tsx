@@ -45,14 +45,12 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
     });
   };
 
-  console.log('## customCourseData', customCourseData);
-
   return (
     <div className="flex w-full overflow-y-hidden">
       <div className="h-full w-full overflow-y-auto bg-white px-5 pb-[60px]">
         <AddPlaceButton onClick={openModal} />
-        {customCourseData?.placeList?.map((place) => (
-          <CustomPlaceItem key={place?.uuid} place={place} onDelete={handleDeletePlace} />
+        {customCourseData?.placeList?.map((place, idx) => (
+          <CustomPlaceItem key={place?.uuid} place={place} onDelete={handleDeletePlace} idx={idx} />
         ))}
       </div>
       <Suspense fallback={<Loading />}>
