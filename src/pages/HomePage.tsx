@@ -51,6 +51,7 @@ const SectionSwiper = ({ items }: { items: PlaceItem[] }) => (
           key={item.uuid}
           idx={idx}
           item={item}
+          total={items.length}
           link={`/culture/${item.place_type === '전시' ? 'exhibition' : 'popup'}/${item?.uuid}`}
           background={`linear-gradient(180deg, rgba(63, 63, 63, 0) 43.43%, #181616 100%), url(${item.thumbnail})`}
           minWidth="clamp(240px, 64vw, 275px)"
@@ -68,6 +69,7 @@ const SwiperCard = ({
   minWidth,
   className,
   link,
+  total,
 }: {
   idx: number;
   item: PlaceItem;
@@ -102,7 +104,7 @@ const SwiperCard = ({
         </div>
       </div>
       <div className="text-12 font-medium leading-[18px]">
-        <span className="font-bold">{idx + 1}</span>/<span>{items.length}</span>
+        <span className="font-bold">{idx + 1}</span>/<span>{total}</span>
       </div>
     </div>
   </Link>
