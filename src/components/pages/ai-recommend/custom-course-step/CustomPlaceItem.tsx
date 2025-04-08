@@ -21,7 +21,7 @@ enum CustomPlaceTypes {
 
 interface CustomPlaceItemProps {
   place: any;
-  onDelete: (uuid: string) => void;
+  onDelete?: (uuid: string) => void;
   idx: number;
 }
 
@@ -32,7 +32,7 @@ const CustomPlaceItem = ({ place, onDelete, idx }: CustomPlaceItemProps) => {
         <div className="text-14 font-normal text-gray-300">
           {CustomPlaceTypes[place.place_type as keyof typeof CustomPlaceTypes]}
         </div>
-        <ChipButton onClick={() => onDelete(place.uuid)}>삭제</ChipButton>
+        {onDelete && <ChipButton onClick={() => onDelete(place.uuid)}>삭제</ChipButton>}
       </div>
     );
   };
