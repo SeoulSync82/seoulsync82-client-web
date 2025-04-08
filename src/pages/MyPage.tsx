@@ -5,7 +5,7 @@ function MyPage() {
   return (
     <div className="page w-full overflow-y-auto bg-white">
       {/* 상단 로그인 안내 박스 */}
-      <section className="max-container px-5">
+      <section className="max-container mt-4 px-5">
         <div className="flex items-center justify-between gap-2 rounded-md bg-gray-50 px-5 py-4">
           <div className="flex items-center gap-3">
             <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white">
