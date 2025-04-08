@@ -11,9 +11,9 @@ function MyPage() {
             <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white">
               <SvgIcon name="MyPage" width={28} height={30} color="#DEE2E6" active />
             </div>
-            <div className="flex flex-col gap-2">
-              <span className="text-base font-semibold text-gray-900">로그인이 필요해요</span>
-              <span className="text-base font-semibold text-primary-500">빠르게 로그인하기!</span>
+            <div className="flex flex-col gap-1">
+              <span className="text-sm font-semibold text-gray-900">로그인이 필요해요</span>
+              <span className="text-sm font-bold text-primary-500">빠르게 로그인하기!</span>
             </div>
           </div>
           {/* <SvgIcon name="Chevron" width={16} height={16} /> */}
