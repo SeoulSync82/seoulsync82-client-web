@@ -80,6 +80,7 @@ module.exports = {
           flex: '1 1 0%',
           flexDirection: 'column',
           alignItems: 'flex-start',
+          paddingBottom: '120px',
         },
         '.max-container': {
           margin: '0 auto',
