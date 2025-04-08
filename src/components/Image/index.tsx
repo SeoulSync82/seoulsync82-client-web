@@ -24,11 +24,12 @@ const Image: React.FC<ImageProps> = ({
 
   const renderImage = () => (
     <img
+      style={{ width, height }}
       src={imgSrc}
       alt={alt}
       onError={handleError}
       className={cn(
-        'aspect-[1/1] w-full',
+        'aspect-[1/1] w-full object-cover',
         width && height && `w-[${width}px] h-[${height}px]`,
         className,
       )}
