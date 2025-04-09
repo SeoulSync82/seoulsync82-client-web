@@ -55,13 +55,10 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
   const handleDeletePlace = async (uuid: string, itemRef?: React.RefObject<HTMLDivElement>) => {
     console.log('Delete place uuid:', uuid);
 
-    setBottomSheetChildUuid(uuid);
-
     if (itemRef?.current) {
       setBottomSheetChildHTML(itemRef?.current?.querySelector('#accordion')?.innerHTML ?? '');
-    } else {
-      setBottomSheetChildHTML('앗, 장소를 찾을 수 없어요.');
     }
+    setBottomSheetChildUuid(uuid);
 
     openBottomSheetModal();
   };
