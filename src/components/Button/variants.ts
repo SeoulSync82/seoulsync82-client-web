@@ -12,6 +12,7 @@ export const buttonVariants = cva('flex items-center justify-center', {
       36: 'h-[36px] min-h-[36px]',
       44: 'h-[44px] min-h-[44px]',
       48: 'h-[48px] min-h-[48px]',
+      56: 'h-[56px] min-h-[56px]',
       60: 'h-[60px] min-h-[60px]',
       72: 'h-[72px] min-h-[72px]',
       76: 'h-[76px] min-h-[76px]',
