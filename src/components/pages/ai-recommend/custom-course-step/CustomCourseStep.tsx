@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useRef, createRef, useState } from 'react';
+import React, { Suspense, useEffect, useRef, createRef, useState, useCallback } from 'react';
 import { useAppStore } from '@/stores';
 import useModal from '@/hooks/useModal';
 import CustomPlaceItem from './CustomPlaceItem';
@@ -41,30 +41,33 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
       courseName: data.aiRecommendCourseData.course_name,
       placeList: data.aiRecommendCourseData.places ?? [],
     });
-  }, [data]);
+  }, [data, customCourseData, setCustomCourseData]);
 
   useEffect(() => {
-    if (placeRefs.current.length < customCourseData.placeList.length) {
-      const needed = customCourseData.placeList.length - placeRefs.current.length;
-      for (let i = 0; i < needed; i++) {
-        placeRefs.current.push(createRef<HTMLDivElement>());
-      }
+    const currentLength = placeRefs.current.length;
+    const requiredLength = customCourseData.placeList.length;
+    if (currentLength < requiredLength) {
+      placeRefs.current = [
+        ...placeRefs.current,
+        ...Array.from({ length: requiredLength - currentLength }, () =>
+          createRef<HTMLDivElement>(),
+        ),
+      ];
     }
   }, [customCourseData.placeList]);
 
-  const handleDeletePlace = async (uuid: string, itemRef?: React.RefObject<HTMLDivElement>) => {
-    console.log('Delete place uuid:', uuid);
+  const handleDeletePlace = useCallback(
+    async (uuid: string, itemRef?: React.RefObject<HTMLDivElement>) => {
+      if (itemRef?.current) {
+        setBottomSheetChildHTML(itemRef.current.querySelector('#accordion')?.innerHTML ?? '');
+      }
+      setBottomSheetChildUuid(uuid);
+      openBottomSheetModal();
+    },
+    [openBottomSheetModal],
+  );
 
-    if (itemRef?.current) {
-      setBottomSheetChildHTML(itemRef?.current?.querySelector('#accordion')?.innerHTML ?? '');
-    }
-    setBottomSheetChildUuid(uuid);
-
-    openBottomSheetModal();
-  };
-
-  const handleConfirmBottomSheetModal = async () => {
-    // flushSync: React가 해당 콜백 안의 상태 변경을 즉시 처리하고 DOM 업데이트를 동기적으로 플러시
+  const handleConfirmBottomSheetModal = useCallback(async () => {
     flushSync(() => {
       const filteredList = customCourseData.placeList.filter(
         (p) => p.uuid !== bottomSheetChildUuid,
@@ -80,23 +83,21 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
     });
 
     alert('장소가 삭제되었어요');
-  };
+  }, [bottomSheetChildUuid, closeBottomSheetModal, customCourseData, setCustomCourseData]);
 
   return (
     <div className="flex w-full overflow-y-hidden">
       <div className="h-full w-full overflow-y-auto bg-white px-5 pb-[60px]">
         <AddPlaceButton onClick={openModal} />
-        {customCourseData.placeList.map((place, idx) => {
-          return (
-            <CustomPlaceItem
-              key={place.uuid}
-              place={place}
-              idx={idx}
-              ref={placeRefs.current[idx]}
-              onDelete={(uuid, ref) => handleDeletePlace(uuid, ref)}
-            />
-          );
-        })}
+        {customCourseData.placeList.map((place, idx) => (
+          <CustomPlaceItem
+            key={place.uuid}
+            place={place}
+            idx={idx}
+            ref={placeRefs.current[idx]}
+            onDelete={handleDeletePlace}
+          />
+        ))}
       </div>
       <Suspense fallback={<Loading />}>
         <AddPlaceModal isOpen={isModalOpen} onConfirm={closeModal} onClose={closeModal} />
@@ -107,7 +108,9 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
           onClose={closeBottomSheetModal}
           onConfirm={handleConfirmBottomSheetModal}
         >
-          <div dangerouslySetInnerHTML={{ __html: bottomSheetChildHTML }} />
+          {bottomSheetChildHTML && (
+            <div dangerouslySetInnerHTML={{ __html: bottomSheetChildHTML }} />
+          )}
         </BottomSheetModal>
       </Suspense>
     </div>
