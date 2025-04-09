@@ -61,7 +61,7 @@ const AiRecommendPage = () => {
         !customCourseData.themeUuid)) ||
     (currentStepIdx === 2 && customCourseData.placeList.length < 3);
 
-  const onClickBottomButton = () => {
+  const onClickBottomButton = async () => {
     if (currentStepIdx === 2) {
       // Custom step
       if (customCourseData.placeList.length < 3) {
@@ -75,9 +75,9 @@ const AiRecommendPage = () => {
         course_name: customCourseData.courseName,
         places: customCourseData.placeList,
       };
-      saveAiRecommendCourse(data);
+      await saveAiRecommendCourse(data);
+      window.location.href = `/course/${customCourseData?.courseUuid}`;
       resetCustomCourseData();
-      navigate(`/course/${customCourseData.courseUuid}`);
       return;
     }
     setCurrentStepIdx((prev) => prev + 1);
