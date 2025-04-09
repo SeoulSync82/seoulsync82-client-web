@@ -27,13 +27,16 @@ const CourseDetailPage = () => {
   };
 
   const detailData = data?.data;
-  const firstPlace = detailData?.places?.[0];
-  const latitude = firstPlace?.latitude;
-  const longitude = firstPlace?.longitude;
+  const points = detailData?.places
+    ?.map((point: { latitude: number; longitude: number }) => ({
+      lat: point.latitude,
+      lng: point.longitude,
+    }))
+    .sort((a: any, b: any) => a.lat - b.lat);
 
   return (
     <div className="page flex h-screen flex-col bg-gray-100">
-      <NaverMap latitude={latitude} longitude={longitude} height={mapHeight} />
+      <NaverMap points={points} height={mapHeight} zoom={13} />
       <div
         onScroll={handleScroll}
         className="hide-scroll w-full flex-1 overflow-y-scroll rounded-t-[8px] bg-gray-50"
