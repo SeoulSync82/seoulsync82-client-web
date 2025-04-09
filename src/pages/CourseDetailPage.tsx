@@ -36,7 +36,7 @@ const CourseDetailPage = () => {
       <NaverMap latitude={latitude} longitude={longitude} height={mapHeight} />
       <div
         onScroll={handleScroll}
-        className="hide-scroll w-full flex-1 overflow-y-scroll rounded-t-[8px] bg-gray-50 shadow-[2px_2px_12px_0px_rgba(0,0,0,0.2)]"
+        className="hide-scroll w-full flex-1 overflow-y-scroll rounded-t-[8px] bg-gray-50"
       >
         <CourseDetailInfo data={detailData} />
         <PlaceListSection places={detailData?.places || []} />
