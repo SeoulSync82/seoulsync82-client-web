@@ -7,14 +7,18 @@ export default function Navigation() {
   const { pathname } = useLocation();
 
   const navbarMenu: Record<NavbarIcon, { name: string; size: number; path: string }> = {
-    Home: { name: '홈', size: 24, path: '/' },
-    MyCourse: { name: '내 코스', size: 24, path: '/course' },
-    AiRecommend: { name: 'AI 추천', size: 66, path: '/ai-recommend' },
-    Community: { name: '커뮤니티', size: 24, path: '/community' },
-    MyPage: { name: '마이페이지', size: 24, path: '/my-page' },
+    Home: { name: 'Home', size: 24, path: '/', label: '홈' },
+    MyCourse: { name: 'MyCourse', size: 24, path: '/course', label: '내 코스' },
+    AiRecommend: { name: 'AiRecommend', size: 66, path: '/ai-recommend', label: 'AI 추천' },
+    Community: { name: 'Community', size: 24, path: '/community', label: '커뮤니티' },
+    MyPage: { name: 'MyPage', size: 24, path: '/my-page', label: '마이페이지' },
   };
 
-  const NavMenuItem = ({ item }: { item: { name: string; size: number; path: string } }) => (
+  const NavMenuItem = ({
+    item,
+  }: {
+    item: { name: string; size: number; path: string; label: string };
+  }) => (
     <li className={listItemVariants({ active: pathname === item.path })}>
       <Link
         to={item.path}
@@ -29,7 +33,7 @@ export default function Navigation() {
           />
         </div>
         <div className={textVariants({ isAiRecommend: item.name === 'AiRecommend' })}>
-          {item.name}
+          {item.label}
         </div>
       </Link>
     </li>
