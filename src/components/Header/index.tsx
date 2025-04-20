@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useLocation, useParams } from 'react-router';
 import HomeHeader from './HomeHeader';
 import DefaultHeader from './DefaultHeader';
@@ -10,7 +9,7 @@ export const Header = () => {
 
   const isHomePage = pathname === '/';
 
-  const pageName = useMemo(() => {
+  const pageName = () => {
     const pageTitles: Record<string, string> = {
       '/login': '로그인',
       '/course': '내 코스',
@@ -19,8 +18,6 @@ export const Header = () => {
       '/my-page': '마이페이지',
       '/culture': '큐레이션',
       '/notifications': '알림',
-      '/culture/exhibition/:id': '전시',
-      '/culture/popup/:id': '팝업',
       '/my-page/notice': '공지사항',
       '/my-page/social-login-info': '소셜로그인 정보',
     };
@@ -30,11 +27,11 @@ export const Header = () => {
     if (pathname.startsWith('/culture/popup/') && id) return '팝업';
 
     return pageTitles[pathname] ?? '';
-  }, [pathname, id]);
+  };
 
   return (
     <header className={headerVariants({ isHomePage })}>
-      {isHomePage ? <HomeHeader /> : <DefaultHeader pageName={pageName} />}
+      {isHomePage ? <HomeHeader /> : <DefaultHeader pageName={pageName()} />}
     </header>
   );
 };
