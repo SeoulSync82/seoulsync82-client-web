@@ -21,6 +21,8 @@ export const Header = () => {
       '/notifications': '알림',
       '/culture/exhibition/:id': '전시',
       '/culture/popup/:id': '팝업',
+      '/my-page/notice': '공지사항',
+      '/my-page/social-login-info': '소셜로그인 정보',
     };
 
     if (pathname.startsWith('/course/') && id) return '코스 상세';

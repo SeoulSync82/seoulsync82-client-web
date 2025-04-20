@@ -3,13 +3,8 @@ import { useLocation, useNavigate } from 'react-router';
 
 export default function DefaultHeader({ pageName }: { pageName: string }) {
   const navigate = useNavigate();
-  const location = useLocation();
   const onClickBackButton = () => {
-    if (location.state && location.state.previousPath) {
-      navigate(location.state.previousPath);
-    } else {
-      navigate(-1);
-    }
+    navigate(-1);
   };
 
   return (
