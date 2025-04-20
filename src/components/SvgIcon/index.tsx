@@ -39,7 +39,14 @@ import {
   IcoCultureActive,
   IcoEntertainmentActive,
 } from '../Icon';
-import { IcoBookmark, IcoBookmarkActive, IcoWrite, IcoWriteActive } from '../icons';
+import {
+  IcoApp,
+  IcoBookmark,
+  IcoBookmarkActive,
+  IcoSpeaker,
+  IcoWrite,
+  IcoWriteActive,
+} from '../icons';
 import { IconProps, SVGName } from './type';
 import { cn } from '@/utils/tailwindcss';
 
@@ -83,6 +90,8 @@ export default function SvgIcon({
     Heart: active ? IcoHeartActive : IcoHeart,
     Bookmark: active ? IcoBookmarkActive : IcoBookmark,
     Write: active ? IcoWriteActive : IcoWrite,
+    App: IcoApp,
+    Notice: IcoSpeaker,
   };
   const SvgComponent = svgTypes[name as SVGName];
 
