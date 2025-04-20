@@ -1,21 +1,26 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { queryOptions } from './queries';
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import NotificationService from './NotificationService';
+import { AxiosResponse } from 'axios';
 
-export const useNotificationList = (size: number = 10, last_id: number = 0) => {
-  return useQuery(queryOptions.getNotificationList(size, last_id));
+export const useNotificationList = (size: number = 10, next_page: string = '') => {
+  return useInfiniteQuery({
+    queryKey: ['getNotificationList', size, next_page],
+    queryFn: ({ pageParam = next_page }) =>
+      NotificationService.getNotificationList(size, pageParam.toString()),
+    getNextPageParam: (lastPage) => {
+      return lastPage.data.next_page || undefined;
+    },
+    initialPageParam: next_page,
+  });
 };
 
-export const useSetReadNotification = ({
-  onSuccess,
-  onError,
-}: { onSuccess?: () => void; onError?: () => void } = {}) => {
+export const useSetReadNotification = () => {
   const queryClient = useQueryClient();
-  queryClient.invalidateQueries(queryOptions.getNotificationList());
 
-  return useMutation({
+  return useMutation<AxiosResponse<any, any>, Error, string>({
     mutationFn: (uuid: string) => NotificationService.setReadNotification(uuid),
-    onSuccess,
-    onError,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getNotificationList'] });
+    },
   });
 };
