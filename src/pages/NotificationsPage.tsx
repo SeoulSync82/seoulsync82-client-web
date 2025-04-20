@@ -11,13 +11,17 @@ const NotificationPage = () => {
   const { data: notificationData } = useNotificationList();
   const { mutate: readNotification } = useSetReadNotification();
 
-  const onClickReadNoti = (uuid: string) => {
+  const onClickReadNotification = (uuid: string) => {
     readNotification(uuid);
   };
   return (
     <div className="mx-auto h-screen w-full max-w-md bg-white">
       {notificationData?.data.items.map((notification: NotificationItemProps) => (
-        <NotificationItem key={notification.id} {...notification} onClick={() => onClickReadNoti} />
+        <NotificationItem
+          key={notification.id}
+          {...notification}
+          onClick={() => onClickReadNotification(notification.uuid)}
+        />
       ))}
     </div>
   );
