@@ -22,7 +22,15 @@ export default function CourseListItem({
   return (
     <Link to={`/course/${course_uuid}`} className="flex items-center px-5">
       <div className="flex w-full gap-3 border-b-[1px] border-gray-200 py-4">
-        <Image src={course_image} width={92} height={92} className="rounded-lg" />
+        <Image
+          src={course_image}
+          alt="Course Image"
+          width={92}
+          height={92}
+          objectFit="cover"
+          rounded="lg"
+          // placeholder={<div className="h-full w-full animate-pulse bg-gray-200" />}
+        />
         <div className="flex flex-col items-start justify-center gap-2">
           <div className="flex items-center gap-1">
             {tags.map((tag) => (

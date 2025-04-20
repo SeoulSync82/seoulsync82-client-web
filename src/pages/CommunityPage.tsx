@@ -119,28 +119,33 @@ const PostItem: React.FC<PostItemProps> = ({ item }) => {
   );
 
   return (
-    <Link to={`/course/${item.course_uuid}`} className="w-[calc((100%-10px)/2)]">
+    <div className="w-[calc((100%-10px)/2)]">
       <div className="flex items-center justify-between">
         <UserProfile userImage={item.user_profile_image} userName={item.user_name} />
         <LikeButton isLiked={item.isLiked} likeCount={item.like_count} onClick={handleLikePost} />
       </div>
-      <Image
-        src={item.course_image}
-        width={190}
-        height={190}
-        fallbackWidth={76}
-        fallbackHeight={76}
-        fallbackBgColor="gray-50"
-        fallbackStatus="bad"
-        alt="course image"
-        className="mt-2 rounded-md"
-      />
-      <div className="mt-2 line-clamp-2 text-14 font-bold leading-[20px]">{item.course_name}</div>
-      <CustomTags customs={item.customs} />
-      <div className="mt-2 text-12 font-semibold text-gray-300">
-        {convertDateToYMD(item.created_at)}
-      </div>
-    </Link>
+      <Link to={`/course/${item.course_uuid}`}>
+        <Image
+          src={item.course_image}
+          alt="Course Image"
+          width={190}
+          height={190}
+          fallbackWidth={76}
+          fallbackHeight={76}
+          fallbackBgColor="gray-50"
+          fallbackStatus="bad"
+          className="mt-2 rounded-md"
+          objectFit="cover"
+          rounded="md"
+          // placeholder={<div className="h-full w-full animate-pulse bg-gray-200" />}
+        />
+        <div className="mt-2 line-clamp-2 text-14 font-bold leading-[20px]">{item.course_name}</div>
+        <CustomTags customs={item.customs} />
+        <div className="mt-2 text-12 font-semibold text-gray-300">
+          {convertDateToYMD(item.created_at)}
+        </div>
+      </Link>
+    </div>
   );
 };
 
@@ -152,6 +157,7 @@ const UserProfile: React.FC<{ userImage: string; userName: string }> = ({
     <Image
       className="rounded-full"
       src={userImage}
+      alt="user image"
       width={24}
       height={24}
       fallbackWidth={16}
