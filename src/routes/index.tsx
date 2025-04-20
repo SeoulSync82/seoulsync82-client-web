@@ -9,12 +9,11 @@ import {
 import Layout from '@/layouts/default';
 import Loading from '@/components/Loading';
 import { ErrorBoundaryWrapper } from '@/components/ErrorBoundary';
-import NoticePage from '@/pages/MyPage/Notice';
-import AlarmSettings from '@/pages/MyPage/AlarmSettings';
-import SocialLoginInfo from '@/pages/MyPage/SocialLoginInfo';
 const HomePage = React.lazy(() => import('@/pages/HomePage'));
 const MyPage = React.lazy(() => import('@/pages/MyPage'));
+const SocialLoginInfoPage = React.lazy(() => import('@/pages/MyPage/SocialLoginInfo'));
 const MyCoursePage = React.lazy(() => import('@/pages/MyCoursePage'));
+const NoticePage = React.lazy(() => import('@/pages/MyPage/Notice'));
 const CourseDetailPage = React.lazy(() => import('@/pages/CourseDetailPage'));
 const AiRecommendPage = React.lazy(() => import('@/pages/AiRecommendPage'));
 const CulturePage = React.lazy(() => import('@/pages/CulturePage'));
@@ -49,8 +48,7 @@ const routes: RouteObject[] = [
         element: <MyPage />,
       },
       { path: '/my-page/notice', element: <NoticePage /> },
-      { path: '/my-page/alarm-settings', element: <AlarmSettings /> },
-      { path: '/my-page/social-login-info', element: <SocialLoginInfo /> },
+      { path: '/my-page/social-login-info', element: <SocialLoginInfoPage /> },
       { path: '/course', element: <MyCoursePage /> },
       {
         path: '/course/:id',
