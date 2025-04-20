@@ -1,3 +1,4 @@
+import Image from '@/components/Image';
 import clsx from 'clsx';
 
 export interface NotificationItem {
@@ -53,20 +54,27 @@ export default function NotificationItem({
   return (
     <div
       className={clsx(
-        'flex h-[70px] w-full items-center gap-[14px] px-[20px]',
+        'flex h-24 w-full items-center gap-3 px-5',
         read_at && 'bg-primary-50 opacity-50',
       )}
       onClick={onClick}
     >
-      <img src={user_thumbnail} alt="Profile" className="h-[40px] w-[40px] rounded-full" />
-      <div>
+      <Image
+        src={user_thumbnail}
+        alt="Profile"
+        width={32}
+        height={32}
+        rounded="full"
+        fallbackWidth={24}
+        fallbackHeight={24}
+      />
+      <div className="flex flex-col gap-2">
+        <div className="text-16 font-bold text-primary-500">좋아요</div>
         <div
-          className="font-regular text-[15px] text-gray-900"
+          className="font-regular text-16 text-gray-900"
           dangerouslySetInnerHTML={{ __html: content }}
         />
-        <div className="font-regular mt-[10px] text-12 text-gray-300">
-          {convertDateToTimeAgo(created_at)}
-        </div>
+        <div className="font-regular text-14 text-gray-300">{convertDateToTimeAgo(created_at)}</div>
       </div>
     </div>
   );
