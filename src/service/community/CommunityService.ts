@@ -5,26 +5,26 @@ class CommunityService extends Service {
     super();
   }
 
-  async getCommunityPostList(
-    size: number = 10,
-    next_page: string = '',
-    me: boolean = false,
-    order: 'latest' | 'popular',
-  ) {
-    return await this.service.get(`/community`, {
-      params: {
-        next_page,
-        size,
-        me,
-        order,
-      },
+  getCommunityPostList(size = 10, next_page = '', me = false, order: 'latest' | 'popular') {
+    return this.service.get('/community', {
+      params: { next_page, size, me, order },
     });
   }
-  async getCommunityPostDetail(uuid: string) {
-    return await this.service.get(`/community/${uuid}`);
+
+  getCommunityPostDetail(uuid: string) {
+    return this.service.get(`/community/${uuid}`);
   }
-  async createCommunityPost(uuid: string) {
-    return await this.service.post(`/community/${uuid}`);
+
+  createCommunityPost(uuid: string) {
+    return this.service.post(`/community/${uuid}`);
+  }
+
+  postCommunityLike(uuid: string) {
+    return this.service.post(`/reaction/${uuid}`);
+  }
+
+  postCommunityCancelLike(uuid: string) {
+    return this.service.patch(`/reaction/${uuid}`);
   }
 }
 

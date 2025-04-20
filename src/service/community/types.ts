@@ -1,15 +1,12 @@
 export interface CommunityPostItem {
-  id: number;
-  course_name: string;
+  course_uuid: string;
+  user_profile_image: string;
+  user_name: string;
+  isLiked: boolean;
+  uuid: string;
+  like_count: number;
   course_image: string;
-  course_date: string;
-  course_location: string;
-  course_price: number;
-  course_review_count: number;
-  course_review_score: number;
-}
-
-export interface CommunityPostListData {
-  items: CommunityPostItem[];
-  total_count: number;
+  course_name: string;
+  customs: string;
+  created_at: string;
 }
