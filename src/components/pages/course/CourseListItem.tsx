@@ -29,6 +29,8 @@ export default function CourseListItem({
           height={92}
           objectFit="cover"
           rounded="lg"
+          fallbackWidth={40}
+          fallbackHeight={40}
           // placeholder={<div className="h-full w-full animate-pulse bg-gray-200" />}
         />
         <div className="flex flex-col items-start justify-center gap-2">
