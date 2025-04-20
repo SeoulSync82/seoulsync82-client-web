@@ -13,6 +13,8 @@ const MyPage = () => {
       <LoginBannerSection userProfile={userProfile?.data} />
       <MySection />
       <Divider />
+      <ServiceUsageSection />
+      <Divider />
       <UserInfoManagementSection isLoggedIn={!!userProfile?.data.name} />
     </div>
   );
@@ -64,16 +66,16 @@ const MySection = () => {
 };
 
 /* TODO: 공지사항 추후 논의 */
-// const ServiceUsageSection = () => {
-//   return (
-//     <section className="max-container mt-5 border-none px-5">
-//       <h2 className="text-base font-normal text-gray-400">서비스 이용</h2>
-//       <ul className="mt-5 space-y-6 pb-5">
-//         <MenuListItem iconName="Notice" text="공지사항" to="/my-page/notice" />
-//       </ul>
-//     </section>
-//   );
-// };
+const ServiceUsageSection = () => {
+  return (
+    <section className="max-container mt-5 border-none px-5">
+      <h2 className="text-base font-normal text-gray-400">서비스 이용</h2>
+      <ul className="mt-5 space-y-6 pb-5">
+        <MenuListItem iconName="Notice" text="공지사항" to="/my-page/notice" />
+      </ul>
+    </section>
+  );
+};
 
 const UserInfoManagementSection = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const { mutate: userLogout } = useUserLogout();
@@ -81,7 +83,7 @@ const UserInfoManagementSection = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const handleLogout = () => {
     userLogout();
     localStorage.removeItem('accessToken');
-    window.location.href = '/login';
+    window.location.href = '/my-page';
   };
 
   return (
