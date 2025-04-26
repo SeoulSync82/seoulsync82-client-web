@@ -56,10 +56,10 @@ const Tag = ({ tag }: { tag: string }) => (
 const Rating = () => (
   <div className="flex h-4 items-center justify-center gap-1">
     <SvgIcon name="FullStar" width={16} height={16} color="#FFC01D" />
-    <span className="flex items-center justify-center pt-1 text-14 font-semibold leading-4 text-gray-900">
+    <span className="flex items-center justify-center pt-1 text-sm font-semibold leading-4 text-gray-900">
       4.2
     </span>
-    <span className="pt-1 text-14 font-normal leading-4 text-gray-400">(999+)</span>
+    <span className="pt-1 text-sm font-normal leading-4 text-gray-400">(999+)</span>
   </div>
 );
 

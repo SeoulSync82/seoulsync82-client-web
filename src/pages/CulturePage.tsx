@@ -90,7 +90,7 @@ export default function Culture() {
         ))}
       </div>
       <div className="flex h-[46px] w-full items-center justify-between px-[20px]">
-        <div className="text-14 font-medium text-gray-500">
+        <div className="text-sm font-medium text-gray-500">
           <span className="font-bold">{cultureData?.data?.items.length}</span>개의 장소
         </div>
         <div className="flex items-center">
@@ -99,7 +99,7 @@ export default function Culture() {
               key={`sort-${idx}`}
               onClick={() => onClickSort(item.type as SortCultureOrder)}
               className={clsx(
-                'text-14',
+                'text-sm',
                 item.type === order ? 'font-bold text-primary-500' : 'font-medium text-gray-300',
                 idx === 0 ? 'mr-[10px]' : 'border-l-[1px] border-gray-200 pl-[10px]',
               )}

@@ -14,7 +14,7 @@ export const TooltipVariants = cva(
     variants: {
       size: {
         small: 'w-[282px] h-[34px] text-12',
-        medium: 'w-[323px] h-[41px] text-14',
+        medium: 'w-[323px] h-[41px] text-sm',
       },
       direction: {
         topLeft: 'rotate-180 left-[50px] top-0 -translate-y-2',
