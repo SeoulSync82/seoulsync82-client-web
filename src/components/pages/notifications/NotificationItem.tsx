@@ -65,22 +65,22 @@ export default function NotificationItem({
       <Image
         src={user_thumbnail}
         alt="Profile"
-        width={40}
-        height={40}
+        width={32}
+        height={32}
         rounded="full"
-        fallbackWidth={24}
-        fallbackHeight={24}
+        fallbackWidth={20}
+        fallbackHeight={20}
       />
       <div className="flex flex-col gap-1">
-        <div className={cn('text-base font-bold', read_at ? 'text-gray-300' : 'text-primary-500')}>
+        <div className={cn('text-sm font-bold', read_at ? 'text-gray-300' : 'text-primary-500')}>
           {target_type === 'comment' && '댓글'}
           {target_type === 'reaction' && '좋아요'}
         </div>
         <div
-          className="font-regular text-base text-gray-900"
+          className="font-regular text-sm text-gray-900"
           dangerouslySetInnerHTML={{ __html: content }}
         />
-        <div className="font-regular text-base text-gray-300">
+        <div className="font-regular text-sm text-gray-300">
           {convertDateToTimeAgo(created_at)}
         </div>
       </div>
