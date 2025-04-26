@@ -93,9 +93,9 @@ const AiRecommendPage = () => {
 
   return (
     <>
-      <TabButtonGroup
+      <StepButtonGroup
         currentStepIdx={currentStepIdx}
-        onTabClick={(idx) => setCurrentStepIdx(idx)}
+        onStepClick={(idx) => setCurrentStepIdx(idx)}
       />
       <CurrentStepView data={currentStepData} />
       <BottomButton disabled={isBottomButtonDisabled} onClick={onClickBottomButton}>
@@ -107,12 +107,12 @@ const AiRecommendPage = () => {
 
 export default AiRecommendPage;
 
-const TabButtonGroup = ({
+const StepButtonGroup = ({
   currentStepIdx,
-  onTabClick,
+  onStepClick,
 }: {
   currentStepIdx: number;
-  onTabClick: (idx: number) => void;
+  onStepClick: (idx: number) => void;
 }) => {
   const isTabButtonDisabled = (idx: number) => idx > currentStepIdx;
   return (
@@ -122,7 +122,7 @@ const TabButtonGroup = ({
           key={`tab-${idx}`}
           active={currentStepIdx === idx}
           disabled={isTabButtonDisabled(idx)}
-          onClick={() => onTabClick(idx)}
+          onClick={() => onStepClick(idx)}
         >
           {name}
         </TabButton>
