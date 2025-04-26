@@ -1,4 +1,0 @@
-import * as React from "react";
-import type { SVGProps } from "react";
-const SvgIcoMyPage = (props: SVGProps<SVGSVGElement>) => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" {...props}><path stroke="#ADB5BD" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12.114 11.229a4.114 4.114 0 1 0 0-8.23 4.114 4.114 0 0 0 0 8.23" /><path fill="#ADB5BD" fillRule="evenodd" d="M5.096 20h14.265c-.512-2.67-3.05-5.2-7.132-5.2s-6.62 2.53-7.133 5.2M3 21c0-4.199 3.63-8.2 9.229-8.2 5.597 0 9.228 4.001 9.228 8.2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1" clipRule="evenodd" /></svg>;
-export default SvgIcoMyPage;

@@ -38,15 +38,14 @@ import {
   IcoShoppingActive,
   IcoCultureActive,
   IcoEntertainmentActive,
-} from '../Icon';
-import {
+  IcoCheck,
   IcoApp,
   IcoBookmark,
   IcoBookmarkActive,
   IcoSpeaker,
   IcoWrite,
   IcoWriteActive,
-} from '../icons';
+} from '../Icon';
 import { IconProps, SVGName } from './type';
 import { cn } from '@/utils/tailwindcss';
 
@@ -92,6 +91,7 @@ export default function SvgIcon({
     Write: active ? IcoWriteActive : IcoWrite,
     App: IcoApp,
     Notice: IcoSpeaker,
+    Check: IcoCheck,
   };
   const SvgComponent = svgTypes[name as SVGName];
 

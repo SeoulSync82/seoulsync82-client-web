@@ -1,4 +1,0 @@
-import * as React from "react";
-import type { SVGProps } from "react";
-const SvgIcoCultureActive = (props: SVGProps<SVGSVGElement>) => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 35 35" {...props}><g stroke="#9070CF" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit={10} strokeWidth={2} clipPath="url(#ico-culture-active_svg__a)"><path d="M1.367 33.633h5.469M28.164 33.633h5.469M28.438 1.367H6.563V15.04h21.875zM4.102 24.61a2.734 2.734 0 1 0 0-5.47 2.734 2.734 0 0 0 0 5.47M30.898 24.61a2.734 2.734 0 1 0 0-5.47 2.734 2.734 0 0 0 0 5.47M4.102 24.61v9.023M30.898 24.61v9.023" /><path d="m6.563 12.305 5.468-5.47 8.203 8.204" /><path d="m17.5 12.305 4.102-4.102 6.836 6.836M6.206 23.621c6.892 4.964 15.695 4.964 22.588 0" /></g><defs><clipPath id="ico-culture-active_svg__a"><path fill="#fff" d="M0 0h35v35H0z" /></clipPath></defs></svg>;
-export default SvgIcoCultureActive;

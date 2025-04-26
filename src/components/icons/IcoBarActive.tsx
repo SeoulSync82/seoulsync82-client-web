@@ -1,6 +1,0 @@
-import * as React from "react";
-import type { SVGProps } from "react";
-const SvgIcoBarActive = (props: SVGProps<SVGSVGElement>) => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 35 35" {...props}><mask id="ico-bar-active_svg__a" width={35} height={35} x={0} y={0} maskUnits="userSpaceOnUse" style={{
-    maskType: "luminance"
-  }}><path fill="#fff" d="M0 0h35v35H0z" /></mask><g stroke="#9070CF" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit={10} strokeWidth={2} mask="url(#ico-bar-active_svg__a)"><path d="M17.5 3.759V1.025M21.602 3.759l1.367-2.368M13.399 3.759l-1.367-2.368M27.52 22.396c-3.816.881-7.497-1.908-7.681-5.82l-.365-7.757 9.325-2.153L31.87 13.8c1.55 3.596-.537 7.717-4.352 8.597M27.518 22.394l1.538 6.66M33.976 32.13l-7.993 1.845 3.074-4.92z" /><path d="M31.301 12.475a6.85 6.85 0 0 1-5.814.304 6.85 6.85 0 0 0-5.813.305M7.483 22.396c3.815.881 7.496-1.908 7.68-5.82l.365-7.757-9.325-2.153L3.131 13.8c-1.55 3.596.537 7.717 4.352 8.597M7.483 22.394l-1.538 6.66M1.025 32.13l7.993 1.845-3.074-4.92z" /><path d="M3.7 12.475a6.85 6.85 0 0 0 5.814.304 6.85 6.85 0 0 1 5.813.305" /></g></svg>;
-export default SvgIcoBarActive;
