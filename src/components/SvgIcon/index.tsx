@@ -45,6 +45,7 @@ import {
   IcoSpeaker,
   IcoWrite,
   IcoWriteActive,
+  IcoCamera,
 } from '../Icon';
 import { IconProps, SVGName } from './type';
 import { cn } from '@/utils/tailwindcss';
@@ -92,6 +93,7 @@ export default function SvgIcon({
     App: IcoApp,
     Notice: IcoSpeaker,
     Check: IcoCheck,
+    Photo: IcoCamera,
   };
   const SvgComponent = svgTypes[name as SVGName];
 
