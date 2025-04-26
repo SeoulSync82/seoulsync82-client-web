@@ -6,6 +6,7 @@ export const useUserProfile = ({ enabled }: { enabled: boolean }) => {
     queryKey: ['userProfile'],
     queryFn: () => UserService.getUserProfile(),
     enabled,
+    gcTime: Infinity,
   });
 };
 
