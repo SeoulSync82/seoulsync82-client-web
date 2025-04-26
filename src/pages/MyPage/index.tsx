@@ -1,4 +1,3 @@
-// import withAuthGuard from '@/hoc/withAuthGuard';
 import SvgIcon from '@/components/SvgIcon';
 import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
@@ -21,6 +20,13 @@ const MyPage = () => {
 };
 
 const LoginBannerSection = ({ userProfile }: { userProfile: any }) => {
+  const snsTypes = {
+    kakao: '카카오톡',
+    google: '구글',
+    apple: '애플',
+    naver: '네이버',
+  };
+
   return (
     <section className="max-container mt-4 h-24 px-5">
       <div className="flex items-center justify-between gap-2 rounded-md bg-gray-50 px-5 py-4">
@@ -38,7 +44,10 @@ const LoginBannerSection = ({ userProfile }: { userProfile: any }) => {
             </span>
             {userProfile?.name ? (
               <span className="text-sm font-normal text-gray-400">
-                <span className="font-bold text-primary-500">카카오톡</span>에서 마지막 로그인!
+                <span className="font-bold text-primary-500">
+                  {snsTypes[userProfile?.type as keyof typeof snsTypes]}
+                </span>
+                에서 마지막 로그인!
               </span>
             ) : (
               <Link to="/login" className="text-sm font-bold text-primary-500">
@@ -58,7 +67,6 @@ const MySection = () => {
     <section className="max-container mt-8 border-none px-5">
       <h2 className="text-base font-normal text-gray-400">MY</h2>
       <ul className="mt-5 space-y-6 pb-5 text-sm font-medium text-gray-600">
-        <MenuListItem iconName="Write" text="내가 작성한 글" to="/my-page" />
         <MenuListItem iconName="Bookmark" text="북마크" to="/course?type=liked" />
       </ul>
     </section>

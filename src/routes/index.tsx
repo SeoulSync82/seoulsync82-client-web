@@ -11,9 +11,10 @@ import Loading from '@/components/Loading';
 import { ErrorBoundaryWrapper } from '@/components/ErrorBoundary';
 const HomePage = React.lazy(() => import('@/pages/HomePage'));
 const MyPage = React.lazy(() => import('@/pages/MyPage'));
-const SocialLoginInfoPage = React.lazy(() => import('@/pages/MyPage/SocialLoginInfo'));
+const EditProfilePage = React.lazy(() => import('@/pages/MyPage/EditProfilePage'));
+const SocialLoginInfoPage = React.lazy(() => import('@/pages/MyPage/SocialLoginInfoPage'));
 const MyCoursePage = React.lazy(() => import('@/pages/MyCoursePage'));
-const NoticePage = React.lazy(() => import('@/pages/MyPage/Notice'));
+const NoticePage = React.lazy(() => import('@/pages/MyPage/NoticePage'));
 const CourseDetailPage = React.lazy(() => import('@/pages/CourseDetailPage'));
 const AiRecommendPage = React.lazy(() => import('@/pages/AiRecommendPage'));
 const CulturePage = React.lazy(() => import('@/pages/CulturePage'));
@@ -27,9 +28,9 @@ const Root = () => {
   return (
     <Layout>
       <ErrorBoundaryWrapper>
-        <Suspense fallback={<Loading />}>
-          <Outlet />
-        </Suspense>
+        {/* <Suspense fallback={<Loading />}> */}
+        <Outlet />
+        {/* </Suspense> */}
       </ErrorBoundaryWrapper>
       <ScrollRestoration />
     </Layout>
@@ -48,6 +49,7 @@ const routes: RouteObject[] = [
         element: <MyPage />,
       },
       { path: '/my-page/notice', element: <NoticePage /> },
+      { path: '/my-page/edit-profile', element: <EditProfilePage /> },
       { path: '/my-page/social-login-info', element: <SocialLoginInfoPage /> },
       { path: '/course', element: <MyCoursePage /> },
       {
