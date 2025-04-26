@@ -1,0 +1,4 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+const SvgIcoCamera = (props: SVGProps<SVGSVGElement>) => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 10" {...props}><path fill="#212529" d="M10.513 1.805H8.769L8.354.653a.41.41 0 0 0-.387-.268H4.033a.41.41 0 0 0-.386.268l-.416 1.152H1.487A1.02 1.02 0 0 0 .461 2.819v5.782c0 .56.46 1.014 1.026 1.014h9.026a1.02 1.02 0 0 0 1.025-1.014V2.819a1.02 1.02 0 0 0-1.025-1.014M6 7.587a2.04 2.04 0 0 1-2.051-2.03 2.04 2.04 0 0 1 2.05-2.028 2.04 2.04 0 0 1 2.052 2.029A2.04 2.04 0 0 1 6 7.587" /></svg>;
+export default SvgIcoCamera;
