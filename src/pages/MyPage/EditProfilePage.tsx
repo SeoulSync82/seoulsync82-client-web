@@ -1,6 +1,7 @@
 import SvgIcon from '@/components/SvgIcon';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import { useEditUserProfile } from '@/service/user/useUserService';
+import { cn } from '@/utils/tailwindcss';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState, useCallback } from 'react';
 
@@ -115,7 +116,9 @@ export default function EditProfile() {
           value={userNickname}
           onChange={handleInputChange}
         />
-        <span className="text-warning mt-3 text-sm">{inputError || inputMessage}</span>
+        <span className={cn('mt-3 text-sm', inputError ? 'text-warning' : 'text-success')}>
+          {inputError || inputMessage}
+        </span>
       </div>
     </div>
   );
