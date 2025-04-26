@@ -37,6 +37,7 @@ module.exports = {
         'naver-green': '#4DA524',
         'google-gray': '#F3F3F3',
         warning: '#E9462B',
+        success: '#4A82EE',
       },
       fontSize: {
         30: ['30px', '100%'],
