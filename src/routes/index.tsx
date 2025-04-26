@@ -28,9 +28,7 @@ const Root = () => {
   return (
     <Layout>
       <ErrorBoundaryWrapper>
-        {/* <Suspense fallback={<Loading />}> */}
         <Outlet />
-        {/* </Suspense> */}
       </ErrorBoundaryWrapper>
       <ScrollRestoration />
     </Layout>

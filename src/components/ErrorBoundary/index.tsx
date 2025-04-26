@@ -1,8 +1,6 @@
 import { useQueryErrorResetBoundary } from '@tanstack/react-query';
-import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Button } from '@/components/Button';
-import Loading from '@/components/Loading';
 
 export const ErrorBoundaryWrapper = ({ children }: { children: React.ReactNode }) => {
   const { reset } = useQueryErrorResetBoundary();
@@ -18,7 +16,7 @@ export const ErrorBoundaryWrapper = ({ children }: { children: React.ReactNode }
         </div>
       )}
     >
-      <Suspense fallback={<Loading />}>{children}</Suspense>
+      {children}
     </ErrorBoundary>
   );
 };
