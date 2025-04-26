@@ -10,31 +10,23 @@ import clsx from 'clsx';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
+const tabItems = [
+  { label: '북마크', type: 'liked' },
+  { label: '코스 추천 내역', type: 'recommended' },
+];
+
 const MyCoursePage = () => {
-  const tabItems = [
-    {
-      label: '북마크',
-      type: 'liked',
-    },
-    {
-      label: '추천받은 코스',
-      type: 'recommended',
-    },
-  ];
   const { pathname, search } = useLocation();
   const searchParams = new URLSearchParams(search);
-  const type = searchParams.get('type');
+  const type = searchParams.get('type') || 'liked';
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!type) {
+    if (!searchParams.get('type')) {
       searchParams.set('type', 'liked');
-      navigate({
-        pathname,
-        search: `?${searchParams.toString()}`,
-      });
+      navigate({ pathname, search: `?${searchParams.toString()}` });
     }
-  }, [type]);
+  }, [type, navigate, pathname, searchParams]);
 
   const { data: bookmarkedCourseData } = useBookmarkedCourseList({ enabled: type === 'liked' });
   const { data: courseHistoryData } = useCourseRecommendHistory({
@@ -43,16 +35,18 @@ const MyCoursePage = () => {
   const courseList =
     type === 'liked' ? bookmarkedCourseData?.data.items : courseHistoryData?.data.items;
 
+  const handleTabClick = (itemType: string) => {
+    navigate(`${pathname}?type=${itemType}`);
+  };
+
   return (
     <div className="page w-full">
       <div className="flex w-full">
-        {tabItems.map((item, idx) => (
+        {tabItems.map((item) => (
           <TabButton
-            key={`tab-${idx}`}
-            active={search.split('=')[1] === item.type}
-            onClick={() => {
-              navigate(`${pathname}?type=${item.type}`);
-            }}
+            key={item.type}
+            active={type === item.type}
+            onClick={() => handleTabClick(item.type)}
             className={clsx('flex-1')}
           >
             {item.label}
