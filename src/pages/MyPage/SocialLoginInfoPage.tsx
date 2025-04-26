@@ -3,7 +3,7 @@ import withAuthGuard from '@/hoc/withAuthGuard';
 import { cn } from '@/utils/tailwindcss';
 import { useQueryClient } from '@tanstack/react-query';
 
-const socialLoginList = [
+export const socialLoginList = [
   { name: '카카오', icon: 'kakao', bgColor: 'kakao-yellow', color: '#391B1B' },
   { name: '네이버', icon: 'naver', bgColor: 'naver-green', color: '#fff' },
   { name: '구글', icon: 'google', bgColor: 'google-gray', color: undefined },
@@ -33,7 +33,7 @@ interface SocialLoginItemProps {
 
 const SocialLoginItem = ({ item, isActive }: SocialLoginItemProps) => {
   const itemContainerStyles = cn(
-    'relative flex h-20 w-full items-center justify-center rounded-full',
+    'relative flex h-16 w-full items-center justify-center rounded-full',
     isActive ? `bg-${item.bgColor}` : 'border border-gray-200 bg-transparent',
   );
   const itemNameStyles = cn(
@@ -42,7 +42,7 @@ const SocialLoginItem = ({ item, isActive }: SocialLoginItemProps) => {
   );
 
   return (
-    <div className="flex w-20 flex-col gap-5">
+    <div className="flex w-16 flex-col gap-5">
       <div className={itemContainerStyles}>
         <SvgIcon
           name={item.icon}
