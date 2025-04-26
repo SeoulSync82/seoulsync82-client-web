@@ -15,16 +15,16 @@ export default function Login() {
 
   return (
     <div className="page">
-      <div className="max-container flex h-[88dvh] items-center justify-center">
+      <div className="max-container flex h-full items-center justify-center">
         <div className="flex flex-col items-center justify-center">
           <SvgIcon name="LogoSeoulsync" width={169} height={169} />
           <Tooltip
             size="small"
             direction="bottomMiddle"
             message="⚡️ 로그인하고 나에게 맞는 코스를 추천 받아보세요!"
-            className="mb-[15px] mt-[70px]"
+            className="mt-18 mb-4"
           />
-          <div className="flex w-full flex-col items-center justify-center gap-[12px]">
+          <div className="flex w-full flex-col items-center justify-center gap-3">
             {SNS_LIST.map((snsName: (typeof SNS_LIST)[number]) => (
               <SocialLoginButton
                 key={snsName}
