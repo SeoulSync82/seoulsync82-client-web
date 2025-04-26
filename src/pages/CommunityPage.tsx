@@ -1,5 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
-import Image from '@/components/Image';
+import React, { useMemo, useCallback, Suspense } from 'react';
 import SVGIcon from '@/components/SvgIcon';
 import { Link } from 'react-router';
 import { useQueryParams } from '@/hooks/useQueryParams';
@@ -11,6 +10,8 @@ import {
 } from '@/service/community/useCommunityService';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { CommunityPostItem } from '@/service/community/types';
+
+const Image = React.lazy(() => import('@/components/Image'));
 
 const ORDER_TYPES = [
   { type: 'popular', label: '인기순' },
@@ -125,20 +126,19 @@ const PostItem: React.FC<PostItemProps> = ({ item }) => {
         <LikeButton isLiked={item.isLiked} likeCount={item.like_count} onClick={handleLikePost} />
       </div>
       <Link to={`/course/${item.course_uuid}`}>
-        <Image
-          src={item.course_image}
-          alt="Course Image"
-          width={190}
-          height={190}
-          fallbackWidth={76}
-          fallbackHeight={76}
-          fallbackBgColor="gray-50"
-          fallbackStatus="bad"
-          className="mt-2 rounded-md"
-          objectFit="cover"
-          rounded="md"
-          // placeholder={<div className="h-full w-full animate-pulse bg-gray-200" />}
-        />
+        <Suspense fallback={<div className="h-full w-full animate-pulse bg-gray-200" />}>
+          <Image
+            src={item.course_image}
+            alt="Course Image"
+            fallbackWidth={76}
+            fallbackHeight={76}
+            fallbackBgColor="gray-50"
+            fallbackStatus="bad"
+            className="mt-2 aspect-square rounded-md"
+            objectFit="cover"
+            rounded="md"
+          />
+        </Suspense>
         <div className="mt-2 line-clamp-2 text-14 font-bold leading-[20px]">{item.course_name}</div>
         <CustomTags customs={item.customs} />
         <div className="mt-2 text-12 font-semibold text-gray-300">
