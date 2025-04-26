@@ -1,4 +1,5 @@
 import Image from '@/components/Image';
+import { cn } from '@/utils/tailwindcss';
 import clsx from 'clsx';
 
 export interface NotificationItem {
@@ -10,6 +11,7 @@ export interface NotificationItem {
   user_thumbnail: string;
   read_at: string; // 철자 수정 요청
   created_at: string;
+  target_type: 'comment' | 'reaction';
 }
 export interface NotificationItemProps extends NotificationItem {
   onClick: () => void;
@@ -20,6 +22,7 @@ export default function NotificationItem({
   created_at,
   user_thumbnail,
   read_at,
+  target_type,
   onClick,
 }: NotificationItemProps) {
   const convertDateToTimeAgo = (dateString: string) => {
@@ -53,28 +56,33 @@ export default function NotificationItem({
 
   return (
     <div
-      className={clsx(
-        'flex h-24 w-full items-center gap-3 px-5',
-        read_at && 'bg-primary-50 opacity-50',
+      className={cn(
+        'flex w-full items-start gap-3 px-5 py-4 hover:cursor-pointer',
+        read_at && 'text-gray-300 opacity-60',
       )}
       onClick={onClick}
     >
       <Image
         src={user_thumbnail}
         alt="Profile"
-        width={32}
-        height={32}
+        width={40}
+        height={40}
         rounded="full"
         fallbackWidth={24}
         fallbackHeight={24}
       />
-      <div className="flex flex-col gap-2">
-        <div className="text-16 font-bold text-primary-500">좋아요</div>
+      <div className="flex flex-col gap-1">
+        <div className={cn('text-base font-bold', read_at ? 'text-gray-300' : 'text-primary-500')}>
+          {target_type === 'comment' && '댓글'}
+          {target_type === 'reaction' && '좋아요'}
+        </div>
         <div
-          className="font-regular text-16 text-gray-900"
+          className="font-regular text-base text-gray-900"
           dangerouslySetInnerHTML={{ __html: content }}
         />
-        <div className="font-regular text-14 text-gray-300">{convertDateToTimeAgo(created_at)}</div>
+        <div className="font-regular text-base text-gray-300">
+          {convertDateToTimeAgo(created_at)}
+        </div>
       </div>
     </div>
   );

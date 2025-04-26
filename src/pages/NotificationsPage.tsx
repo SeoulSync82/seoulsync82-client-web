@@ -8,15 +8,16 @@ import {
 } from '@/service/notification/useNotificationService';
 
 const NotificationPage = () => {
-  const { data: notificationData } = useNotificationList();
+  const { data: notificationListData } = useNotificationList();
   const { mutate: readNotification } = useSetReadNotification();
 
   const onClickReadNotification = (uuid: string) => {
     readNotification(uuid);
   };
+
   return (
-    <div className="mx-auto h-screen w-full max-w-md bg-white">
-      {notificationData?.data.items.map((notification: NotificationItemProps) => (
+    <div className="page">
+      {notificationListData?.map((notification: any) => (
         <NotificationItem
           key={notification.id}
           {...notification}

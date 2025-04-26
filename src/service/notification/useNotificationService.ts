@@ -14,6 +14,10 @@ export const useNotificationList = (size: number = 10, nextPage: string = '') =>
       NotificationService.getNotificationList(size, pageParam.toString()),
     getNextPageParam: (lastPage) => lastPage.data.next_page || undefined,
     initialPageParam: nextPage,
+    select: (data) => {
+      console.log(data.pages.flatMap((page) => page.data.items));
+      return data.pages.flatMap((page) => page.data.items);
+    },
   });
 };
 
