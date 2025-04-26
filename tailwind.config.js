@@ -1,5 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 import plugin from 'tailwindcss/plugin';
+
+const { addIconSelectors, addDynamicIconSelectors } = require('@iconify/tailwind');
+
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
@@ -33,6 +36,7 @@ module.exports = {
         'kakao-yellow': '#F5DA35',
         'naver-green': '#4DA524',
         'google-gray': '#F3F3F3',
+        warning: '#E9462B',
       },
       fontSize: {
         30: ['30px', '100%'],
@@ -73,41 +77,48 @@ module.exports = {
   },
   plugins: [
     require('tailwind-scrollbar-hide'),
-    plugin(function ({ addComponents, theme }) {
-      addComponents({
-        '.page': {
-          display: 'flex',
-          flex: '1 1 0%',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          paddingBottom: '120px',
-        },
-        '.max-container': {
-          margin: '0 auto',
-          width: '100%',
-          maxWidth: '430px',
-        },
-        '.hide-scroll': {
-          '-ms-overflow-style': 'none',
-          '&::-webkit-scrollbar': {
-            display: 'none',
+    plugin([
+      function ({ addComponents, theme }) {
+        addComponents({
+          '.page': {
+            display: 'flex',
+            flex: '1 1 0%',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            width: '100%',
+            paddingBottom: '120px',
+            overflowY: 'auto',
+            backgroundColor: 'white',
           },
-        },
-        '.hide-search-decoration': {
-          '&::-webkit-search-cancel-button': {
-            appearance: 'none',
+          '.max-container': {
+            margin: '0 auto',
+            width: '100%',
+            maxWidth: '430px',
           },
-          '&::-webkit-search-decoration': {
-            appearance: 'none',
+          '.hide-scroll': {
+            '-ms-overflow-style': 'none',
+            '&::-webkit-scrollbar': {
+              display: 'none',
+            },
           },
-          '&::-ms-clear': {
-            display: 'none',
+          '.hide-search-decoration': {
+            '&::-webkit-search-cancel-button': {
+              appearance: 'none',
+            },
+            '&::-webkit-search-decoration': {
+              appearance: 'none',
+            },
+            '&::-ms-clear': {
+              display: 'none',
+            },
           },
-        },
-        '.custom-clip-path': {
-          'clip-path': 'ellipse(54% 90% at 50% 95%)',
-        },
-      });
-    }),
+          '.custom-clip-path': {
+            'clip-path': 'ellipse(54% 90% at 50% 95%)',
+          },
+        });
+        addIconSelectors(['mdi-light', 'vscode-icons']);
+        addDynamicIconSelectors();
+      },
+    ]),
   ],
 };
