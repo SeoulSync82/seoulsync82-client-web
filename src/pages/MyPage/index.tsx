@@ -67,7 +67,7 @@ const MySection = () => {
     <section className="max-container mt-8 border-none px-5">
       <h2 className="text-base font-normal text-gray-400">MY</h2>
       <ul className="mt-5 space-y-6 pb-5 text-sm font-medium text-gray-600">
-        <MenuListItem iconName="Bookmark" text="북마크" to="/course?type=liked" />
+        <MenuListItem text="북마크" to="/course?type=liked" />
       </ul>
     </section>
   );
@@ -75,11 +75,24 @@ const MySection = () => {
 
 /* TODO: 공지사항 추후 논의 */
 const ServiceUsageSection = () => {
+  const openGmailCompose = () => {
+    const url =
+      'https://mail.google.com/mail/?view=cm' +
+      '&to=' +
+      encodeURIComponent('zzznly@gmail.com') +
+      '&su=' +
+      encodeURIComponent('[SeoulSync82] 문의드립니다.') +
+      '&body=' +
+      encodeURIComponent('성함: ' + '\n' + '연락처: ' + '\n' + '문의 내용: ');
+    window.open(url, '_blank');
+  };
+
   return (
     <section className="max-container mt-5 border-none px-5">
       <h2 className="text-base font-normal text-gray-400">서비스 이용</h2>
       <ul className="mt-5 space-y-6 pb-5">
-        <MenuListItem iconName="Notice" text="공지사항" to="/my-page/notice" />
+        <MenuListItem text="공지사항" to="/my-page/notice" />
+        <MenuListItem text="이메일 문의" onClick={openGmailCompose} />
       </ul>
     </section>
   );
@@ -122,7 +135,7 @@ const MenuListItem = ({
   to?: string | null;
   onClick?: () => void;
 }) => {
-  const Component = to ? Link : 'div';
+  const Component = to ? Link : 'a';
 
   return (
     <Component
