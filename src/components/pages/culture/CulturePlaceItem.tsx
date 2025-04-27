@@ -1,3 +1,4 @@
+import Image from '@/components/Image';
 import { ExhibitionItem, PopupItem } from '@/pages/CulturePage';
 import { convertDateToYMD } from '@/utils';
 import { Link } from 'react-router';
@@ -18,7 +19,15 @@ export default function CulturePlaceItem({
       className="flex w-full px-[20px]"
     >
       <div className="flex w-full items-center gap-[20px] border-b-[1px] border-gray-200 py-[10px]">
-        <img src={thumbnail} className="h-[114px] w-[90px] rounded-md object-cover" />
+        <Image
+          src={thumbnail}
+          className="h-[114px] w-[90px] rounded-md object-cover"
+          width={90}
+          height={114}
+          alt={place_name}
+          fallbackWidth={40}
+          fallbackHeight={40}
+        />
         <div className="flex-1">
           <h2 className="text-16 font-bold leading-[24px]">{place_name}</h2>
           <div className="mt-[4px] text-sm font-medium text-gray-300">
