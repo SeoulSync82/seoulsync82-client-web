@@ -90,6 +90,9 @@ module.exports = {
             paddingBottom: '120px',
             overflowY: 'auto',
             backgroundColor: 'white',
+            '&::-webkit-scrollbar': {
+              display: 'none',
+            },
           },
           '.max-container': {
             margin: '0 auto',
