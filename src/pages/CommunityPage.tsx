@@ -52,7 +52,7 @@ const Header: React.FC<{ itemsCount: number; currentOrder: 'popular' | 'latest' 
 );
 
 const ItemCountDisplay: React.FC<{ count: number }> = ({ count }) => (
-  <div className="flex items-center gap-1 text-14">
+  <div className="flex items-center gap-1 text-sm">
     <span className="font-semibold text-gray-300">콘텐츠</span>
     <span className="font-bold text-primary-500">{count}</span>
   </div>
@@ -63,7 +63,7 @@ interface OrderTypeFiltersProps {
 }
 
 const OrderTypeFilters: React.FC<OrderTypeFiltersProps> = ({ currentOrder }) => (
-  <div className="flex items-center text-14">
+  <div className="flex items-center text-sm">
     {ORDER_TYPES.map(({ type, label }, idx) => (
       <Link
         key={type}
@@ -139,7 +139,7 @@ const PostItem: React.FC<PostItemProps> = ({ item }) => {
             rounded="md"
           />
         </Suspense>
-        <div className="mt-2 line-clamp-2 text-14 font-bold leading-[20px]">{item.course_name}</div>
+        <div className="mt-2 line-clamp-2 text-sm font-bold leading-5">{item.course_name}</div>
         <CustomTags customs={item.customs} />
         <div className="mt-2 text-12 font-semibold text-gray-300">
           {convertDateToYMD(item.created_at)}
@@ -163,7 +163,7 @@ const UserProfile: React.FC<{ userImage: string; userName: string }> = ({
       fallbackWidth={16}
       fallbackHeight={16}
     />
-    <span className="text-14 font-bold">{userName}</span>
+    <span className="text-sm font-bold">{userName}</span>
   </div>
 );
 
@@ -174,7 +174,7 @@ const LikeButton: React.FC<{
 }> = ({ isLiked, likeCount, onClick }) => (
   <div className="flex items-center gap-0.5">
     <SVGIcon name="Heart" width={16} height={16} active={isLiked} onClick={onClick} />
-    <span className="text-14 font-medium text-gray-400">{likeCount}</span>
+    <span className="text-sm font-medium text-gray-400">{likeCount}</span>
   </div>
 );
 
