@@ -28,9 +28,15 @@ const LoginBannerSection = ({ userProfile }: { userProfile: any }) => {
     naver: '네이버',
   };
 
+  const Component = userProfile?.name ? Link : 'div';
+  const to = userProfile?.name ? '/my-page/edit-profile' : undefined;
+
   return (
     <section className="max-container mt-4 h-24 px-5">
-      <div className="flex items-center justify-between gap-2 rounded-md bg-gray-50 px-5 py-4">
+      <Component
+        className="flex items-center justify-between gap-2 rounded-md bg-gray-50 px-5 py-4"
+        to={to as string}
+      >
         <div className="flex items-center gap-4">
           <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-white">
             {userProfile?.profile_image ? (
@@ -58,7 +64,7 @@ const LoginBannerSection = ({ userProfile }: { userProfile: any }) => {
           </div>
         </div>
         {/* <SvgIcon name="Chevron" width={16} height={16} /> */}
-      </div>
+      </Component>
     </section>
   );
 };
