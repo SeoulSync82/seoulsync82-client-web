@@ -44,20 +44,10 @@ export const headerConfig: HeaderConfigItem[] = [
     Component: DefaultHeader,
   },
   {
-    match: (p) => p.startsWith('/courseDetail'),
+    match: (p) => p.startsWith('/course/'),
     pageName: '코스 상세',
     Component: DefaultHeader,
     rightActions: <button>공유하기</button>,
-  },
-  {
-    match: (p) => p.startsWith('/exhibition'),
-    pageName: '전시회',
-    Component: DefaultHeader,
-  },
-  {
-    match: (p) => p.startsWith('/popup'),
-    pageName: '팝업',
-    Component: DefaultHeader,
   },
   {
     match: (p) => p.startsWith('/map'),
@@ -66,7 +56,7 @@ export const headerConfig: HeaderConfigItem[] = [
   },
   {
     match: (p) => p.startsWith('/culture'),
-    pageName: '문화',
+    pageName: '큐레이션',
     Component: DefaultHeader,
   },
   {
@@ -98,7 +88,7 @@ const Header: React.FC = () => {
 
   return (
     <header className={headerVariants({ isHomePage: pathname === '/' })}>
-      <Component pageName={pageName} rightActions={rightActions} />
+      <Component pageName={pageName as string} rightActions={rightActions} />
     </header>
   );
 };
