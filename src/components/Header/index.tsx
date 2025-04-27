@@ -1,59 +1,104 @@
+import React from 'react';
 import { useLocation } from 'react-router';
-import DefaultHeader from './DefaultHeader';
 import HomeHeader from './HomeHeader';
+import DefaultHeader from './DefaultHeader';
 import { headerVariants } from './variants';
 
-const headerPageNames = {
-  '/my-page/edit-profile': '프로필 수정',
-  '/my-page/social-login-info': '소셜 로그인 정보',
-  '/my-page/notice': '공지사항',
-  '/my-page': '마이페이지',
-  '/courseDetail': '코스 상세',
-  '/exhibition': '전시회',
-  '/popup': '팝업',
-  '/map': '지도',
-  '/culture': '문화',
-  '/course': '내 코스',
-  '/ai-recommend': 'AI 추천',
-  '/community': '커뮤니티',
-  '/': '홈',
-} as const;
+type HeaderProps = {
+  pageName: string;
+  rightActions?: React.ReactNode;
+};
 
-const headerPathComponents: Record<
-  string,
-  (props: { pageName: string; rightActions?: React.ReactNode; key?: React.Key }) => React.ReactNode
-> = {
-  '/my-page/edit-profile': (props) => (
-    <DefaultHeader {...props} rightActions={<button>확인</button>} />
-  ),
-  '/my-page/social-login-info': (props) => <DefaultHeader {...props} />,
-  '/my-page/notice': (props) => <DefaultHeader {...props} />,
-  '/my-page': (props) => <DefaultHeader {...props} />,
-  '/courseDetail': (props) => <DefaultHeader {...props} rightActions={<button>공유하기</button>} />,
-  '/exhibition': (props) => <DefaultHeader {...props} />,
-  '/popup': (props) => <DefaultHeader {...props} />,
-  '/map': (props) => <DefaultHeader {...props} />,
-  '/culture': (props) => <DefaultHeader {...props} />,
-  '/course': (props) => <DefaultHeader {...props} />,
-  '/ai-recommend': (props) => <DefaultHeader {...props} />,
-  '/community': (props) => <DefaultHeader {...props} />,
-  '/': (props) => <HomeHeader {...props} />,
-} as const;
+type HeaderConfigItem = {
+  match: (path: string) => boolean;
+  pageName: string;
+  Component: React.FC<HeaderProps>;
+  rightActions?: React.ReactNode;
+};
 
-const Header = () => {
+export const headerConfig: HeaderConfigItem[] = [
+  {
+    match: (p) => p === '/',
+    pageName: '홈',
+    Component: HomeHeader,
+  },
+  {
+    match: (p) => p.startsWith('/my-page/edit-profile'),
+    pageName: '프로필 수정',
+    Component: DefaultHeader,
+    rightActions: <button>확인</button>,
+  },
+  {
+    match: (p) => p.startsWith('/my-page/social-login-info'),
+    pageName: '소셜 로그인 정보',
+    Component: DefaultHeader,
+  },
+  {
+    match: (p) => p.startsWith('/my-page/notice'),
+    pageName: '공지사항',
+    Component: DefaultHeader,
+  },
+  {
+    match: (p) => p.startsWith('/my-page'),
+    pageName: '마이페이지',
+    Component: DefaultHeader,
+  },
+  {
+    match: (p) => p.startsWith('/courseDetail'),
+    pageName: '코스 상세',
+    Component: DefaultHeader,
+    rightActions: <button>공유하기</button>,
+  },
+  {
+    match: (p) => p.startsWith('/exhibition'),
+    pageName: '전시회',
+    Component: DefaultHeader,
+  },
+  {
+    match: (p) => p.startsWith('/popup'),
+    pageName: '팝업',
+    Component: DefaultHeader,
+  },
+  {
+    match: (p) => p.startsWith('/map'),
+    pageName: '지도',
+    Component: DefaultHeader,
+  },
+  {
+    match: (p) => p.startsWith('/culture'),
+    pageName: '문화',
+    Component: DefaultHeader,
+  },
+  {
+    match: (p) => p.startsWith('/course'),
+    pageName: '내 코스',
+    Component: DefaultHeader,
+  },
+  {
+    match: (p) => p.startsWith('/ai-recommend'),
+    pageName: 'AI 추천',
+    Component: DefaultHeader,
+  },
+  {
+    match: (p) => p.startsWith('/community'),
+    pageName: '커뮤니티',
+    Component: DefaultHeader,
+  },
+  // fallback ‑ 매칭되지 않는 모든 경로
+  {
+    match: () => true,
+    pageName: '',
+    Component: DefaultHeader,
+  },
+];
+
+const Header: React.FC = () => {
   const { pathname } = useLocation();
-
-  const component = Object.entries(headerPathComponents).find(([path]) => {
-    const isMatch = pathname === path || pathname.startsWith(path);
-    console.log(`Checking path: ${path}, Match: ${isMatch}`);
-    return isMatch;
-  })?.[1];
-
-  const HeaderComponent = component || (({ pageName }) => <DefaultHeader pageName={pageName} />);
+  const { Component, pageName, rightActions } = headerConfig.find((c) => c.match(pathname))!;
 
   return (
     <header className={headerVariants({ isHomePage: pathname === '/' })}>
-      <HeaderComponent pageName={headerPageNames[pathname as keyof typeof headerPageNames]} />
+      <Component pageName={pageName} rightActions={rightActions} />
     </header>
   );
 };
