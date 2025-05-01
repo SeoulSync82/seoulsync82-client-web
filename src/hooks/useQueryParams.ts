@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation, useNavigate, useSearchParams } from 'react-router';
 
 interface NavigateOptions {
   replace?: boolean;
@@ -8,15 +8,18 @@ interface NavigateOptions {
 }
 export function useQueryParams() {
   const navigate = useNavigate();
-  const { pathname, search } = useLocation();
-  const searchParams = new URLSearchParams(search);
+  const { pathname } = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const getQueryParam = (key: string) => {
     return searchParams.get(key);
   };
 
   const updateQueryParam = (key: string, value: string, navigateOptions: NavigateOptions = {}) => {
-    searchParams.set(key, value);
+    setSearchParams((prev) => {
+      prev.set(key, value);
+      return prev;
+    });
     navigate(
       {
         pathname,
@@ -27,7 +30,10 @@ export function useQueryParams() {
   };
 
   const deleteQueryParam = (key: string, navigateOptions: NavigateOptions = {}) => {
-    searchParams.delete(key);
+    setSearchParams((prev) => {
+      prev.delete(key);
+      return prev;
+    });
     navigate(
       {
         pathname,
