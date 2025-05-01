@@ -6,6 +6,7 @@ import { convertDateToYMD } from '@/utils';
 import { useCommunityPostList } from '@/service/community/useCommunityService';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { CommunityPostItem } from '@/service/community/types';
+import { cn } from '@/utils/tailwindcss';
 
 const Image = React.lazy(() => import('@/components/Image'));
 
@@ -26,26 +27,23 @@ const CommunityPage: React.FC = () => {
   });
 
   const items = useMemo(() => data?.pages?.flatMap((page) => page.data.items) || [], [data]);
+  const totalCount = useMemo(
+    () => data?.pages[0].data.total_count || 0,
+    [data?.pages[0].data.total_count],
+  );
 
   return (
     <div className="page">
       <div className="flex h-[calc(100dvh-146px)] w-full flex-col justify-between">
-        <Header itemsCount={items.length} currentOrder={order} />
+        <div className="flex w-full items-center justify-between px-5">
+          <ItemCountDisplay count={totalCount} />
+          <OrderTypeFilters currentOrder={order} />
+        </div>
         <CommunityPostList items={items} hasNextPage={hasNextPage} fetchNextPage={fetchNextPage} />
       </div>
     </div>
   );
 };
-
-const Header: React.FC<{ itemsCount: number; currentOrder: 'popular' | 'latest' }> = ({
-  itemsCount,
-  currentOrder,
-}) => (
-  <div className="flex w-full items-center justify-between px-5">
-    <ItemCountDisplay count={itemsCount} />
-    <OrderTypeFilters currentOrder={currentOrder} />
-  </div>
-);
 
 const ItemCountDisplay: React.FC<{ count: number }> = ({ count }) => (
   <div className="flex items-center gap-1 text-sm">
@@ -54,21 +52,18 @@ const ItemCountDisplay: React.FC<{ count: number }> = ({ count }) => (
   </div>
 );
 
-interface OrderTypeFiltersProps {
-  currentOrder: 'popular' | 'latest';
-}
-
-const OrderTypeFilters: React.FC<OrderTypeFiltersProps> = ({ currentOrder }) => (
-  <div className="flex items-center text-sm">
+const OrderTypeFilters: React.FC<{ currentOrder: 'popular' | 'latest' }> = ({ currentOrder }) => (
+  <div className="flex items-center">
     {ORDER_TYPES.map(({ type, label }, idx) => (
       <Link
         key={type}
         to={`/community?order=${type}`}
-        className={`
-          ${idx === 0 ? 'border-r-[1px] border-[#d9d9d9] pr-[10px]' : ''}
-          ${idx === 1 ? 'pl-[10px]' : ''}
-          ${currentOrder === type ? 'font-bold text-black' : 'font-medium text-gray-300'}
-        `}
+        className={cn(
+          'flex items-center text-sm',
+          idx === 0 ? 'border-r-[1px] border-[#d9d9d9] pr-2.5' : '',
+          idx === 1 ? 'pl-2.5' : '',
+          currentOrder === type ? 'font-bold text-black' : 'font-medium text-gray-300',
+        )}
       >
         {label}
       </Link>
@@ -76,17 +71,11 @@ const OrderTypeFilters: React.FC<OrderTypeFiltersProps> = ({ currentOrder }) => 
   </div>
 );
 
-interface CommunityPostListProps {
+const CommunityPostList: React.FC<{
   items: CommunityPostItem[];
   hasNextPage: boolean;
   fetchNextPage: () => void;
-}
-
-const CommunityPostList: React.FC<CommunityPostListProps> = ({
-  items,
-  hasNextPage,
-  fetchNextPage,
-}) => {
+}> = ({ items, hasNextPage, fetchNextPage }) => {
   const { bottomRef } = useIntersectionObserver(hasNextPage, fetchNextPage);
 
   return (
@@ -99,11 +88,7 @@ const CommunityPostList: React.FC<CommunityPostListProps> = ({
   );
 };
 
-interface PostItemProps {
-  item: CommunityPostItem;
-}
-
-const PostItem: React.FC<PostItemProps> = ({ item }) => {
+const PostItem: React.FC<{ item: CommunityPostItem }> = ({ item }) => {
   return (
     <div className="w-[calc((100%-10px)/2)]">
       <div className="flex items-center justify-between">
@@ -143,12 +128,12 @@ const UserProfile: React.FC<{ userImage: string; userName: string }> = ({
       className="rounded-full"
       src={userImage}
       alt="user image"
-      width={24}
-      height={24}
-      fallbackWidth={16}
-      fallbackHeight={16}
+      width={20}
+      height={20}
+      fallbackWidth={12}
+      fallbackHeight={12}
     />
-    <span className="text-sm font-bold">{userName}</span>
+    <span className="text-xs font-bold">{userName}</span>
   </div>
 );
 
