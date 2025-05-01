@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
 import { useSubwayLines, useSubwayStations } from '@/service/subway/useSubwayService';
 import { useThemesList } from '@/service/theme/useThemeService';
-import { TabButton, BottomButton } from '@/components/Button';
+import { BottomButton } from '@/components/Button';
 import SelectSubwayStep from '@/components/pages/ai-recommend/SelectSubwayStep';
 import SelectThemeStep from '@/components/pages/ai-recommend/SelectThemeStep';
 import CustomCourseStep from '@/components/pages/ai-recommend/custom-course-step/CustomCourseStep';
 import { useAppStore } from '@/stores';
 import { useAiCourseRecommend, useSaveRecommendCourse } from '@/service/course/useCourseService';
+import TabButton from '@/components/TabButtonGroup/TabButton';
 
 const THEME_UUID_OVER_THREE_POINT_FIVE_STARS = 'c4ca35dff1a85b6788f66e864f58958a'; // 별점 3.5 이상
 
@@ -27,11 +27,8 @@ const aiRecommendSteps = [
 ];
 
 const AiRecommendPage = () => {
-  const navigate = useNavigate();
   const customCourseData = useAppStore((state) => state.customCourseData);
   const resetCustomCourseData = useAppStore((state) => state.resetCustomCourseData);
-
-  console.log('## AI 추천 데이터: ', customCourseData);
 
   const [currentStepIdx, setCurrentStepIdx] = useState(0);
 
@@ -95,7 +92,11 @@ const AiRecommendPage = () => {
     <>
       <StepButtonGroup
         currentStepIdx={currentStepIdx}
-        onStepClick={(idx) => setCurrentStepIdx(idx)}
+        onStepClick={(idx) => {
+          if (idx <= currentStepIdx) {
+            setCurrentStepIdx(idx);
+          }
+        }}
       />
       <CurrentStepView data={currentStepData} />
       <BottomButton disabled={isBottomButtonDisabled} onClick={onClickBottomButton}>
