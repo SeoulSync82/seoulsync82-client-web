@@ -1,13 +1,12 @@
 import SvgIcon from '@/components/SvgIcon';
 import { useNavigate } from 'react-router';
 
-export default function DefaultHeader({
-  pageName,
-  rightActions,
-}: {
+export interface DefaultHeaderProps {
   pageName: string;
   rightActions?: React.ReactNode;
-}) {
+}
+
+const DefaultHeader = ({ pageName, rightActions }: DefaultHeaderProps) => {
   const navigate = useNavigate();
   const onClickBackButton = () => {
     navigate(-1);
@@ -22,4 +21,6 @@ export default function DefaultHeader({
       {rightActions}
     </div>
   );
-}
+};
+
+export default DefaultHeader;

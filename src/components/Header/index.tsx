@@ -1,8 +1,11 @@
 import React from 'react';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import HomeHeader from './HomeHeader';
 import DefaultHeader from './DefaultHeader';
 import { headerVariants } from './variants';
+import { useEditUserProfile } from '@/service/user/useUserService';
+import { useUserStore } from '@/stores/userSlice';
+import { cn } from '@/utils/tailwindcss';
 
 type HeaderProps = {
   pageName: string;
@@ -16,75 +19,119 @@ type HeaderConfigItem = {
   rightActions?: React.ReactNode;
 };
 
-export const headerConfig: HeaderConfigItem[] = [
-  {
-    match: (p) => p === '/',
-    pageName: '홈',
-    Component: HomeHeader,
-  },
-  {
-    match: (p) => p.startsWith('/my-page/edit-profile'),
-    pageName: '프로필 수정',
-    Component: DefaultHeader,
-    rightActions: <button>확인</button>,
-  },
-  {
-    match: (p) => p.startsWith('/my-page/social-login-info'),
-    pageName: '소셜 로그인 정보',
-    Component: DefaultHeader,
-  },
-  {
-    match: (p) => p.startsWith('/my-page/notice'),
-    pageName: '공지사항',
-    Component: DefaultHeader,
-  },
-  {
-    match: (p) => p.startsWith('/my-page'),
-    pageName: '마이페이지',
-    Component: DefaultHeader,
-  },
-  {
-    match: (p) => p.startsWith('/course/'),
-    pageName: '코스 상세',
-    Component: DefaultHeader,
-    rightActions: <button>공유하기</button>,
-  },
-  {
-    match: (p) => p.startsWith('/map'),
-    pageName: '지도',
-    Component: DefaultHeader,
-  },
-  {
-    match: (p) => p.startsWith('/culture'),
-    pageName: '큐레이션',
-    Component: DefaultHeader,
-  },
-  {
-    match: (p) => p.startsWith('/course'),
-    pageName: '내 코스',
-    Component: DefaultHeader,
-  },
-  {
-    match: (p) => p.startsWith('/ai-recommend'),
-    pageName: 'AI 추천',
-    Component: DefaultHeader,
-  },
-  {
-    match: (p) => p.startsWith('/community'),
-    pageName: '커뮤니티',
-    Component: DefaultHeader,
-  },
-  // fallback ‑ 매칭되지 않는 모든 경로
-  {
-    match: () => true,
-    pageName: '',
-    Component: DefaultHeader,
-  },
-];
-
 const Header: React.FC = () => {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { Component, pageName, rightActions } = headerConfig.find((c) => c.match(pathname))!;
+  const { mutate: editUserProfile } = useEditUserProfile();
+  const { userProfile, setUserNameValidation, userNameValidation } = useUserStore();
+
+  const handleEditProfile = () => {
+    editUserProfile(
+      {
+        name: userProfile.name as string,
+        profile_image: userProfile.profile_image as string,
+        uuid: userProfile.uuid as string,
+      },
+      {
+        onSuccess: () => {
+          setUserNameValidation({
+            message: '굿! 멋진 닉네임이에요',
+            errorMessage: '',
+          });
+          navigate('/my-page');
+        },
+        onError: (error: any) => {
+          console.error(error.response?.data.status.includes('SWEAR_WORD'));
+          setUserNameValidation({
+            errorMessage: error.response?.data.status.includes('SWEAR_WORD')
+              ? '닉네임에 사용할 수 없는 단어가 포함되어 있어요.'
+              : '',
+          });
+        },
+      },
+    );
+  };
+
+  const makeHeaderConfig = (): HeaderConfigItem[] => {
+    return [
+      {
+        match: (p) => p === '/',
+        pageName: '홈',
+        Component: HomeHeader,
+      },
+      {
+        match: (p) => p.startsWith('/my-page/edit-profile'),
+        pageName: '프로필 수정',
+        Component: DefaultHeader,
+        rightActions: (
+          // TODO: Button 컴포넌트 확장 적용
+          <button
+            className={cn('text-base font-bold', {
+              'text-primary-500': userProfile.name,
+              'text-gray-400': !userProfile.name || userNameValidation.errorMessage,
+            })}
+            onClick={handleEditProfile}
+          >
+            완료
+          </button>
+        ),
+      },
+      {
+        match: (p) => p.startsWith('/my-page/social-login-info'),
+        pageName: '소셜 로그인 정보',
+        Component: DefaultHeader,
+      },
+      {
+        match: (p) => p.startsWith('/my-page/notice'),
+        pageName: '공지사항',
+        Component: DefaultHeader,
+      },
+      {
+        match: (p) => p.startsWith('/my-page'),
+        pageName: '마이페이지',
+        Component: DefaultHeader,
+      },
+      {
+        match: (p) => p.startsWith('/course/'),
+        pageName: '코스 상세',
+        Component: DefaultHeader,
+        rightActions: <button>공유하기</button>,
+      },
+      {
+        match: (p) => p.startsWith('/map'),
+        pageName: '지도',
+        Component: DefaultHeader,
+      },
+      {
+        match: (p) => p.startsWith('/culture'),
+        pageName: '큐레이션',
+        Component: DefaultHeader,
+      },
+      {
+        match: (p) => p.startsWith('/course'),
+        pageName: '내 코스',
+        Component: DefaultHeader,
+      },
+      {
+        match: (p) => p.startsWith('/ai-recommend'),
+        pageName: 'AI 추천',
+        Component: DefaultHeader,
+      },
+      {
+        match: (p) => p.startsWith('/community'),
+        pageName: '커뮤니티',
+        Component: DefaultHeader,
+      },
+      // fallback ‑ 매칭되지 않는 모든 경로
+      {
+        match: () => true,
+        pageName: '',
+        Component: DefaultHeader,
+      },
+    ];
+  };
+
+  const { Component, pageName, rightActions } = makeHeaderConfig().find((c) => c.match(pathname))!;
 
   return (
     <header className={headerVariants({ isHomePage: pathname === '/' })}>
