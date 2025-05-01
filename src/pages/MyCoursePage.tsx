@@ -7,25 +7,21 @@ import {
   useCourseRecommendHistory,
 } from '@/service/course/useCourseService';
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router';
-
+import { useQueryParams } from '@/hooks/useQueryParams';
 const tabItems = [
   { label: '북마크', type: 'liked' },
   { label: '코스 추천 내역', type: 'recommended' },
 ];
 
 const MyCoursePage = () => {
-  const { pathname, search } = useLocation();
-  const searchParams = new URLSearchParams(search);
+  const { searchParams, updateQueryParam } = useQueryParams();
   const type = searchParams.get('type') || 'liked';
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!searchParams.get('type')) {
-      searchParams.set('type', 'liked');
-      navigate({ pathname, search: `?${searchParams.toString()}` });
+      updateQueryParam('type', 'liked');
     }
-  }, [type, navigate, pathname, searchParams]);
+  }, [type, updateQueryParam, searchParams]);
 
   const { data: bookmarkedCourseData } = useBookmarkedCourseList({ enabled: type === 'liked' });
   const { data: courseHistoryData } = useCourseRecommendHistory({
@@ -35,7 +31,7 @@ const MyCoursePage = () => {
     type === 'liked' ? bookmarkedCourseData?.data.items : courseHistoryData?.data.items;
 
   const handleTabClick = (itemType: string) => {
-    navigate(`${pathname}?type=${itemType}`);
+    updateQueryParam('type', itemType);
   };
 
   return (
