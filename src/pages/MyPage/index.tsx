@@ -106,8 +106,8 @@ const UserProfileInfo = ({
     <div className="flex flex-col gap-1">
       <span className="text-base font-semibold text-gray-900">
         {userName || '로그인이 필요해요'}
+        {loginMessage}
       </span>
-      {loginMessage}
     </div>
   );
 };
@@ -117,7 +117,8 @@ const MySection = () => {
     <section className="max-container mt-8 border-none px-5">
       <h2 className="text-base font-normal text-gray-400">MY</h2>
       <ul className="mt-5 space-y-6 pb-5 text-sm font-medium text-gray-600">
-        <MenuListItem text="북마크" to="/course?type=liked" />
+        <MenuListItem iconName="Write" text="내가 작성한 글" to="/community?me=true" />
+        <MenuListItem iconName="Bookmark" text="북마크" to="/course?type=liked" />
       </ul>
     </section>
   );
@@ -141,8 +142,8 @@ const ServiceUsageSection = () => {
     <section className="max-container mt-5 border-none px-5">
       <h2 className="text-base font-normal text-gray-400">서비스 이용</h2>
       <ul className="mt-5 space-y-6 pb-5">
-        <MenuListItem text="공지사항" to="/my-page/notice" />
-        <MenuListItem text="이메일 문의" onClick={openGmailCompose} />
+        <MenuListItem iconName="Speaker" text="공지사항" to="/my-page/notice" />
+        <MenuListItem iconName="Headphone" text="문의하기" onClick={openGmailCompose} />
       </ul>
     </section>
   );
@@ -159,8 +160,9 @@ const UserInfoManagementSection = ({
     <section className="mt-5 border-none px-5">
       <h2 className="text-base font-normal text-gray-400">회원정보 관리</h2>
       <ul className="mt-5 space-y-6 pb-5 text-sm font-medium text-gray-600">
-        <MenuListItem text="소셜로그인 정보" to="/my-page/social-login-info" />
+        <MenuListItem iconName="App" text="소셜로그인 정보" to="/my-page/social-login-info" />
         <MenuListItem
+          iconName={isLoggedIn ? 'Logout' : 'Login'}
           text={isLoggedIn ? '로그아웃' : '로그인'}
           to={!isLoggedIn ? '/login' : undefined}
           onClick={isLoggedIn ? handleLogout : undefined}
