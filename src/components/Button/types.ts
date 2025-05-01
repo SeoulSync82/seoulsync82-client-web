@@ -27,9 +27,7 @@ export interface ButtonBorderProps {
     | 'gray-400';
 }
 
-export interface TabButtonProps
-  extends Omit<ButtonProps, 'active' | 'disabled'>,
-    TabButtonVariantsProps {}
+export interface TabButtonProps extends ButtonProps, TabButtonVariantsProps {}
 
 export interface SocialLoginButtonProps extends ButtonProps {
   snsName: SNSType;

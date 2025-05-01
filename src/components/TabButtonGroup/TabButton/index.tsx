@@ -1,7 +1,7 @@
 import { cn } from '@/utils/tailwindcss';
-import { TabButtonProps } from '../types';
-import { Button } from '..';
 import { tabButtonVariants } from './variants';
+import { TabButtonProps } from '@/components/Button/types';
+import { Button } from '@/components/Button';
 
 export default function TabButton({
   active,
