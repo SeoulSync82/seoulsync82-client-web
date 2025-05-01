@@ -25,20 +25,17 @@ export default function CourseListItem({
         <Image
           src={course_image}
           alt="Course Image"
-          width={92}
-          height={92}
+          width={80}
+          height={80}
           objectFit="cover"
           rounded="lg"
-          fallbackWidth={40}
-          fallbackHeight={40}
+          fallbackWidth={32}
+          fallbackHeight={32}
+          fallbackStatus="bad"
           // placeholder={<div className="h-full w-full animate-pulse bg-gray-200" />}
         />
-        <div className="flex flex-col items-start justify-center gap-2">
-          <div className="flex items-center gap-1">
-            {tags.map((tag) => (
-              <Tag key={tag} tag={tag} />
-            ))}
-          </div>
+        <div className="flex flex-col items-start justify-center gap-1">
+          <TagList tags={tags} />
           <Rating />
           <CourseName name={course_name} />
         </div>
@@ -48,9 +45,17 @@ export default function CourseListItem({
 }
 
 const Tag = ({ tag }: { tag: string }) => (
-  <span className="flex h-[20px] items-center justify-center rounded-full border-[1px] border-[#E0D1FF] px-2 text-12 font-semibold text-primary-500">
+  <span className="flex h-5 items-center justify-center rounded-full border-[1px] border-[#E0D1FF] px-2 text-10 font-semibold text-primary-500">
     {tag}
   </span>
+);
+
+const TagList = ({ tags }: { tags: string[] }) => (
+  <div className="flex items-center gap-1">
+    {tags.map((tag) => (
+      <Tag key={tag} tag={tag} />
+    ))}
+  </div>
 );
 
 const Rating = () => (
@@ -59,10 +64,15 @@ const Rating = () => (
     <span className="flex items-center justify-center pt-1 text-sm font-semibold leading-4 text-gray-900">
       4.2
     </span>
-    <span className="pt-1 text-sm font-normal leading-4 text-gray-400">(999+)</span>
+    <span className="flex items-center justify-center pt-1 text-sm font-normal leading-4 text-gray-400">
+      (999+)
+    </span>
   </div>
 );
 
 const CourseName = ({ name }: { name: string }) => (
-  <div className="flex items-center gap-1 text-15 font-bold leading-[18px]">{name}</div>
+  <div className="flex items-center gap-1">
+    <span className="text-sm font-bold leading-5">{name.split(',')[0] + ','}</span>
+    <span className="text-sm font-medium leading-5">{name.split(',')[1]}</span>
+  </div>
 );
