@@ -3,17 +3,15 @@ import Tooltip from '@/components/Tooltip';
 import { SNSType } from '@/components/SvgIcon/type';
 import { SocialLoginButton } from '@/components/Button';
 import Service from '@/service/Service';
-import { useNavigate } from 'react-router';
 
 const SNS_LIST: SNSType[] = ['kakao', 'naver', 'google'];
 
 export default function LoginPage() {
-  const navigate = useNavigate();
   const service = new Service();
 
   const onClickLogin = (authType: SNSType) => {
     const socialLoginUrl = `${service.service.defaults.baseURL}/auth/login/${authType}`;
-    navigate(socialLoginUrl);
+    window.location.href = socialLoginUrl;
   };
 
   return (
