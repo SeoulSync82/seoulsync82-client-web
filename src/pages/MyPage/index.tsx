@@ -1,11 +1,10 @@
 import SvgIcon from '@/components/SvgIcon';
 import { ReactNode } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useUserLogout, useUserProfile } from '@/service/user/useUserService';
 import Image from '@/components/Image';
 
 const MyPage = () => {
-  const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem('accessToken') !== null;
 
   const { data: userProfile } = useUserProfile({ enabled: !!isLoggedIn });
@@ -14,7 +13,7 @@ const MyPage = () => {
   const handleLogout = () => {
     userLogout();
     localStorage.removeItem('accessToken');
-    navigate('/my-page');
+    window.location.href = '/my-page';
   };
 
   return (
