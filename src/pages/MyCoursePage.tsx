@@ -8,6 +8,7 @@ import {
 } from '@/service/course/useCourseService';
 import { useEffect } from 'react';
 import { useQueryParams } from '@/hooks/useQueryParams';
+
 const tabItems = [
   { label: '북마크', type: 'liked' },
   { label: '코스 추천 내역', type: 'recommended' },
