@@ -1,12 +1,21 @@
 import SvgIcon from '@/components/SvgIcon';
 import { ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUserLogout, useUserProfile } from '@/service/user/useUserService';
 import Image from '@/components/Image';
 
 const MyPage = () => {
+  const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem('accessToken') !== null;
+
   const { data: userProfile } = useUserProfile({ enabled: !!isLoggedIn });
+  const { mutate: userLogout } = useUserLogout();
+
+  const handleLogout = () => {
+    userLogout();
+    localStorage.removeItem('accessToken');
+    navigate('/my-page');
+  };
 
   return (
     <div className="page w-full overflow-y-auto bg-white">
@@ -15,7 +24,10 @@ const MyPage = () => {
       <Divider />
       <ServiceUsageSection />
       <Divider />
-      <UserInfoManagementSection isLoggedIn={!!userProfile?.data.name} />
+      <UserInfoManagementSection
+        isLoggedIn={!!userProfile?.data.name}
+        handleLogout={handleLogout}
+      />
     </div>
   );
 };
@@ -34,38 +46,47 @@ const LoginBannerSection = ({ userProfile }: { userProfile: any }) => {
   return (
     <section className="max-container mt-4 h-24 px-5">
       <Component
-        className="flex items-center justify-between gap-2 rounded-md bg-gray-50 px-5 py-4"
+        className="flex items-center gap-3 rounded-md bg-gray-50 px-5 py-4"
         to={to as string}
       >
-        <div className="flex items-center gap-4">
-          <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-white">
-            {userProfile?.profile_image ? (
-              <Image src={userProfile?.profile_image} alt="profile" />
-            ) : (
-              <SvgIcon name="MyPage" width={32} height={36} color="#DEE2E6" active />
-            )}
-          </div>
-          <div className="flex flex-col gap-1">
-            <span className="text-base font-semibold text-gray-900">
-              {userProfile?.name || '로그인이 필요해요'}
-            </span>
-            {userProfile?.name ? (
-              <span className="text-sm font-normal text-gray-400">
-                <span className="font-bold text-primary-500">
-                  {snsTypes[userProfile?.type as keyof typeof snsTypes]}
-                </span>
-                에서 마지막 로그인!
-              </span>
-            ) : (
-              <Link to="/login" className="text-sm font-bold text-primary-500">
-                빠르게 로그인하기!
-              </Link>
-            )}
-          </div>
-        </div>
+        <UserProfileImage profileImage={userProfile?.profile_image} />
+        <UserProfileInfo userProfile={userProfile} snsTypes={snsTypes} />
         {/* <SvgIcon name="Chevron" width={16} height={16} /> */}
       </Component>
     </section>
+  );
+};
+
+const UserProfileImage = ({ profileImage }: { profileImage: string }) => (
+  <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-white">
+    {profileImage ? (
+      <Image src={profileImage} alt="profile" />
+    ) : (
+      <SvgIcon name="MyPage" width={32} height={36} color="#DEE2E6" active />
+    )}
+  </div>
+);
+
+const UserProfileInfo = ({ userProfile, snsTypes }: { userProfile: any; snsTypes: any }) => {
+  const userName = userProfile?.name;
+  const userType = userProfile?.type as keyof typeof snsTypes;
+  const loginMessage = userName ? (
+    <div className="text-sm font-normal text-gray-400">
+      <span className="font-bold text-primary-500">{snsTypes[userType]}</span>에서 마지막 로그인!
+    </div>
+  ) : (
+    <Link to="/login" className="text-sm font-bold text-primary-500">
+      빠르게 로그인하기!
+    </Link>
+  );
+
+  return (
+    <div className="flex flex-col gap-1">
+      <span className="text-base font-semibold text-gray-900">
+        {userName || '로그인이 필요해요'}
+      </span>
+      {loginMessage}
+    </div>
   );
 };
 
@@ -105,15 +126,13 @@ const ServiceUsageSection = () => {
   );
 };
 
-const UserInfoManagementSection = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
-  const { mutate: userLogout } = useUserLogout();
-
-  const handleLogout = () => {
-    userLogout();
-    localStorage.removeItem('accessToken');
-    window.location.href = '/my-page';
-  };
-
+const UserInfoManagementSection = ({
+  isLoggedIn,
+  handleLogout,
+}: {
+  isLoggedIn: boolean;
+  handleLogout: () => void;
+}) => {
   return (
     <section className="mt-5 border-none px-5">
       <h2 className="text-base font-normal text-gray-400">회원정보 관리</h2>
