@@ -1,13 +1,9 @@
-import React, { useMemo, useCallback, Suspense } from 'react';
+import React, { useMemo, Suspense } from 'react';
 import SVGIcon from '@/components/SvgIcon';
 import { Link } from 'react-router';
 import { useQueryParams } from '@/hooks/useQueryParams';
 import { convertDateToYMD } from '@/utils';
-import {
-  useCommunityPostCancelLike,
-  useCommunityPostLike,
-  useCommunityPostList,
-} from '@/service/community/useCommunityService';
+import { useCommunityPostList } from '@/service/community/useCommunityService';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { CommunityPostItem } from '@/service/community/types';
 
@@ -108,22 +104,11 @@ interface PostItemProps {
 }
 
 const PostItem: React.FC<PostItemProps> = ({ item }) => {
-  const { mutate: like } = useCommunityPostLike();
-  const { mutate: cancelLike } = useCommunityPostCancelLike();
-
-  const handleLikePost = useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
-      item.isLiked ? cancelLike(item.uuid) : like(item.uuid);
-    },
-    [item, like, cancelLike],
-  );
-
   return (
     <div className="w-[calc((100%-10px)/2)]">
       <div className="flex items-center justify-between">
         <UserProfile userImage={item.user_profile_image} userName={item.user_name} />
-        <LikeButton isLiked={item.isLiked} likeCount={item.like_count} onClick={handleLikePost} />
+        <LikeIcon isLiked={item.isLiked} likeCount={item.like_count} />
       </div>
       <Link to={`/course/${item.course_uuid}`}>
         <Suspense fallback={<div className="h-full w-full animate-pulse bg-gray-200" />}>
@@ -140,7 +125,7 @@ const PostItem: React.FC<PostItemProps> = ({ item }) => {
           />
         </Suspense>
         <div className="mt-2 line-clamp-2 text-sm font-bold leading-5">{item.course_name}</div>
-        <CustomTags customs={item.customs} />
+        <Tags customs={item.customs} />
         <div className="mt-2 text-12 font-semibold text-gray-300">
           {convertDateToYMD(item.created_at)}
         </div>
@@ -167,18 +152,17 @@ const UserProfile: React.FC<{ userImage: string; userName: string }> = ({
   </div>
 );
 
-const LikeButton: React.FC<{
+const LikeIcon: React.FC<{
   isLiked: boolean;
   likeCount: number;
-  onClick: (e: React.MouseEvent) => void;
-}> = ({ isLiked, likeCount, onClick }) => (
+}> = ({ isLiked, likeCount }) => (
   <div className="flex items-center gap-0.5">
-    <SVGIcon name="Heart" width={16} height={16} active={isLiked} onClick={onClick} />
+    <SVGIcon name="Heart" width={16} height={16} active={isLiked} />
     <span className="text-sm font-medium text-gray-400">{likeCount}</span>
   </div>
 );
 
-const CustomTags: React.FC<{ customs: string }> = ({ customs }) => (
+const Tags: React.FC<{ customs: string }> = ({ customs }) => (
   <div className="mt-1 truncate text-12 font-semibold text-primary-500">
     {customs
       .split(', ')
