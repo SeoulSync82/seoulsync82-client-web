@@ -72,7 +72,6 @@ const Rating = () => (
 
 const CourseName = ({ name }: { name: string }) => (
   <div className="flex items-center gap-1">
-    <span className="text-sm font-bold leading-5">{name.split(',')[0] + ','}</span>
-    <span className="text-sm font-medium leading-5">{name.split(',')[1]}</span>
+    <span className="text-sm font-bold leading-5">{name}</span>
   </div>
 );
