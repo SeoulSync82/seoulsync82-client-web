@@ -4,8 +4,12 @@ import { usePlaceCulture } from '@/service/place/usePlaceService';
 import Section from '@/components/Section/Section';
 import SwiperCardSkeleton from '@/components/SwiperCard/SwiperCardSkeleton';
 import SwiperCard from '@/components/SwiperCard';
+import useLogin from '@/hooks/useLogin';
 
-export default function HomePage() {
+const HomePage = () => {
+  const { userProfileData } = useLogin();
+  console.log('userProfileData', userProfileData?.data);
+
   return (
     <div className="page gap-2.5 overflow-y-auto pb-[109px]">
       <Section title="주목해야할 전시 · 팝업" link="/culture">
@@ -18,7 +22,9 @@ export default function HomePage() {
       </Section>
     </div>
   );
-}
+};
+
+export default HomePage;
 
 const SwiperSection = () => {
   const { data: cultureData } = usePlaceCulture(10, 0);

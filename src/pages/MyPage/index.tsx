@@ -1,37 +1,47 @@
 import SvgIcon from '@/components/SvgIcon';
 import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { useUserLogout, useUserProfile } from '@/service/user/useUserService';
+import { useUserLogout } from '@/service/user/useUserService';
 import Image from '@/components/Image';
+import { useUserStore } from '@/stores/userSlice';
+import useLogin from '@/hooks/useLogin';
+
+type UserProfile = {
+  name: string;
+  profile_image: string;
+  uuid: string;
+};
 
 const MyPage = () => {
-  const isLoggedIn = localStorage.getItem('accessToken') !== null;
-
-  const { data: userProfile } = useUserProfile({ enabled: !!isLoggedIn });
+  const { isLoggedIn } = useLogin();
+  const { userProfile } = useUserStore();
   const { mutate: userLogout } = useUserLogout();
 
   const handleLogout = () => {
     userLogout();
     localStorage.removeItem('accessToken');
-    window.location.href = '/my-page';
+    window.location.href = '/';
   };
 
   return (
     <div className="page w-full overflow-y-auto bg-white">
-      <LoginBannerSection userProfile={userProfile?.data} />
+      <LoginBannerSection isLoggedIn={isLoggedIn} userProfile={userProfile} />
       <MySection />
       <Divider />
       <ServiceUsageSection />
       <Divider />
-      <UserInfoManagementSection
-        isLoggedIn={!!userProfile?.data.name}
-        handleLogout={handleLogout}
-      />
+      <UserInfoManagementSection isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
     </div>
   );
 };
 
-const LoginBannerSection = ({ userProfile }: { userProfile: any }) => {
+const LoginBannerSection = ({
+  isLoggedIn,
+  userProfile,
+}: {
+  isLoggedIn: boolean;
+  userProfile: UserProfile;
+}) => {
   const snsTypes = {
     kakao: '카카오톡',
     google: '구글',
@@ -39,19 +49,30 @@ const LoginBannerSection = ({ userProfile }: { userProfile: any }) => {
     naver: '네이버',
   };
 
-  const Component = userProfile?.name ? Link : 'div';
-  const to = userProfile?.name ? '/my-page/edit-profile' : undefined;
+  const profileContent = (
+    <>
+      <UserProfileImage profileImage={userProfile?.profile_image} />
+      <UserProfileInfo userProfile={userProfile} snsTypes={snsTypes} />
+    </>
+  );
 
   return (
     <section className="max-container mt-4 h-24 px-5">
-      <Component
-        className="flex items-center gap-3 rounded-md bg-gray-50 px-5 py-4"
-        to={to as string}
-      >
-        <UserProfileImage profileImage={userProfile?.profile_image} />
-        <UserProfileInfo userProfile={userProfile} snsTypes={snsTypes} />
-        {/* <SvgIcon name="Chevron" width={16} height={16} /> */}
-      </Component>
+      {isLoggedIn ? (
+        <Link
+          className="flex items-center gap-3 rounded-md bg-gray-50 px-5 py-4"
+          to="/my-page/edit-profile"
+        >
+          {profileContent}
+        </Link>
+      ) : (
+        <div className="flex items-center gap-3 rounded-md bg-gray-50 px-5 py-4">
+          {profileContent}
+          <Link to="/login" className="text-sm font-bold text-primary-500">
+            빠르게 로그인하기!
+          </Link>
+        </div>
+      )}
     </section>
   );
 };
@@ -66,18 +87,20 @@ const UserProfileImage = ({ profileImage }: { profileImage: string }) => (
   </div>
 );
 
-const UserProfileInfo = ({ userProfile, snsTypes }: { userProfile: any; snsTypes: any }) => {
+const UserProfileInfo = ({
+  userProfile,
+  snsTypes,
+}: {
+  userProfile: UserProfile;
+  snsTypes: any;
+}) => {
   const userName = userProfile?.name;
   const userType = userProfile?.type as keyof typeof snsTypes;
   const loginMessage = userName ? (
     <div className="text-sm font-normal text-gray-400">
       <span className="font-bold text-primary-500">{snsTypes[userType]}</span>에서 마지막 로그인!
     </div>
-  ) : (
-    <Link to="/login" className="text-sm font-bold text-primary-500">
-      빠르게 로그인하기!
-    </Link>
-  );
+  ) : null;
 
   return (
     <div className="flex flex-col gap-1">
