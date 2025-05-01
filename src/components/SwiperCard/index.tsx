@@ -11,7 +11,6 @@ const SWIPER_CARD_STYLES = {
   skeleton: 'animate-pulse',
   rounded: 'rounded-md',
   minWidth: 'clamp(240px, 64vw, 275px)',
-  height: 'h-[366px]',
 };
 
 interface SwiperCardProps {
@@ -31,7 +30,6 @@ const SwiperCard: React.FC<SwiperCardProps> = ({ idx, item, background, link, to
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         minWidth: SWIPER_CARD_STYLES.minWidth,
-        height: SWIPER_CARD_STYLES.height,
       }}
       className={cn(SWIPER_CARD_STYLES.container, SWIPER_CARD_STYLES.rounded)}
       to={link}
