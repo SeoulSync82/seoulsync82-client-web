@@ -7,7 +7,7 @@ import SwiperCard from '@/components/SwiperCard';
 
 export default function HomePage() {
   return (
-    <div className="page gap-[10px] overflow-y-auto pb-[109px]">
+    <div className="page gap-2.5 overflow-y-auto pb-[109px]">
       <Section title="주목해야할 전시 · 팝업" link="/culture">
         <Suspense fallback={<SwiperSectionSkeleton />}>
           <SwiperSection />
@@ -24,7 +24,7 @@ const SwiperSection = () => {
   const { data: cultureData } = usePlaceCulture(10, 0);
   return (
     <div className="w-full overflow-x-hidden">
-      <div className="flex gap-3 overflow-x-auto px-[20px] scrollbar-hide">
+      <div className="flex h-1/2 gap-3 overflow-x-auto px-5 scrollbar-hide">
         {cultureData?.data?.items?.map((item: PlaceItem, idx: number) => (
           <SwiperCard
             key={item.uuid}
@@ -42,7 +42,7 @@ const SwiperSection = () => {
 
 const SwiperSectionSkeleton = () => (
   <div className="w-full overflow-x-hidden">
-    <div className="flex gap-[12px] overflow-x-auto px-[20px] scrollbar-hide">
+    <div className="flex gap-3 overflow-x-auto px-5 scrollbar-hide">
       {Array.from({ length: 5 }).map((_, idx) => (
         <SwiperCardSkeleton key={idx} />
       ))}
