@@ -10,8 +10,20 @@ export const EditProfilePage = () => {
   const userProfile = useUserStore((state) => state.userProfile);
   const userNameValidation = useUserStore((state) => state.userNameValidation);
   const setUserProfile = useUserStore((state) => state.setUserProfile);
+  const setUserNameValidation = useUserStore((state) => state.setUserNameValidation);
+
+  const checkValidateUserName = (name: string) => {
+    let errorMessage = '';
+    if (name.length > 8) {
+      errorMessage = '닉네임은 8자 이하로 입력해주세요.';
+    } else if (name.length < 2) {
+      errorMessage = '2자 이상 입력해주세요.';
+    }
+    setUserNameValidation({ errorMessage });
+  };
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    checkValidateUserName(e.target.value);
     setUserProfile({ name: e.target.value });
   };
   const { handleSelectImageFile } = useImageUpload();
@@ -43,6 +55,7 @@ export const EditProfilePage = () => {
         inputError={userNameValidation.errorMessage}
         inputMessage={userNameValidation.message}
         handleNicknameChange={handleNicknameChange}
+        checkValidateUserName={checkValidateUserName}
       />
     </div>
   );
