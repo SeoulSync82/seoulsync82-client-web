@@ -2,17 +2,12 @@ import SvgIcon from '@/components/SvgIcon';
 import Tooltip from '@/components/Tooltip';
 import { SNSType } from '@/components/SvgIcon/type';
 import { SocialLoginButton } from '@/components/Button';
-import Service from '@/service/Service';
+import useLogin from '@/hooks/useLogin';
 
 const SNS_LIST: SNSType[] = ['kakao', 'naver', 'google'];
 
 export default function LoginPage() {
-  const service = new Service();
-
-  const onClickLogin = (authType: SNSType) => {
-    const socialLoginUrl = `${service.service.defaults.baseURL}/auth/login/${authType}`;
-    window.location.href = socialLoginUrl;
-  };
+  const { handleLogin } = useLogin();
 
   return (
     <div className="page max-container flex h-full items-center justify-center">
@@ -24,7 +19,7 @@ export default function LoginPage() {
           message="⚡️ 로그인하고 나에게 맞는 코스를 추천 받아보세요!"
           className="mt-18 mb-4"
         />
-        <SocialLoginSection onClickLogin={onClickLogin} />
+        <SocialLoginSection onClickLogin={handleLogin} />
       </div>
     </div>
   );
