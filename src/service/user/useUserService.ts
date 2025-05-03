@@ -12,10 +12,16 @@ export const useUserProfile = ({ enabled }: { enabled: boolean }) => {
 
 export const useEditUserProfile = () => {
   const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: (data: { name: string; profile_image: string }) =>
-      UserService.editUserProfile(data),
+    mutationFn: ({
+      name,
+      profile_image,
+      uuid,
+    }: {
+      name: string;
+      profile_image: string;
+      uuid: string;
+    }) => UserService.editUserProfile({ name, profile_image, uuid }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userProfile'] });
     },
