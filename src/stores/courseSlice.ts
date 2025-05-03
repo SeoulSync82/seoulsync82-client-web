@@ -20,7 +20,7 @@ export interface CustomCourseState {
   resetCustomCourseData: () => void;
 }
 
-export const useCourseStore = create(
+const useCourseStore = create(
   persist(
     immer<CustomCourseState>((set) => ({
       customCourseData: initialCustomCourseData,
@@ -39,3 +39,5 @@ export const useCourseStore = create(
     },
   ),
 );
+
+export default useCourseStore;
