@@ -18,11 +18,12 @@ const ORDER_TYPES = [
 const CommunityPage: React.FC = () => {
   const { getQueryParam } = useQueryParams();
   const order = (getQueryParam('order') as 'popular' | 'latest') || 'popular';
+  const me = getQueryParam('me');
 
   const { data, fetchNextPage, hasNextPage } = useCommunityPostList({
     size: 10,
     next_page: '',
-    me: false,
+    me: Boolean(me),
     order,
   });
 
@@ -34,7 +35,7 @@ const CommunityPage: React.FC = () => {
 
   return (
     <div className="page">
-      <div className="flex h-[calc(100dvh-146px)] w-full flex-col justify-between">
+      <div className="flex h-[calc(100dvh-146px)] w-full flex-col">
         <div className="flex w-full items-center justify-between px-5">
           <ItemCountDisplay count={totalCount} />
           <OrderTypeFilters currentOrder={order} />
