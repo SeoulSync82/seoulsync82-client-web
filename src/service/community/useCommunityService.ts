@@ -1,5 +1,6 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import CommunityService from './CommunityService';
+import { convertDateToYMD } from '@/utils';
 
 export const useCommunityPostList = ({
   order = 'popular',
@@ -12,12 +13,29 @@ export const useCommunityPostList = ({
   next_page: string;
   me: boolean;
 }) => {
+  const queryKey = ['communityPostLists', order];
+  const queryFn = ({ pageParam = next_page }) =>
+    CommunityService.getCommunityPostList(size, pageParam.toString(), me, order);
+  const getNextPageParam = (lastPage: any) => lastPage.data.next_page || undefined;
+  const select = (data: any) => ({
+    pages: data.pages.map((page: any) => ({
+      ...page,
+      data: {
+        ...page.data,
+        items: page.data.items.map((item: any) => ({
+          ...item,
+          created_at: convertDateToYMD(item.created_at),
+        })),
+      },
+    })),
+  });
+
   return useInfiniteQuery({
-    queryKey: ['communityPostLists', order],
-    queryFn: ({ pageParam = next_page }) =>
-      CommunityService.getCommunityPostList(size, pageParam.toString(), me, order),
-    getNextPageParam: (lastPage) => (lastPage.data.next_page ? lastPage.data.next_page : undefined),
+    queryKey,
+    queryFn,
+    getNextPageParam,
     initialPageParam: next_page,
+    select,
   });
 };
 
