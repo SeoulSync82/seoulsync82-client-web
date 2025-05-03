@@ -113,7 +113,11 @@ const MySection = () => {
     <section className="max-container mt-8 border-none px-5">
       <h2 className="text-base font-normal text-gray-400">MY</h2>
       <ul className="mt-5 space-y-6 pb-5 text-sm font-medium text-gray-600">
-        <MenuListItem iconName="Write" text="내가 작성한 글" to="/community?me=true" />
+        <MenuListItem
+          iconName="Write"
+          text="내가 작성한 글"
+          to="/community?me=true&order=popular"
+        />
         <MenuListItem iconName="Bookmark" text="북마크" to="/course?type=liked" />
       </ul>
     </section>

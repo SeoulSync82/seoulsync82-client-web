@@ -13,7 +13,12 @@ export default function Navigation() {
     Home: { name: 'Home', size: 24, path: '/', label: '홈' },
     MyCourse: { name: 'MyCourse', size: 24, path: '/course', label: '내 코스' },
     AiRecommend: { name: 'AiRecommend', size: 66, path: '/ai-recommend', label: 'AI 추천' },
-    Community: { name: 'Community', size: 24, path: '/community?order=popular', label: '커뮤니티' },
+    Community: {
+      name: 'Community',
+      size: 24,
+      path: '/community?me=false&order=popular',
+      label: '커뮤니티',
+    },
     MyPage: { name: 'MyPage', size: 24, path: '/my-page', label: '마이페이지' },
   };
 

@@ -13,7 +13,7 @@ const HomePage = () => {
           <SwiperSection />
         </Suspense>
       </Section>
-      <Section title="인기코스 모아보기" link="/community?order=popular">
+      <Section title="인기코스 모아보기" link="/community?me=false&order=popular">
         <>{/* TODO: 콘텐츠 추가 */}</>
       </Section>
     </div>

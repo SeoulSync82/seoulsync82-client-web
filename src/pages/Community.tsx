@@ -18,12 +18,12 @@ const ORDER_TYPES = [
 const CommunityPage: React.FC = () => {
   const { getQueryParam } = useQueryParams();
   const order = (getQueryParam('order') as 'popular' | 'latest') || 'popular';
-  const me = getQueryParam('me');
+  const me = getQueryParam('me') === 'true' ? true : false;
 
   const { data, fetchNextPage, hasNextPage } = useCommunityPostList({
     size: 10,
     next_page: '',
-    me: Boolean(me),
+    me,
     order,
   });
 
@@ -38,7 +38,7 @@ const CommunityPage: React.FC = () => {
       <div className="flex h-[calc(100dvh-146px)] w-full flex-col">
         <div className="flex w-full items-center justify-between px-5">
           <ItemCountDisplay count={totalCount} />
-          <OrderTypeFilters currentOrder={order} />
+          <OrderTypeFilters currentOrder={order} me={me} />
         </div>
         <CommunityPostList items={items} hasNextPage={hasNextPage} fetchNextPage={fetchNextPage} />
       </div>
@@ -53,12 +53,15 @@ const ItemCountDisplay: React.FC<{ count: number }> = ({ count }) => (
   </div>
 );
 
-const OrderTypeFilters: React.FC<{ currentOrder: 'popular' | 'latest' }> = ({ currentOrder }) => (
+const OrderTypeFilters: React.FC<{ currentOrder: 'popular' | 'latest'; me: boolean }> = ({
+  currentOrder,
+  me,
+}) => (
   <div className="flex items-center">
     {ORDER_TYPES.map(({ type, label }, idx) => (
       <Link
         key={type}
-        to={`/community?order=${type}`}
+        to={`/community?me=${me}&order=${type}`}
         className={cn(
           'flex items-center text-sm',
           idx === 0 ? 'border-r-[1px] border-[#d9d9d9] pr-2.5' : '',
