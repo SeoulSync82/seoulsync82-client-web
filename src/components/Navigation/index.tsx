@@ -37,7 +37,7 @@ export default function Navigation() {
             name={item.name as NavbarIcon}
             height={item.size}
             width={item.size}
-            active={pathname === item.path}
+            active={pathname === item.path.split('?')[0]}
           />
         </div>
         <div className={textVariants({ isAiRecommend: item.name === 'AiRecommend' })}>
