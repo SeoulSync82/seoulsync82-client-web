@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import {
   createBrowserRouter,
   Navigate,
@@ -7,22 +7,23 @@ import {
   ScrollRestoration,
 } from 'react-router-dom';
 import Layout from '@/layouts/default';
-import Loading from '@/components/Loading';
 import { ErrorBoundaryWrapper } from '@/components/ErrorBoundary';
-const HomePage = React.lazy(() => import('@/pages/HomePage'));
+
+const Home = React.lazy(() => import('@/pages/Home'));
 const MyPage = React.lazy(() => import('@/pages/MyPage'));
-const EditProfilePage = React.lazy(() => import('@/pages/MyPage/EditProfilePage'));
-const SocialLoginInfoPage = React.lazy(() => import('@/pages/MyPage/SocialLoginInfoPage'));
-const MyCoursePage = React.lazy(() => import('@/pages/MyCoursePage'));
-const NoticePage = React.lazy(() => import('@/pages/MyPage/NoticePage'));
-const CourseDetailPage = React.lazy(() => import('@/pages/CourseDetailPage'));
-const AiRecommendPage = React.lazy(() => import('@/pages/AiRecommendPage'));
-const CulturePage = React.lazy(() => import('@/pages/CulturePage'));
-const CultureDetailPage = React.lazy(() => import('@/pages/CultureDetailPage'));
-const NotificationsPage = React.lazy(() => import('@/pages/NotificationsPage'));
-const MapPage = React.lazy(() => import('@/pages/MapPage'));
-const CommunityPage = React.lazy(() => import('@/pages/CommunityPage'));
-const LoginPage = React.lazy(() => import('@/pages/LoginPage'));
+const Notice = React.lazy(() => import('@/pages/MyPage/Notice'));
+const NoticeDetail = React.lazy(() => import('@/pages/MyPage/Notice/NoticeDetail'));
+const EditProfile = React.lazy(() => import('@/pages/MyPage/EditProfile'));
+const SocialLoginInfo = React.lazy(() => import('@/pages/MyPage/SocialLoginInfo'));
+const MyCourse = React.lazy(() => import('@/pages/MyCourse'));
+const MyCourseDetail = React.lazy(() => import('@/pages/MyCourse/MyCourseDetail'));
+const AiRecommend = React.lazy(() => import('@/pages/AiRecommend'));
+const Culture = React.lazy(() => import('@/pages/Culture'));
+const CultureDetail = React.lazy(() => import('@/pages/Culture/CultureDetail'));
+const Notifications = React.lazy(() => import('@/pages/Notifications'));
+const Map = React.lazy(() => import('@/pages/Map'));
+const Community = React.lazy(() => import('@/pages/Community'));
+const Login = React.lazy(() => import('@/pages/Login'));
 
 const Root = () => {
   return (
@@ -39,37 +40,23 @@ const routes: RouteObject[] = [
   {
     element: <Root />,
     children: [
-      { index: true, element: <HomePage /> },
-      { path: '/login', element: <LoginPage /> },
-      { path: '/community', element: <CommunityPage /> },
-      {
-        path: '/my-page',
-        element: <MyPage />,
-      },
-      { path: '/my-page/notice', element: <NoticePage /> },
-      { path: '/my-page/edit-profile', element: <EditProfilePage /> },
-      { path: '/my-page/social-login-info', element: <SocialLoginInfoPage /> },
-      { path: '/course', element: <MyCoursePage /> },
-      {
-        path: '/course/:id',
-        element: <CourseDetailPage />,
-      },
-      { path: '/ai-recommend', element: <AiRecommendPage /> },
-      {
-        path: '/culture',
-        element: <CulturePage />,
-      },
-      {
-        path: '/culture/:type/:id',
-        element: <CultureDetailPage />,
-      },
-      {
-        path: '/notifications',
-        element: <NotificationsPage />,
-      },
+      { index: true, element: <Home /> },
+      { path: '/login', element: <Login /> },
+      { path: '/community', element: <Community /> },
+      { path: '/my-page', element: <MyPage /> },
+      { path: '/my-page/notice', element: <Notice /> },
+      { path: '/my-page/notice/:id', element: <NoticeDetail /> },
+      { path: '/my-page/edit-profile', element: <EditProfile /> },
+      { path: '/my-page/social-login-info', element: <SocialLoginInfo /> },
+      { path: '/course', element: <MyCourse /> },
+      { path: '/course/:id', element: <MyCourseDetail /> },
+      { path: '/ai-recommend', element: <AiRecommend /> },
+      { path: '/culture', element: <Culture /> },
+      { path: '/culture/:type/:id', element: <CultureDetail /> },
+      { path: '/notifications', element: <Notifications /> },
     ],
   },
-  { path: '/map', element: <MapPage /> },
+  { path: '/map', element: <Map /> },
   { path: '*', element: <Navigate to="/" /> },
 ];
 

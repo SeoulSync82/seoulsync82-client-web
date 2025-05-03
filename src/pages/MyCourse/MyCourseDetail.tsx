@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import withAuthGuard from '@/hoc/withAuthGuard';
 
@@ -36,7 +36,7 @@ const CourseDetailPage = () => {
 
   return (
     <div className="page flex h-screen flex-col bg-gray-100">
-      <NaverMap points={points} height={mapHeight} zoom={13} />
+      <NaverMap points={points} height={mapHeight} zoom={14} />
       <div
         onScroll={handleScroll}
         className="hide-scroll w-full flex-1 overflow-y-scroll rounded-t-[8px] bg-gray-50"
@@ -53,7 +53,7 @@ export default withAuthGuard(CourseDetailPage);
 const CourseDetailInfo = ({ data }: { data: any }) => {
   if (!data) return null;
 
-  const { line = [], course_name = '' } = data;
+  const { line = [], course_name = '', score = '0.0' } = data;
   const [stationName, courseName] = course_name.split(',');
 
   return (
@@ -75,23 +75,23 @@ const CourseDetailInfo = ({ data }: { data: any }) => {
         </div>
         <div className="mt-1 flex h-4 items-center gap-1">
           <SvgIcon name="FullStar" width={16} height={16} color="#FFC01D" />
-          <span className="flex items-center justify-center pt-1 text-14 font-semibold leading-4 text-gray-900">
-            4.2
+          <span className="flex items-center justify-center pt-1 text-sm font-semibold leading-4 text-gray-900">
+            {score}
           </span>
-          <span className="pt-1 text-14 font-normal leading-4 text-gray-400">(999+)</span>
+          <span className="pt-1 text-sm font-normal leading-4 text-gray-400">(0)</span>
         </div>
-        <div className="mt-4 flex h-20 items-center justify-center rounded-md border-[1px] border-[#F4F4F4] px-9 text-14 text-gray-400">
+        <div className="mt-4 flex h-20 items-center justify-center rounded-md border-[1px] border-[#F4F4F4] px-9 text-sm text-gray-400">
           <button className="h-13 flex w-1/3 flex-col items-center justify-between gap-2 border-r-[1px] border-[#F4F4F4]">
             <SvgIcon name="Bookmark" width={24} height={24} />
-            <span className="text-14 text-gray-400">북마크</span>
+            <span className="text-sm text-gray-400">북마크</span>
           </button>
           <button className="h-13 flex w-1/3 flex-col items-center justify-between gap-2 border-r-[1px] border-[#F4F4F4]">
             <SvgIcon name="Heart" width={24} height={24} />
-            <span className="text-14 text-gray-400">좋아요</span>
+            <span className="text-sm text-gray-400">좋아요</span>
           </button>
           <button className="h-13 flex w-1/3 flex-col items-center justify-between gap-2">
             <SvgIcon name="Write" width={24} height={24} />
-            <span className="text-14 text-gray-400">좋아요</span>
+            <span className="text-sm text-gray-400">좋아요</span>
           </button>
         </div>
       </div>
@@ -100,11 +100,33 @@ const CourseDetailInfo = ({ data }: { data: any }) => {
 };
 
 const PlaceListSection = ({ places }: { places: any[] }) => {
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && entry.intersectionRatio === 0.1) {
+          console.log('isIntersecting');
+          // fetchNextPage();
+        }
+      });
+    });
+
+    if (bottomRef.current) {
+      observer.observe(bottomRef.current);
+    }
+
+    return () => {
+      observer.unobserve(bottomRef.current as HTMLDivElement);
+    };
+  }, []);
+
   return (
     <div className="bg-white px-5 py-4">
       {places.map((place: any, idx: number) => (
         <CustomPlaceItem key={place.uuid} place={place} idx={idx} />
       ))}
+      <div ref={bottomRef} />
     </div>
   );
 };
