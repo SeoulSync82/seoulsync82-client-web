@@ -1,5 +1,5 @@
 import Image from '@/components/Image';
-import { ExhibitionItem, PopupItem } from '@/pages/CulturePage';
+import { ExhibitionItem, PopupItem } from '@/pages/Culture';
 import { convertDateToYMD } from '@/utils';
 import { Link } from 'react-router';
 
