@@ -22,10 +22,10 @@ class CourseService extends Service {
     return await this.service.post('/course/recommend/save', data);
   }
 
-  async getMyCourseHistory(size: number, last_id?: string) {
+  async getMyCourseHistory(size: number, last_id?: number) {
     return await this.service.get(`/course/my-history?size=${size}&last_id=${last_id}`);
   }
-  async getBookmarkedCourseList(size: number, last_id?: string) {
+  async getBookmarkedCourseList(size: number, last_id?: number) {
     return await this.service.get(`/bookmark?size=${size}&last_id=${last_id}`);
   }
   async getCourseDetail(uuid: string) {

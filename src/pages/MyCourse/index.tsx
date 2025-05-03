@@ -28,8 +28,7 @@ const MyCoursePage = () => {
   const { data: courseHistoryData } = useCourseRecommendHistory({
     enabled: type === 'recommended',
   });
-  const courseList =
-    type === 'liked' ? bookmarkedCourseData?.data.items : courseHistoryData?.data.items;
+  const courseList = type === 'liked' ? bookmarkedCourseData : courseHistoryData;
 
   const handleTabClick = (itemType: string) => {
     updateQueryParam('type', itemType);

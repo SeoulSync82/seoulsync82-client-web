@@ -3,71 +3,74 @@ import { PlaceCustomParams, SaveAiRecommendCourseRequest } from './types';
 import CourseService from './CourseService';
 import SubwayService from '../subway/SubwayService';
 
-const queryKeys = {
-  getCourseRecommend: (station_uuid: string, theme_uuid: string) =>
-    ['courseRecommend', station_uuid, theme_uuid] as const,
-  getPlaceCustomize: (place_uuids: string, place_type: string) =>
-    ['placeCustomize', place_uuids, place_type] as const,
-  saveCourseRecommend: ['saveCourseRecommend'] as const,
-  getCourseDetail: (uuid: string) => ['getCourseDetail', uuid] as const,
-};
-
-const queryOptions = {
-  getCourseRecommend: (station_uuid: string, theme_uuid: string = '', { enabled }: any) => ({
-    queryKey: queryKeys.getCourseRecommend(station_uuid, theme_uuid),
-    queryFn: () => CourseService.getCourseRecommend(station_uuid, theme_uuid),
-    enabled,
-    retryOnWindowFocus: false,
-    retryOnMount: false,
-  }),
-  getPlaceCustomize: (
-    { place_uuids, place_type, station_uuid, theme_uuid = '' }: PlaceCustomParams,
-    { enabled }: { enabled?: boolean } = {},
-  ) => ({
-    queryKey: queryKeys.getPlaceCustomize(place_uuids, place_type),
-    queryFn: () =>
-      CourseService.getPlaceCustomize({ place_uuids, place_type, station_uuid, theme_uuid }),
-    enabled,
-  }),
-  getCourseDetail: (uuid: string) => ({
-    queryKey: queryKeys.getCourseDetail(uuid),
-    queryFn: () => CourseService.getCourseDetail(uuid),
-  }),
-};
-
-export const useAiCourseRecommend = (
-  stationUuid: string,
-  themeUuid: string,
-  placeType: string,
-  { enabled }: any = {},
-) => useQuery(queryOptions.getCourseRecommend(stationUuid, themeUuid, { enabled }));
-
+// 내 코스, 북마크
 export const useBookmarkedCourseList = (
   { enabled }: { enabled?: boolean } = {},
   size: number = 10,
-  last_id: string = '',
 ) =>
-  useQuery({
+  useInfiniteQuery({
     queryKey: ['getBookmarkedCourseList', size],
-    queryFn: () => CourseService.getBookmarkedCourseList(size, last_id),
+    queryFn: ({ pageParam = 0 }) => CourseService.getBookmarkedCourseList(size, pageParam),
+    getNextPageParam: (lastPage) => {
+      const next = lastPage?.data?.last_item_id;
+      return next ? next : undefined;
+    },
+    select: (data) => {
+      return data.pages.flatMap((page) => page.data.items);
+    },
+    initialPageParam: 0,
     enabled,
   });
 
 export const useCourseRecommendHistory = (
   { enabled }: { enabled?: boolean } = {},
   size: number = 10,
-  last_id: string = '',
+) =>
+  useInfiniteQuery({
+    queryKey: ['getCourseRecommendHistory', size],
+    queryFn: ({ pageParam = 0 }) => CourseService.getMyCourseHistory(size, pageParam),
+    getNextPageParam: (lastPage) => {
+      console.log(lastPage.data.last_item_id);
+      const next = lastPage?.data?.last_item_id;
+      return next ? next : undefined;
+    },
+    select: (data) => {
+      return data.pages.flatMap((page) => page.data.items);
+    },
+    initialPageParam: 0,
+    enabled,
+  });
+
+// AI 코스 추천
+export const useAiCourseRecommend = (
+  stationUuid: string,
+  themeUuid: string,
+  placeType: string,
+  { enabled }: any = {},
 ) =>
   useQuery({
-    queryKey: ['getCourseRecommendHistory', size],
-    queryFn: () => CourseService.getMyCourseHistory(size, last_id),
+    queryKey: ['courseRecommend', stationUuid, themeUuid],
+    queryFn: () => CourseService.getCourseRecommend(stationUuid, themeUuid),
     enabled,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
 
 export const useAddCustomPlace = (
   params: PlaceCustomParams,
   { enabled }: { enabled: boolean } = { enabled: false },
-) => useQuery(queryOptions.getPlaceCustomize(params, { enabled }));
+) =>
+  useQuery({
+    queryKey: ['placeCustomize', params.place_uuids, params.place_type],
+    queryFn: () =>
+      CourseService.getPlaceCustomize({
+        place_uuids: params.place_uuids,
+        place_type: params.place_type,
+        station_uuid: params.station_uuid,
+        theme_uuid: params.theme_uuid,
+      }),
+    enabled,
+  });
 
 export const useAddCustomPlaceMutation = () => {
   const queryClient = useQueryClient();
@@ -79,14 +82,10 @@ export const useAddCustomPlaceMutation = () => {
   });
 };
 
-export const useCourseDetail = (uuid: string) => useQuery(queryOptions.getCourseDetail(uuid));
-
-export const useCourseDetailInfinite = (uuid: string, last_id: string) =>
-  useInfiniteQuery({
-    queryKey: ['courseDetail', uuid, last_id],
-    queryFn: ({ pageParam = 0 }) => CourseService.getCourseDetail(uuid, pageParam),
-    getNextPageParam: (lastPage, pages) => (lastPage.next_id ? pages.length + 1 : undefined),
-    initialPageParam: 0,
+export const useCourseDetail = (uuid: string) =>
+  useQuery({
+    queryKey: ['courseDetail', uuid],
+    queryFn: () => CourseService.getCourseDetail(uuid),
   });
 
 export const useCheckUsedCustomPlaces = (params: any, { enabled }: { enabled: boolean }) =>
