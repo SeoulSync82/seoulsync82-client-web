@@ -1,15 +1,24 @@
-import { useUserProfile } from '@/service/user/useUserService';
-import { useUserStore } from '@/stores/userSlice';
+import { SNSType } from '@/components/SvgIcon/type';
+import Service from '@/service/Service';
+import { useUserLogout } from '@/service/user/useUserService';
 
 const useLogin = () => {
-  const isLoggedIn = localStorage.getItem('accessToken') !== null;
+  const isLoggedIn = Boolean(localStorage.getItem('accessToken'));
+  const { mutate: userLogout } = useUserLogout();
 
-  const { data: userProfileData } = useUserProfile({ enabled: !!isLoggedIn });
-  const { setUserProfile } = useUserStore();
+  const handleLogin = (authType: SNSType) => {
+    const service = new Service();
+    const socialLoginUrl = `${service.service.defaults.baseURL}/auth/login/${authType}`;
+    window.location.href = socialLoginUrl;
+  };
 
-  setUserProfile(userProfileData?.data);
+  const handleLogout = () => {
+    userLogout();
+    localStorage.removeItem('accessToken');
+    window.location.href = '/';
+  };
 
-  return { isLoggedIn, userProfileData };
+  return { isLoggedIn, handleLogin, handleLogout };
 };
 
 export default useLogin;
