@@ -5,7 +5,7 @@ import DefaultHeader from './DefaultHeader';
 import { headerVariants } from './variants';
 import useUserStore from '@/stores/userSlice';
 import { cn } from '@/utils/tailwindcss';
-import { useEditProfile } from '@/pages/MyPage/EditProfilePage';
+import { useEditProfile } from '@/pages/MyPage/EditProfile';
 
 interface HeaderProps {
   pageName: string;
