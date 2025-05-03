@@ -7,19 +7,21 @@ const queryKeys = {
     ['getNotificationList', size, nextPage] as const,
 };
 
-export const useNotificationList = (size: number = 10, nextPage: string = '') => {
-  return useInfiniteQuery({
-    queryKey: queryKeys.notificationList(size, nextPage),
-    queryFn: ({ pageParam = nextPage }) =>
+export const useNotificationList = (size: number = 5) =>
+  useInfiniteQuery({
+    queryKey: ['notificationList', size],
+    queryFn: ({ pageParam = 0 }) =>
       NotificationService.getNotificationList(size, pageParam.toString()),
-    getNextPageParam: (lastPage) => lastPage.data.next_page || undefined,
-    initialPageParam: nextPage,
+    getNextPageParam: (lastPage) => {
+      const next = lastPage?.data?.last_item_id;
+      return next ? next : undefined;
+    },
+    initialPageParam: 0,
     select: (data) => {
       console.log(data.pages.flatMap((page) => page.data.items));
       return data.pages.flatMap((page) => page.data.items);
     },
   });
-};
 
 export const useSetReadNotification = () => {
   const queryClient = useQueryClient();
