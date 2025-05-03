@@ -1,31 +1,26 @@
 import SvgIcon from '@/components/SvgIcon';
-import { ReactNode } from 'react';
-import { Link } from 'react-router-dom';
-import { useUserLogout } from '@/service/user/useUserService';
+import { ReactNode, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { UserProfile, UserProfileStore } from '@/stores/userSlice';
+import useUserStore from '@/stores/userSlice';
 import Image from '@/components/Image';
-import { useUserStore } from '@/stores/userSlice';
 import useLogin from '@/hooks/useLogin';
-
-type UserProfile = {
-  name: string;
-  profile_image: string;
-  uuid: string;
-};
+import { useUserProfile } from '@/service/user/useUserService';
 
 const MyPage = () => {
-  const { isLoggedIn } = useLogin();
-  const { userProfile } = useUserStore();
-  const { mutate: userLogout } = useUserLogout();
+  const { isLoggedIn, handleLogout } = useLogin();
+  const { data: userProfileData } = useUserProfile({ enabled: !!isLoggedIn });
+  const setUserProfile = useUserStore((state: UserProfileStore) => state.setUserProfile);
 
-  const handleLogout = () => {
-    userLogout();
-    localStorage.removeItem('accessToken');
-    window.location.href = '/';
-  };
+  useEffect(() => {
+    if (userProfileData?.data) {
+      setUserProfile(userProfileData.data);
+    }
+  }, [userProfileData?.data, setUserProfile]);
 
   return (
     <div className="page w-full overflow-y-auto bg-white">
-      <LoginBannerSection isLoggedIn={isLoggedIn} userProfile={userProfile} />
+      <LoginBannerSection isLoggedIn={isLoggedIn} userProfile={userProfileData?.data} />
       <MySection />
       <Divider />
       <ServiceUsageSection />
@@ -48,29 +43,24 @@ const LoginBannerSection = ({
     apple: '애플',
     naver: '네이버',
   };
-
-  const profileContent = (
-    <>
-      <UserProfileImage profileImage={userProfile?.profile_image} />
-      <UserProfileInfo userProfile={userProfile} snsTypes={snsTypes} />
-    </>
-  );
+  const navigate = useNavigate();
 
   return (
     <section className="max-container mt-4 h-24 px-5">
       {isLoggedIn ? (
-        <Link
+        <div
           className="flex items-center gap-3 rounded-md bg-gray-50 px-5 py-4"
-          to="/my-page/edit-profile"
+          onClick={() => {
+            navigate('/my-page/edit-profile', { state: userProfile });
+          }}
         >
-          {profileContent}
-        </Link>
+          <UserProfileImage profileImage={userProfile?.profile_image} />
+          <UserProfileInfo isLoggedIn={isLoggedIn} userProfile={userProfile} snsTypes={snsTypes} />
+        </div>
       ) : (
         <div className="flex items-center gap-3 rounded-md bg-gray-50 px-5 py-4">
-          {profileContent}
-          <Link to="/login" className="text-sm font-bold text-primary-500">
-            빠르게 로그인하기!
-          </Link>
+          <UserProfileImage profileImage={userProfile?.profile_image} />
+          <UserProfileInfo isLoggedIn={isLoggedIn} userProfile={userProfile} snsTypes={snsTypes} />
         </div>
       )}
     </section>
@@ -88,26 +78,32 @@ const UserProfileImage = ({ profileImage }: { profileImage: string }) => (
 );
 
 const UserProfileInfo = ({
+  isLoggedIn,
   userProfile,
   snsTypes,
 }: {
+  isLoggedIn: boolean;
   userProfile: UserProfile;
   snsTypes: any;
 }) => {
   const userName = userProfile?.name;
   const userType = userProfile?.type as keyof typeof snsTypes;
-  const loginMessage = userName ? (
+  const loginMessage = isLoggedIn ? (
     <div className="text-sm font-normal text-gray-400">
       <span className="font-bold text-primary-500">{snsTypes[userType]}</span>에서 마지막 로그인!
     </div>
-  ) : null;
+  ) : (
+    <Link to="/login" className="text-sm font-bold text-primary-500">
+      빠르게 로그인하기!
+    </Link>
+  );
 
   return (
     <div className="flex flex-col gap-1">
       <span className="text-base font-semibold text-gray-900">
-        {userName || '로그인이 필요해요'}
-        {loginMessage}
+        {isLoggedIn ? userName : '로그인이 필요해요'}
       </span>
+      {loginMessage}
     </div>
   );
 };

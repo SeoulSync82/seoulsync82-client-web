@@ -1,56 +1,28 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation } from 'react-router';
 import HomeHeader from './HomeHeader';
 import DefaultHeader from './DefaultHeader';
 import { headerVariants } from './variants';
-import { useEditUserProfile } from '@/service/user/useUserService';
-import { useUserStore } from '@/stores/userSlice';
+import useUserStore from '@/stores/userSlice';
 import { cn } from '@/utils/tailwindcss';
+import { useEditProfile } from '@/pages/MyPage/EditProfilePage';
 
-type HeaderProps = {
+interface HeaderProps {
   pageName: string;
   rightActions?: React.ReactNode;
-};
+}
 
-type HeaderConfigItem = {
+interface HeaderConfigItem {
   match: (path: string) => boolean;
   pageName: string;
   Component: React.FC<HeaderProps>;
   rightActions?: React.ReactNode;
-};
+}
 
 const Header: React.FC = () => {
-  const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { mutate: editUserProfile } = useEditUserProfile();
-  const { userProfile, setUserNameValidation, userNameValidation } = useUserStore();
-
-  const handleEditProfile = () => {
-    editUserProfile(
-      {
-        name: userProfile.name as string,
-        profile_image: userProfile.profile_image as string,
-        uuid: userProfile.uuid as string,
-      },
-      {
-        onSuccess: () => {
-          setUserNameValidation({
-            message: '굿! 멋진 닉네임이에요',
-            errorMessage: '',
-          });
-          navigate('/my-page');
-        },
-        onError: (error: any) => {
-          console.error(error.response?.data.status.includes('SWEAR_WORD'));
-          setUserNameValidation({
-            errorMessage: error.response?.data.status.includes('SWEAR_WORD')
-              ? '닉네임에 사용할 수 없는 단어가 포함되어 있어요.'
-              : '',
-          });
-        },
-      },
-    );
-  };
+  const { userProfile, userNameValidation } = useUserStore();
+  const { handleEditProfile } = useEditProfile();
 
   const makeHeaderConfig = (): HeaderConfigItem[] => {
     return [
