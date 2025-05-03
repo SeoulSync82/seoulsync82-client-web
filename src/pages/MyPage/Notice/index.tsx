@@ -7,16 +7,14 @@ export default function NoticePage() {
 
   return (
     <div className="page px-5">
-      {noticesList?.pages?.[0]?.data?.items?.map(
-        (notice: { uuid: string; title: string; published_at: string }) => (
-          <NoticeItem
-            key={notice.uuid}
-            title={notice.title}
-            date={convertDateToYMD(notice.published_at, 'dot')}
-            uuid={notice.uuid}
-          />
-        ),
-      )}
+      {noticesList?.map((notice: { uuid: string; title: string; published_at: string }) => (
+        <NoticeItem
+          key={notice.uuid}
+          title={notice.title}
+          date={convertDateToYMD(notice.published_at, 'dot')}
+          uuid={notice.uuid}
+        />
+      ))}
     </div>
   );
 }
