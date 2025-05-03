@@ -1,28 +1,27 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 
-export interface UserProfileState {
-  userProfile: {
-    name: string;
-    profile_image: string;
-    uuid: string;
-    type: string;
-    created_at: string;
-    email: string;
-    id: string;
-  };
+export interface UserProfile {
+  name: string;
+  profile_image: string;
+  uuid: string;
+  type: string;
+  created_at: string;
+}
+export interface UserProfileStore {
+  userProfile: UserProfile;
   userNameValidation: {
     message: string;
     errorMessage: string;
   };
-  setUserProfile: (userProfile: Partial<UserProfileState['userProfile']>) => void;
+  setUserProfile: (userProfile: Partial<UserProfileStore['userProfile']>) => void;
   setUserNameValidation: (
-    userNameValidation: Partial<UserProfileState['userNameValidation']>,
+    userNameValidation: Partial<UserProfileStore['userNameValidation']>,
   ) => void;
 }
 
-export const useUserStore = create(
-  immer<UserProfileState>((set) => ({
+const useUserStore = create(
+  immer<UserProfileStore>((set) => ({
     userProfile: {
       name: '',
       profile_image: '',
@@ -46,3 +45,5 @@ export const useUserStore = create(
       }),
   })),
 );
+
+export default useUserStore;
