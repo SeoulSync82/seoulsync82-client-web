@@ -87,7 +87,7 @@ module.exports = {
             flexDirection: 'column',
             alignItems: 'flex-start',
             width: '100%',
-            paddingBottom: '120px',
+            paddingBottom: '86px',
             overflowY: 'auto',
             backgroundColor: 'white',
             '&::-webkit-scrollbar': {
