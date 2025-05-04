@@ -71,8 +71,7 @@ const CulturePage = () => {
         totalCount={cultureData?.total_count}
         handleSortClick={handleSortClick}
       />
-      <CultureList cultureData={cultureData?.items || []} />
-      <div ref={bottomRef} />
+      <CultureList cultureData={cultureData?.items || []} bottomRef={bottomRef} />
     </div>
   );
 };
@@ -108,13 +107,18 @@ const SortOptions = ({
   </div>
 );
 
-const CultureList = ({ cultureData }: { cultureData: (ExhibitionItem & PopupItem)[] }) => (
-  <div className="h-[calc(100dvh-238px)] w-full overflow-y-scroll">
-    <div className="overflow-y-hidden">
-      {cultureData?.map((item: ExhibitionItem & PopupItem) => (
-        <CulturePlaceItem key={`culture-${item.uuid}`} {...item} />
-      ))}
-    </div>
+const CultureList = ({
+  cultureData,
+  bottomRef,
+}: {
+  cultureData: (ExhibitionItem & PopupItem)[];
+  bottomRef: React.RefObject<HTMLDivElement>;
+}) => (
+  <div className="hide-scroll h-[calc(100dvh-238px)] w-full overflow-y-scroll">
+    {cultureData?.map((item: ExhibitionItem & PopupItem) => (
+      <CulturePlaceItem key={`culture-${item.uuid}`} {...item} />
+    ))}
+    <div ref={bottomRef} />
   </div>
 );
 
