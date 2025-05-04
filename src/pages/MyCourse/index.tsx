@@ -6,7 +6,6 @@ import {
   useBookmarkedCourseList,
   useCourseRecommendHistory,
 } from '@/service/course/useCourseService';
-import { useEffect } from 'react';
 import { useQueryParams } from '@/hooks/useQueryParams';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 
@@ -19,17 +18,12 @@ const MyCoursePage = () => {
   const { searchParams, updateQueryParam } = useQueryParams();
   const type = searchParams.get('type') || 'liked';
 
-  // useEffect(() => {
-  //   if (!searchParams.get('type')) {
-  //     updateQueryParam('type', 'liked');
-  //   }
-  // }, [type, updateQueryParam, searchParams]);
-
   const {
     data: bookmarkedCourseData,
     hasNextPage: bookmarkedCourseHasNextPage,
     fetchNextPage: fetchBookmarkedCourseNextPage,
   } = useBookmarkedCourseList({ enabled: type === 'liked' });
+
   const {
     data: courseHistoryData,
     hasNextPage: courseHistoryHasNextPage,
@@ -37,6 +31,7 @@ const MyCoursePage = () => {
   } = useCourseRecommendHistory({
     enabled: type === 'recommended',
   });
+
   const courseList = type === 'liked' ? bookmarkedCourseData : courseHistoryData;
   const hasNextPage = type === 'liked' ? bookmarkedCourseHasNextPage : courseHistoryHasNextPage;
   const fetchNextPage =
@@ -51,21 +46,23 @@ const MyCoursePage = () => {
   return (
     <div className="page w-full">
       <TabButtonGroup tabType={type} onClickTab={handleTabClick} tabItems={tabItems} />
-      <CourseList courseList={courseList || []} />
-      <div ref={bottomRef} />
+      <CourseList courseList={courseList || []} bottomRef={bottomRef} />
     </div>
   );
 };
 
 const CourseList = ({
   courseList,
+  bottomRef,
 }: {
-  courseList: (CourseListItemProps & { [key: string]: any })[];
+  courseList: CourseListItemProps[];
+  bottomRef: React.RefObject<HTMLDivElement>;
 }) => (
   <div className="hide-scroll h-[calc(100dvh-192px)] w-full overflow-y-scroll">
-    <div className="overflow-y-hidden">
-      {courseList?.map((item) => <CourseListItem key={item.course_uuid} {...item} />)}
-    </div>
+    {courseList?.map((item: CourseListItemProps) => (
+      <CourseListItem key={item.course_uuid} {...item} />
+    ))}
+    <div ref={bottomRef} />
   </div>
 );
 
