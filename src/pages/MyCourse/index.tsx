@@ -8,6 +8,7 @@ import {
 } from '@/service/course/useCourseService';
 import { useEffect } from 'react';
 import { useQueryParams } from '@/hooks/useQueryParams';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 
 const tabItems = [
   { label: '북마크', type: 'liked' },
@@ -18,17 +19,30 @@ const MyCoursePage = () => {
   const { searchParams, updateQueryParam } = useQueryParams();
   const type = searchParams.get('type') || 'liked';
 
-  useEffect(() => {
-    if (!searchParams.get('type')) {
-      updateQueryParam('type', 'liked');
-    }
-  }, [type, updateQueryParam, searchParams]);
+  // useEffect(() => {
+  //   if (!searchParams.get('type')) {
+  //     updateQueryParam('type', 'liked');
+  //   }
+  // }, [type, updateQueryParam, searchParams]);
 
-  const { data: bookmarkedCourseData } = useBookmarkedCourseList({ enabled: type === 'liked' });
-  const { data: courseHistoryData } = useCourseRecommendHistory({
+  const {
+    data: bookmarkedCourseData,
+    hasNextPage: bookmarkedCourseHasNextPage,
+    fetchNextPage: fetchBookmarkedCourseNextPage,
+  } = useBookmarkedCourseList({ enabled: type === 'liked' });
+  const {
+    data: courseHistoryData,
+    hasNextPage: courseHistoryHasNextPage,
+    fetchNextPage: fetchCourseHistoryNextPage,
+  } = useCourseRecommendHistory({
     enabled: type === 'recommended',
   });
   const courseList = type === 'liked' ? bookmarkedCourseData : courseHistoryData;
+  const hasNextPage = type === 'liked' ? bookmarkedCourseHasNextPage : courseHistoryHasNextPage;
+  const fetchNextPage =
+    type === 'liked' ? fetchBookmarkedCourseNextPage : fetchCourseHistoryNextPage;
+
+  const { bottomRef } = useIntersectionObserver(hasNextPage, fetchNextPage);
 
   const handleTabClick = (itemType: string) => {
     updateQueryParam('type', itemType);
@@ -37,7 +51,8 @@ const MyCoursePage = () => {
   return (
     <div className="page w-full">
       <TabButtonGroup tabType={type} onClickTab={handleTabClick} tabItems={tabItems} />
-      <CourseList courseList={courseList} />
+      <CourseList courseList={courseList || []} />
+      <div ref={bottomRef} />
     </div>
   );
 };
