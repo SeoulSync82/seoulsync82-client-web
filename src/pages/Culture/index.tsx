@@ -1,5 +1,4 @@
 import { cn } from '@/utils/tailwindcss';
-import { useEffect } from 'react';
 import { usePlaceExhibition, usePlacePopup } from '@/service/place/usePlaceService';
 import CulturePlaceItem from '@/components/pages/culture/CulturePlaceItem';
 import TabButtonGroup from '@/components/TabButtonGroup';
