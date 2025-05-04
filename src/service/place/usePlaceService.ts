@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import PlaceService from './PlaceService';
 
 export const usePlaceCulture = (size: number = 10, last_id?: number) => {
@@ -8,25 +8,39 @@ export const usePlaceCulture = (size: number = 10, last_id?: number) => {
   });
 };
 
-export const usePlaceExhibition = (
-  size: number = 10,
-  last_id?: number,
-  order: 'latest' | 'deadline' = 'latest',
-) => {
-  return useQuery({
-    queryKey: ['placeExhibition', size, last_id, order],
-    queryFn: () => PlaceService.getPlaceExhibition(size, last_id, order),
+export const usePlaceExhibition = (order: 'latest' | 'deadline' = 'latest', size: number = 10) => {
+  return useInfiniteQuery({
+    queryKey: ['placeExhibition', size, order],
+    queryFn: ({ pageParam = 0 }) => PlaceService.getPlaceExhibition(size, pageParam, order),
+    getNextPageParam: (lastPage) => {
+      const next = lastPage?.data?.last_item_id;
+      return next ? next : undefined;
+    },
+    initialPageParam: 0,
+    select: (data) => {
+      return {
+        items: data.pages.flatMap((page) => page.data.items),
+        total_count: data.pages[0].data.total_count,
+      };
+    },
   });
 };
 
-export const usePlacePopup = (
-  size: number = 10,
-  last_id?: number,
-  order: 'latest' | 'deadline' = 'latest',
-) => {
-  return useQuery({
-    queryKey: ['placePopup', size, last_id, order],
-    queryFn: () => PlaceService.getPlacePopup(size, last_id, order),
+export const usePlacePopup = (order: 'latest' | 'deadline' = 'latest', size: number = 10) => {
+  return useInfiniteQuery({
+    queryKey: ['placePopup', size, order],
+    queryFn: ({ pageParam = 0 }) => PlaceService.getPlacePopup(size, pageParam, order),
+    getNextPageParam: (lastPage) => {
+      const next = lastPage?.data?.last_item_id;
+      return next ? next : undefined;
+    },
+    initialPageParam: 0,
+    select: (data) => {
+      return {
+        items: data.pages.flatMap((page) => page.data.items),
+        total_count: data.pages[0].data.total_count,
+      };
+    },
   });
 };
 

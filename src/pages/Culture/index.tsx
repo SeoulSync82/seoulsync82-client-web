@@ -4,6 +4,7 @@ import { usePlaceExhibition, usePlacePopup } from '@/service/place/usePlaceServi
 import CulturePlaceItem from '@/components/pages/culture/CulturePlaceItem';
 import TabButtonGroup from '@/components/TabButtonGroup';
 import { useQueryParams } from '@/hooks/useQueryParams';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 
 interface CultureItem {
   address: string;
@@ -15,6 +16,7 @@ interface CultureItem {
   top_level_address: string;
   uuid: string;
 }
+
 export interface PopupItem extends CultureItem {}
 export interface ExhibitionItem extends CultureItem {
   closed_days: string;
@@ -32,25 +34,28 @@ const sortTypes = [
   { type: 'deadline', label: '마감임박순' },
 ];
 
-const useCultureData = (order: SortCultureOrder, type: string | null) => {
-  const { data: exhibitionData } = usePlaceExhibition(10, 0, order);
-  const { data: popupData } = usePlacePopup(10, 0, order);
-  return type === 'exhibitions' ? exhibitionData : popupData;
-};
-
 const CulturePage = () => {
   const { searchParams, updateQueryParam } = useQueryParams();
   const type = searchParams.get('type');
-  const order = searchParams.get('order') ?? 'latest';
+  const order: SortCultureOrder = (searchParams.get('order') ?? 'latest') as SortCultureOrder;
 
-  const cultureData = useCultureData(order as SortCultureOrder, type);
+  const {
+    data: exhibitionData,
+    hasNextPage: exhibitionHasNextPage,
+    fetchNextPage: fetchExhibitionNextPage,
+  } = usePlaceExhibition(order);
 
-  useEffect(() => {
-    if (!type || !order) {
-      updateQueryParam('type', 'exhibitions');
-      updateQueryParam('order', 'latest');
-    }
-  }, [type, order, updateQueryParam]);
+  const {
+    data: popupData,
+    hasNextPage: popupHasNextPage,
+    fetchNextPage: fetchPopupNextPage,
+  } = usePlacePopup(order);
+
+  const cultureData = type === 'exhibitions' ? exhibitionData : popupData;
+  const hasNextPage = type === 'exhibitions' ? exhibitionHasNextPage : popupHasNextPage;
+  const fetchNextPage = type === 'exhibitions' ? fetchExhibitionNextPage : fetchPopupNextPage;
+
+  const { bottomRef } = useIntersectionObserver(hasNextPage, fetchNextPage);
 
   const handleTabClick = (tabType: string) => {
     updateQueryParam('type', tabType);
@@ -64,10 +69,11 @@ const CulturePage = () => {
       <TabButtonGroup tabType={type as string} onClickTab={handleTabClick} tabItems={tabItems} />
       <SortOptions
         sortType={order as SortCultureOrder}
-        totalCount={cultureData?.data?.total_count}
+        totalCount={cultureData?.total_count}
         handleSortClick={handleSortClick}
       />
-      <CultureList cultureData={cultureData?.data} />
+      <CultureList cultureData={cultureData?.items || []} />
+      <div ref={bottomRef} />
     </div>
   );
 };
@@ -103,14 +109,10 @@ const SortOptions = ({
   </div>
 );
 
-const CultureList = ({
-  cultureData,
-}: {
-  cultureData: { items: (ExhibitionItem & PopupItem)[] };
-}) => (
+const CultureList = ({ cultureData }: { cultureData: (ExhibitionItem & PopupItem)[] }) => (
   <div className="h-[calc(100dvh-238px)] w-full overflow-y-scroll">
     <div className="overflow-y-hidden">
-      {cultureData?.items.map((item: ExhibitionItem & PopupItem) => (
+      {cultureData?.map((item: ExhibitionItem & PopupItem) => (
         <CulturePlaceItem key={`culture-${item.uuid}`} {...item} />
       ))}
     </div>
