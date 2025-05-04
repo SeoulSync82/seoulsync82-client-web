@@ -8,7 +8,7 @@ import SwiperCard from '@/components/SwiperCard';
 const HomePage = () => {
   return (
     <div className="page gap-2.5 overflow-y-auto pb-[109px]">
-      <Section title="주목해야할 전시 · 팝업" link="/culture">
+      <Section title="주목해야할 전시 · 팝업" link="/culture?type=exhibitions&order=latest">
         <Suspense fallback={<SwiperSectionSkeleton />}>
           <SwiperSection />
         </Suspense>
