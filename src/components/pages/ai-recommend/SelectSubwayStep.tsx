@@ -1,6 +1,6 @@
 import { SelectStationButton } from '@/components/Button';
 import { SelectSubwayButton } from '@/components/Button';
-import { useAppStore } from '@/stores';
+import useCourseStore from '@/stores/courseSlice';
 import { AxiosResponse } from 'axios';
 
 interface SelectSubwayStepProps {
@@ -11,7 +11,8 @@ interface SelectSubwayStepProps {
 }
 
 const SelectSubwayStep = ({ data }: SelectSubwayStepProps) => {
-  const { customCourseData, setCustomCourseData } = useAppStore((state) => state);
+  const customCourseData = useCourseStore((state) => state.customCourseData);
+  const setCustomCourseData = useCourseStore((state) => state.setCustomCourseData);
 
   const handleSelectSubwayLine = (lineUuid: string) => {
     setCustomCourseData({
@@ -27,6 +28,8 @@ const SelectSubwayStep = ({ data }: SelectSubwayStepProps) => {
       stationUuid,
     });
   };
+
+  console.log(data);
 
   return (
     <div className="flex w-full">

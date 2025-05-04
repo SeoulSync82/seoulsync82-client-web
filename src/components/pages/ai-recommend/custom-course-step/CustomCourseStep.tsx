@@ -1,10 +1,8 @@
-import React, { Suspense, useEffect, useRef, createRef, useState, useCallback } from 'react';
-import { useAppStore } from '@/stores';
+import React, { useEffect, useRef, createRef, useState, useCallback } from 'react';
 import useModal from '@/hooks/useModal';
 import CustomPlaceItem from './CustomPlaceItem';
 import AddPlaceButton from './AddPlaceButton';
-import Loading from '@/components/Loading';
-import { flushSync } from 'react-dom';
+import useCourseStore from '@/stores/courseSlice';
 
 const BottomSheetModal = React.lazy(() => import('@/components/Modal/BottomSheetModal'));
 const AddPlaceModal = React.lazy(() => import('@/components/Modal/AddCustomPlaceModal'));
@@ -16,8 +14,8 @@ interface CustomCourseStepProps {
 }
 
 const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
-  const customCourseData = useAppStore((state) => state.customCourseData);
-  const setCustomCourseData = useAppStore((state) => state.setCustomCourseData);
+  const customCourseData = useCourseStore((state) => state.customCourseData);
+  const setCustomCourseData = useCourseStore((state) => state.setCustomCourseData);
 
   const [bottomSheetChildHTML, setBottomSheetChildHTML] = useState<string>('');
   const [bottomSheetChildUuid, setBottomSheetChildUuid] = useState<string>('');
@@ -68,21 +66,13 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
   );
 
   const handleConfirmBottomSheetModal = useCallback(async () => {
-    flushSync(() => {
-      const filteredList = customCourseData.placeList.filter(
-        (p) => p.uuid !== bottomSheetChildUuid,
-      );
-      setCustomCourseData({
-        ...customCourseData,
-        placeList: filteredList,
-      });
+    const filteredList = customCourseData.placeList.filter((p) => p.uuid !== bottomSheetChildUuid);
+    setCustomCourseData({
+      ...customCourseData,
+      placeList: filteredList,
     });
-
-    flushSync(() => {
-      closeBottomSheetModal();
-    });
-
-    alert('장소가 삭제되었어요');
+    closeBottomSheetModal();
+    alert('장소가 삭제되었어요'); // TODO: 토스트 메시지 추가
   }, [bottomSheetChildUuid, closeBottomSheetModal, customCourseData, setCustomCourseData]);
 
   return (
@@ -99,20 +89,14 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
           />
         ))}
       </div>
-      <Suspense fallback={<Loading />}>
-        <AddPlaceModal isOpen={isModalOpen} onConfirm={closeModal} onClose={closeModal} />
-      </Suspense>
-      <Suspense fallback={<Loading />}>
-        <BottomSheetModal
-          isOpen={isBottomSheetModalOpen}
-          onClose={closeBottomSheetModal}
-          onConfirm={handleConfirmBottomSheetModal}
-        >
-          {bottomSheetChildHTML && (
-            <div dangerouslySetInnerHTML={{ __html: bottomSheetChildHTML }} />
-          )}
-        </BottomSheetModal>
-      </Suspense>
+      <AddPlaceModal isOpen={isModalOpen} onConfirm={closeModal} onClose={closeModal} />
+      <BottomSheetModal
+        isOpen={isBottomSheetModalOpen}
+        onClose={closeBottomSheetModal}
+        onConfirm={handleConfirmBottomSheetModal}
+      >
+        {bottomSheetChildHTML && <div dangerouslySetInnerHTML={{ __html: bottomSheetChildHTML }} />}
+      </BottomSheetModal>
     </div>
   );
 };

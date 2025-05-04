@@ -1,5 +1,5 @@
 import { CapsuleButton } from '@/components/Button';
-import { useAppStore } from '@/stores';
+import useCourseStore from '@/stores/courseSlice';
 
 interface SelectThemeStepProps {
   data: {
@@ -8,12 +8,14 @@ interface SelectThemeStepProps {
 }
 
 const SelectThemeStep = ({ data }: SelectThemeStepProps) => {
-  const customCourseData = useAppStore((state) => state.customCourseData);
-  const setCustomCourseData = useAppStore((state) => state.setCustomCourseData);
+  const customCourseData = useCourseStore((state) => state.customCourseData);
+  const setCustomCourseData = useCourseStore((state) => state.setCustomCourseData);
 
   const selectedThemeName = data?.themeData?.items?.find(
     (item: any) => item.uuid === customCourseData.themeUuid,
   )?.theme_name;
+
+  console.log(data);
 
   return (
     <div className="flex flex-col">
