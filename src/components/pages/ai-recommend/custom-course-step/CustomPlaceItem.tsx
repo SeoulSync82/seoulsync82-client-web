@@ -36,7 +36,7 @@ const CustomPlaceItem = forwardRef<HTMLDivElement, CustomPlaceItemProps>(
       <div ref={ref} className="mb-4 flex min-h-[70px] w-full items-start">
         <div className="flex w-full">
           <CustomPlaceFlag number={idx + 1} />
-          <div className="flex w-full flex-col items-center justify-start">
+          <div className="flex w-full flex-col items-center justify-start gap-2">
             <CustomPlaceHeader place={place} onDelete={handleDelete} />
             <CustomPlaceContent place={place} />
           </div>
@@ -50,7 +50,7 @@ export default CustomPlaceItem;
 
 const CustomPlaceHeader = ({ place, onDelete }: { place: any; onDelete?: () => void }) => {
   return (
-    <div className="flex w-full items-center justify-between pl-4">
+    <div className="flex h-8 w-full items-center justify-between pl-4">
       <div className="text-14 font-normal text-gray-300">
         {CustomPlaceTypes[place.place_type as keyof typeof CustomPlaceTypes]}
       </div>
@@ -61,15 +61,22 @@ const CustomPlaceHeader = ({ place, onDelete }: { place: any; onDelete?: () => v
 
 const CustomPlaceContent = ({ place }: { place: any }) => {
   return (
-    <Accordion type="multiple" defaultValue={[place.uuid]} className="w-full" id={`accordion`}>
-      <AccordionItem value={place.uuid}>
-        <AccordionTrigger>{place.place_name}</AccordionTrigger>
-        <AccordionContent>
-          <div className="flex w-full items-center gap-[10px] rounded-lg bg-gray-50 p-4">
+    <Accordion
+      type="multiple"
+      defaultValue={[place.uuid]}
+      className="flex w-full items-center gap-2.5 rounded-lg"
+      id="accordion"
+    >
+      <AccordionItem value={place.uuid} className="w-full">
+        <AccordionTrigger className="rounded-lg bg-white data-[state=open]:bg-gray-50">
+          {place.place_name}
+        </AccordionTrigger>
+        <AccordionContent className="rounded-lg bg-gray-50 p-4 pt-0">
+          <div className="flex w-full items-center gap-2.5">
             <img
               src={place.thumbnail}
               alt={place.place_name}
-              className="size-[68px] min-w-[68px] rounded-lg object-cover"
+              className="h-[68px] w-[68px] object-cover"
             />
             <div className="flex w-full items-center justify-between gap-[22px]">
               <div>
@@ -97,12 +104,11 @@ const CustomPlaceContent = ({ place }: { place: any }) => {
     </Accordion>
   );
 };
-
 const CustomPlaceFlag = ({ number }: { number: number }) => {
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="relative h-fit w-fit">
-        <SvgIcon name="Line" width={33} height={33} active={false} />
+        <SvgIcon name="Line" width={32} height={32} active={false} />
         <div className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-2 text-10 text-white">
           {number}
         </div>
