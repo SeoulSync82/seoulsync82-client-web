@@ -1,11 +1,11 @@
 import { Modal } from '..';
 import SvgIcon from '@/components/SvgIcon';
-import { useAppStore } from '@/stores';
 import { useState, useEffect } from 'react';
 import { cva } from 'class-variance-authority';
 import clsx from 'clsx';
 import { useAddCustomPlace, useCheckUsedCustomPlaces } from '@/service/course/useCourseService';
 import { ModalProps } from '../Modal';
+import useCourseStore from '@/stores/courseSlice';
 
 export type PlaceType = 'Restaurant' | 'Cafe' | 'Bar' | 'Shopping' | 'Culture' | 'Entertainment';
 export type PlaceTypeItem = {
@@ -26,12 +26,12 @@ const placeTypes: PlaceTypeItem[] = [
 export interface AddCustomPlaceModalProps extends ModalProps {}
 
 export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
-  const { onClose, ...rest } = props;
+  const { isOpen: isModalOpen, onClose: onCloseModal, ...rest } = props;
 
   const [selectedPlaceType, setSelectedPlaceType] = useState('');
 
-  const customCourseData = useAppStore((state) => state.customCourseData);
-  const setCustomCourseData = useAppStore((state) => state.setCustomCourseData);
+  const customCourseData = useCourseStore((state) => state.customCourseData);
+  const setCustomCourseData = useCourseStore((state) => state.setCustomCourseData);
 
   const {
     data: addPlaceResponse,
@@ -45,28 +45,26 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
       theme_uuid: customCourseData.themeUuid,
     },
     {
-      enabled: !!selectedPlaceType,
+      enabled: !!selectedPlaceType && !isModalOpen,
     },
   );
 
   // 사용된 장소 체크
-  const { refetch: refetchCheckUsedPlaces, isFetching: isCheckingUsedPlaces } =
-    useCheckUsedCustomPlaces(
-      {
-        place_type: selectedPlaceType.toUpperCase(),
-        place_uuids: customCourseData.placeList?.map((p) => p.uuid).join(','),
-        station_uuid: customCourseData.stationUuid,
-        line_uuid: customCourseData.lineUuid,
-        theme_uuid: customCourseData.themeUuid,
-      },
-      {
-        enabled: false,
-      },
-    );
+  const { isFetching: isCheckingUsedPlaces } = useCheckUsedCustomPlaces(
+    {
+      place_type: selectedPlaceType.toUpperCase(),
+      place_uuids: customCourseData.placeList?.map((p) => p.uuid).join(','),
+      station_uuid: customCourseData.stationUuid,
+      line_uuid: customCourseData.lineUuid,
+      theme_uuid: customCourseData.themeUuid,
+    },
+    {
+      enabled: isModalOpen,
+    },
+  );
 
-  const handleSelectPlaceType = (type: string) => {
-    setSelectedPlaceType(type);
-    onClose();
+  const onClickAiButton = () => {
+    onCloseModal();
   };
 
   // 쿼리 응답이 도착할 때(isSuccess), 새 장소를 전역 상태에 추가 (이미 있는 uuid면 중복 추가 X)
@@ -74,6 +72,7 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
     if (!isSuccess || !addPlaceResponse) return;
 
     const newPlace = addPlaceResponse.data;
+    console.log(newPlace);
     if (!newPlace?.uuid) {
       alert('해당 타입에 적합한 장소가 더 이상 없습니다.');
       return;
@@ -87,7 +86,6 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
     }
 
     setCustomCourseData({
-      ...customCourseData,
       placeList: [...customCourseData.placeList, newPlace],
     });
 
@@ -96,7 +94,7 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
   }, [isSuccess, addPlaceResponse]);
 
   return (
-    <Modal onClose={onClose} {...rest}>
+    <Modal isOpen={isModalOpen} onClose={onCloseModal} {...rest}>
       <div className="max-container custom-clip-path absolute bottom-0 left-0 right-0 flex h-[252px] w-full flex-col justify-center bg-white p-5 shadow-md">
         {placeTypes.map(({ label, type, position }) => (
           <PlaceTypeButton
@@ -106,7 +104,7 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
             position={position}
             isSelected={selectedPlaceType === type}
             isIconActive={!isAddingPlace && !isCheckingUsedPlaces}
-            onClick={() => handleSelectPlaceType(type)}
+            onClick={() => setSelectedPlaceType(type)}
           />
         ))}
         <SvgIcon
@@ -114,6 +112,7 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
           width={126}
           height={126}
           className="absolute bottom-[4px] left-1/2 flex -translate-x-1/2 flex-col items-center"
+          onClick={onClickAiButton}
         />
       </div>
     </Modal>
