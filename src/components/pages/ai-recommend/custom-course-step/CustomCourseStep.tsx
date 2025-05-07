@@ -17,8 +17,7 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
   const customCourseData = useCourseStore((state) => state.customCourseData);
   const setCustomCourseData = useCourseStore((state) => state.setCustomCourseData);
 
-  const [bottomSheetChildHTML, setBottomSheetChildHTML] = useState<string>('');
-  const [bottomSheetChildUuid, setBottomSheetChildUuid] = useState<string>('');
+  const [placeToDelete, setPlaceToDelete] = useState<any>(null);
 
   const { isModalOpen, openModal, closeModal } = useModal();
   const {
@@ -55,25 +54,23 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
   }, [customCourseData.placeList]);
 
   const handleDeletePlace = useCallback(
-    async (uuid: string, itemRef?: React.RefObject<HTMLDivElement>) => {
-      if (itemRef?.current) {
-        setBottomSheetChildHTML(itemRef.current.querySelector('#accordion')?.innerHTML ?? '');
-      }
-      setBottomSheetChildUuid(uuid);
+    async (uuid: string) => {
+      const placeToDelete = data?.aiRecommendCourseData.places.find((p: any) => p.uuid === uuid);
+      setPlaceToDelete(placeToDelete);
       openBottomSheetModal();
     },
-    [openBottomSheetModal],
+    [data, setPlaceToDelete, openBottomSheetModal],
   );
 
   const handleConfirmBottomSheetModal = useCallback(async () => {
-    const filteredList = customCourseData.placeList.filter((p) => p.uuid !== bottomSheetChildUuid);
+    const filterredList = customCourseData.placeList.filter((p) => p.uuid !== placeToDelete.uuid);
     setCustomCourseData({
       ...customCourseData,
-      placeList: filteredList,
+      placeList: filterredList,
     });
     closeBottomSheetModal();
     alert('장소가 삭제되었어요'); // TODO: 토스트 메시지 추가
-  }, [bottomSheetChildUuid, closeBottomSheetModal, customCourseData, setCustomCourseData]);
+  }, [closeBottomSheetModal, customCourseData, setCustomCourseData, placeToDelete]);
 
   return (
     <div className="flex w-full overflow-y-hidden">
@@ -95,10 +92,28 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
         onClose={closeBottomSheetModal}
         onConfirm={handleConfirmBottomSheetModal}
       >
-        {bottomSheetChildHTML && <div dangerouslySetInnerHTML={{ __html: bottomSheetChildHTML }} />}
+        {placeToDelete && <BottomSheetContent placeToDelete={placeToDelete} />}
       </BottomSheetModal>
     </div>
   );
 };
 
 export default CustomCourseStep;
+
+const BottomSheetContent = ({ placeToDelete }: { placeToDelete: any }) => {
+  return (
+    <div className="flex w-full flex-col gap-2">
+      <div className="text-14 font-normal text-gray-900">{placeToDelete.place_name}</div>
+      <div className="flex w-full gap-2">
+        <img
+          src={placeToDelete.thumbnail}
+          alt={placeToDelete.place_name}
+          className="h-[68px] w-[68px] object-cover"
+        />
+        <div className="flex flex-col gap-2">
+          <div className="text-12 font-normal text-gray-500">{placeToDelete.address}</div>
+        </div>
+      </div>
+    </div>
+  );
+};
