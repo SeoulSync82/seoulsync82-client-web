@@ -37,7 +37,7 @@ const CustomPlaceItem = forwardRef<HTMLDivElement, CustomPlaceItemProps>(
         <div className="flex w-full">
           <CustomPlaceFlag number={idx + 1} />
           <div className="flex w-full flex-col items-center justify-start gap-2">
-            <CustomPlaceHeader place={place} onDelete={handleDelete} />
+            <CustomPlaceHeader placeType={place.place_type} onDelete={handleDelete} />
             <CustomPlaceContent place={place} />
           </div>
         </div>
@@ -48,72 +48,73 @@ const CustomPlaceItem = forwardRef<HTMLDivElement, CustomPlaceItemProps>(
 CustomPlaceItem.displayName = 'CustomPlaceItem';
 export default CustomPlaceItem;
 
-const CustomPlaceHeader = ({ place, onDelete }: { place: any; onDelete?: () => void }) => {
-  return (
-    <div className="flex h-8 w-full items-center justify-between pl-4">
-      <div className="text-14 font-normal text-gray-300">
-        {CustomPlaceTypes[place.place_type as keyof typeof CustomPlaceTypes]}
-      </div>
-      {onDelete && <ChipButton onClick={onDelete}>삭제</ChipButton>}
+const CustomPlaceHeader = ({
+  placeType,
+  onDelete,
+}: {
+  placeType: string;
+  onDelete?: () => void;
+}) => (
+  <div className="flex h-8 w-full items-center justify-between pl-4">
+    <div className="text-14 font-normal text-gray-300">
+      {CustomPlaceTypes[placeType as keyof typeof CustomPlaceTypes]}
     </div>
-  );
-};
+    {onDelete && <ChipButton onClick={onDelete}>삭제</ChipButton>}
+  </div>
+);
 
-const CustomPlaceContent = ({ place }: { place: any }) => {
-  return (
-    <Accordion
-      type="multiple"
-      defaultValue={[place.uuid]}
-      className="flex w-full items-center gap-2.5 rounded-lg"
-      id="accordion"
-    >
-      <AccordionItem value={place.uuid} className="w-full">
-        <AccordionTrigger className="rounded-lg bg-white data-[state=open]:bg-gray-50">
-          {place.place_name}
-        </AccordionTrigger>
-        <AccordionContent className="rounded-lg bg-gray-50 p-4 pt-0">
-          <div className="flex w-full items-center gap-2.5">
-            <img
-              src={place.thumbnail}
-              alt={place.place_name}
-              className="h-[68px] w-[68px] object-cover"
-            />
-            <div className="flex w-full items-center justify-between gap-[22px]">
-              <div>
-                <div className="line-clamp-2 break-all text-14 font-normal leading-[18px] text-gray-500">
-                  {place.address}
-                </div>
-                <div className="mt-2 flex items-center">
-                  <Link
-                    to={`/map?latitude=${place.latitude}&longitude=${place.longitude}`}
-                    target="_blank"
-                    className="text-12 font-bold text-primary-500"
-                  >
-                    지도보기
-                  </Link>
-                </div>
-              </div>
-              <div className="flex items-center">
-                <SvgIcon name="FullStar" width={14} height={14} />
-                <span className="text-12 font-normal text-gray-900">{place.score}</span>
-              </div>
-            </div>
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
-  );
-};
-const CustomPlaceFlag = ({ number }: { number: number }) => {
-  return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="relative h-fit w-fit">
-        <SvgIcon name="Line" width={32} height={32} active={false} />
-        <div className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-2 text-10 text-white">
-          {number}
+const CustomPlaceContent = ({ place }: { place: any }) => (
+  <Accordion
+    type="multiple"
+    defaultValue={[place.uuid]}
+    className="flex w-full items-center gap-2.5 rounded-lg"
+    id="accordion"
+  >
+    <AccordionItem value={place.uuid} className="w-full">
+      <AccordionTrigger className="rounded-lg bg-white data-[state=open]:bg-gray-50">
+        {place.place_name}
+      </AccordionTrigger>
+      <AccordionContent className="rounded-lg bg-gray-50 p-4 pt-0">
+        <PlaceDetails place={place} />
+      </AccordionContent>
+    </AccordionItem>
+  </Accordion>
+);
+
+const PlaceDetails = ({ place }: { place: any }) => (
+  <div className="flex w-full items-center gap-2.5">
+    <img src={place.thumbnail} alt={place.place_name} className="h-[68px] w-[68px] object-cover" />
+    <div className="flex w-full items-center justify-between gap-[22px]">
+      <div>
+        <div className="line-clamp-2 break-all text-14 font-normal leading-[18px] text-gray-500">
+          {place.address}
+        </div>
+        <div className="mt-2 flex items-center">
+          <Link
+            to={`/map?latitude=${place.latitude}&longitude=${place.longitude}`}
+            target="_blank"
+            className="text-12 font-bold text-primary-500"
+          >
+            지도보기
+          </Link>
         </div>
       </div>
-      <hr className="mt-1 h-full w-0 border-[1px] border-dashed" />
+      <div className="flex items-center">
+        <SvgIcon name="FullStar" width={14} height={14} />
+        <span className="text-12 font-normal text-gray-900">{place.score}</span>
+      </div>
     </div>
-  );
-};
+  </div>
+);
+
+const CustomPlaceFlag = ({ number }: { number: number }) => (
+  <div className="flex flex-col items-center justify-center">
+    <div className="relative h-fit w-fit">
+      <SvgIcon name="Line" width={32} height={32} active={false} />
+      <div className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-2 text-10 text-white">
+        {number}
+      </div>
+    </div>
+    <hr className="mt-1 h-full w-0 border-[1px] border-dashed" />
+  </div>
+);
