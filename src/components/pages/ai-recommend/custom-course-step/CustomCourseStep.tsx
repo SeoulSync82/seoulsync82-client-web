@@ -3,6 +3,9 @@ import useModal from '@/hooks/useModal';
 import CustomPlaceItem from './CustomPlaceItem';
 import AddPlaceButton from './AddPlaceButton';
 import useCourseStore from '@/stores/courseSlice';
+import Image from '@/components/Image';
+import { Link } from 'react-router-dom';
+import SvgIcon from '@/components/SvgIcon';
 
 const BottomSheetModal = React.lazy(() => import('@/components/Modal/BottomSheetModal'));
 const AddPlaceModal = React.lazy(() => import('@/components/Modal/AddCustomPlaceModal'));
@@ -92,7 +95,7 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
         onClose={closeBottomSheetModal}
         onConfirm={handleConfirmBottomSheetModal}
       >
-        {placeToDelete && <BottomSheetContent placeToDelete={placeToDelete} />}
+        {placeToDelete && <PlaceItemToDelete placeToDelete={placeToDelete} />}
       </BottomSheetModal>
     </div>
   );
@@ -100,18 +103,35 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
 
 export default CustomCourseStep;
 
-const BottomSheetContent = ({ placeToDelete }: { placeToDelete: any }) => {
+const PlaceItemToDelete = ({ placeToDelete }: { placeToDelete: any }) => {
   return (
-    <div className="flex w-full flex-col gap-2">
-      <div className="text-14 font-normal text-gray-900">{placeToDelete.place_name}</div>
-      <div className="flex w-full gap-2">
-        <img
-          src={placeToDelete.thumbnail}
-          alt={placeToDelete.place_name}
-          className="h-[68px] w-[68px] object-cover"
-        />
-        <div className="flex flex-col gap-2">
-          <div className="text-12 font-normal text-gray-500">{placeToDelete.address}</div>
+    <div className="flex w-full flex-col gap-2.5 rounded-lg bg-gray-50 p-4">
+      <div className="text-base font-semibold text-gray-900">{placeToDelete.place_name}</div>
+      <div className="flex w-full items-center justify-between gap-2.5">
+        <div className="flex items-center gap-2.5">
+          <Image
+            src={placeToDelete.thumbnail}
+            alt={placeToDelete.place_name}
+            width={68}
+            height={68}
+            fallbackWidth={32}
+            fallbackHeight={32}
+            rounded="lg"
+          />
+          <div className="flex flex-col gap-2">
+            <div className="text-sm font-normal text-gray-500">{placeToDelete.address}</div>
+            <Link
+              to={`/map?latitude=${placeToDelete.latitude}&longitude=${placeToDelete.longitude}`}
+              target="_blank"
+              className="text-12 font-bold text-primary-500"
+            >
+              지도보기
+            </Link>
+          </div>
+        </div>
+        <div className="flex items-center">
+          <SvgIcon name="FullStar" width={14} height={14} />
+          <span className="pt-1 text-xs font-bold text-gray-900">{placeToDelete.score}</span>
         </div>
       </div>
     </div>
