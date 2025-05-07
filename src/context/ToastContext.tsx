@@ -22,7 +22,7 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     setToasts((prev) => [...prev, message]);
     setTimeout(() => {
       setToasts((prev) => prev.slice(1));
-    }, 15000);
+    }, 2000);
   };
 
   return (
