@@ -71,10 +71,10 @@ const CustomPlaceContent = ({ place }: { place: any }) => (
     id="accordion"
   >
     <AccordionItem value={place.uuid} className="w-full">
-      <AccordionTrigger className="rounded-lg bg-white data-[state=open]:bg-gray-50">
+      <AccordionTrigger className="rounded-b-none rounded-t-lg bg-white data-[state=open]:bg-gray-50">
         {place.place_name}
       </AccordionTrigger>
-      <AccordionContent className="rounded-lg bg-gray-50 p-4 pt-0">
+      <AccordionContent className="rounded-b-lg rounded-t-none bg-gray-50 p-4 pt-0">
         <PlaceDetails place={place} />
       </AccordionContent>
     </AccordionItem>
