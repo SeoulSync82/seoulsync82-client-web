@@ -8,6 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import Image from '@/components/Image';
 
 enum CustomPlaceTypes {
   RESTAURANT = '음식점',
@@ -83,7 +84,15 @@ const CustomPlaceContent = ({ place }: { place: any }) => (
 
 const PlaceDetails = ({ place }: { place: any }) => (
   <div className="flex w-full items-center gap-2.5">
-    <img src={place.thumbnail} alt={place.place_name} className="h-[68px] w-[68px] object-cover" />
+    <Image
+      src={place.thumbnail}
+      alt={place.place_name}
+      width={68}
+      height={68}
+      fallbackWidth={32}
+      fallbackHeight={32}
+      rounded="lg"
+    />
     <div className="flex w-full items-center justify-between gap-[22px]">
       <div>
         <div className="line-clamp-2 break-all text-14 font-normal leading-[18px] text-gray-500">
