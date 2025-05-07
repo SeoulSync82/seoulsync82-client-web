@@ -21,6 +21,17 @@ enum CustomPlaceTypes {
   POPUP = '팝업',
 }
 
+enum CustomPlaceFlagColors {
+  POPUP = '#90D690',
+  EXHIBITION = '#90D690',
+  CULTURE = '#90D690',
+  CAFE = '#FFC700',
+  RESTAURANT = '#9070CF',
+  BAR = '#6495ED',
+  SHOPPING = '#ED672E',
+  ENTERTAINMENT = '#5DD4B0',
+}
+
 interface CustomPlaceItemProps {
   place: any;
   idx: number;
@@ -36,7 +47,7 @@ const CustomPlaceItem = forwardRef<HTMLDivElement, CustomPlaceItemProps>(
     return (
       <div ref={ref} className="mb-4 flex min-h-[70px] w-full items-start">
         <div className="flex w-full">
-          <CustomPlaceFlag number={idx + 1} />
+          <CustomPlaceFlag number={idx + 1} placeType={place.place_type} />
           <div className="flex w-full flex-col items-center justify-start gap-2">
             <CustomPlaceHeader placeType={place.place_type} onDelete={handleDelete} />
             <CustomPlaceContent place={place} />
@@ -116,10 +127,22 @@ const PlaceDetails = ({ place }: { place: any }) => (
   </div>
 );
 
-const CustomPlaceFlag = ({ number }: { number: number }) => (
+const CustomPlaceFlag = ({
+  number,
+  placeType,
+}: {
+  number: number;
+  placeType: keyof typeof CustomPlaceTypes;
+}) => (
   <div className="flex flex-col items-center justify-center">
     <div className="relative h-fit w-fit">
-      <SvgIcon name="Line" width={32} height={32} active={false} />
+      <SvgIcon
+        name="Flag"
+        width={32}
+        height={32}
+        active={false}
+        color={CustomPlaceFlagColors[placeType]}
+      />
       <div className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-2 text-10 text-white">
         {number}
       </div>
