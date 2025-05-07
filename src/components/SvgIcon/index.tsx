@@ -19,7 +19,6 @@ import {
   IcoDownTriangle,
   LogoSeoulsync,
   IcoCancel,
-  IcoLine,
   IcoPlus,
   IcoFullStar,
   IcoRestaurant,
@@ -49,6 +48,7 @@ import {
   IcoHeadphone,
   IcoLogout,
   IcoLogin,
+  IcoFlag,
 } from '../Icon';
 import { IconProps, SVGName } from './type';
 import { cn } from '@/utils/tailwindcss';
@@ -79,9 +79,9 @@ export default function SvgIcon({
     DownTriangle: IcoDownTriangle,
     LogoSeoulsync: LogoSeoulsync,
     Cancel: IcoCancel,
-    Line: IcoLine,
     Plus: IcoPlus,
     FullStar: IcoFullStar,
+    Flag: IcoFlag,
     Restaurant: active ? IcoRestaurantActive : IcoRestaurant,
     Cafe: active ? IcoCafeActive : IcoCafe,
     Bar: active ? IcoBarActive : IcoBar,
