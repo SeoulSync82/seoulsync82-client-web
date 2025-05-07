@@ -58,11 +58,11 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
 
   const handleDeletePlace = useCallback(
     async (uuid: string) => {
-      const placeToDelete = data?.aiRecommendCourseData.places.find((p: any) => p.uuid === uuid);
+      const placeToDelete = customCourseData.placeList.find((p: any) => p.uuid === uuid);
       setPlaceToDelete(placeToDelete);
       openBottomSheetModal();
     },
-    [data, setPlaceToDelete, openBottomSheetModal],
+    [customCourseData.placeList, openBottomSheetModal],
   );
 
   const handleConfirmBottomSheetModal = useCallback(async () => {
