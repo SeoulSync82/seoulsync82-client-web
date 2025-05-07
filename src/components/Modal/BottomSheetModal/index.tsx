@@ -11,8 +11,8 @@ const BottomSheetModal = ({ children, onConfirm, onClose, isOpen }: BottomSheetM
     <Modal isOpen={isOpen} onClose={onClose} onConfirm={onConfirm}>
       <div className="fixed bottom-0 left-0 right-0 mx-auto h-fit w-full max-w-[430px] rounded-t-[8px] bg-white p-[20px]">
         <div className="text-20 font-bold text-gray-900">해당 내역을 삭제할까요?</div>
-        <div className="">{children}</div>
-        <div className="mt-[16px] flex w-full items-center justify-end gap-[16px]">
+        {children && <div className="mt-4">{children}</div>}
+        <div className="mt-4 flex w-full items-center justify-end gap-[16px]">
           <Button
             fullWidth
             bgColor="white"
