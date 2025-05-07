@@ -65,7 +65,7 @@ const Image: React.FC<ImageProps> = ({
   const renderImage = () => (
     <img
       style={{
-        minWidth: typeof width === 'number' ? `${width}px` : width,
+        width: typeof width === 'number' ? `${width}px` : width,
         height: typeof height === 'number' ? `${height}px` : height,
       }}
       src={imgSrc}
@@ -86,7 +86,7 @@ const Image: React.FC<ImageProps> = ({
   const renderFallback = () => (
     <div
       style={{
-        minWidth: typeof width === 'number' ? `${width}px` : width,
+        width: typeof width === 'number' ? `${width}px` : width,
         height: typeof height === 'number' ? `${height}px` : height,
       }}
       className={cn(
