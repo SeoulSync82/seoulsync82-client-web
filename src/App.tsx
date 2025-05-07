@@ -3,6 +3,7 @@ import { router } from '@/routes';
 import { useAuthHandler } from '@/hooks/useAuthHandler';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { GlobalPortal } from '@/context/GlobalPortal';
+import { ToastProvider } from '@/context/ToastContext';
 
 const queryClient = new QueryClient();
 
@@ -12,7 +13,9 @@ export default function App() {
   return (
     <GlobalPortal.Provider>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <ToastProvider>
+          <RouterProvider router={router} />
+        </ToastProvider>
       </QueryClientProvider>
     </GlobalPortal.Provider>
   );
