@@ -8,7 +8,10 @@ export default function Map() {
 
   return (
     <div className="h-screen w-full">
-      <NaverMap height={'100dvh'} latitude={latitude} longitude={longitude} />
+      <NaverMap
+        height={'100dvh'}
+        points={[{ lat: parseFloat(latitude), lng: parseFloat(longitude) }]}
+      />
     </div>
   );
 }
