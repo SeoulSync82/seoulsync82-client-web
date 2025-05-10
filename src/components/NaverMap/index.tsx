@@ -6,7 +6,7 @@ interface LatLng {
   lng: number;
 }
 
-const Map = ({
+const NaverMap = ({
   points = [],
   zoom = 15,
   height = 224,
@@ -100,4 +100,4 @@ const Map = ({
   );
 };
 
-export default Map;
+export default NaverMap;
