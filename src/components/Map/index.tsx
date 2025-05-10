@@ -24,7 +24,7 @@ const Map = ({
   useEffect(() => {
     const loadNaverMapScript = () => {
       return new Promise<void>((resolve, reject) => {
-        if (window.naver && window.naver.maps) {
+        if ((window as any).naver && (window as any).naver.maps) {
           resolve();
           return;
         }
@@ -42,9 +42,9 @@ const Map = ({
 
     loadNaverMapScript()
       .then(() => {
-        if (!mapElement.current || !window.naver?.maps || points.length === 0) return;
+        if (!mapElement.current || !(window as any).naver?.maps || points.length === 0) return;
 
-        const { naver } = window;
+        const naver = (window as any).naver;
         const centerPoint = new naver.maps.LatLng(points[0].lat, points[0].lng);
         const map = new naver.maps.Map(mapElement.current, {
           center: centerPoint,
@@ -52,17 +52,32 @@ const Map = ({
         });
 
         // 경로 좌표 생성
-        const pathArray: naver.maps.LatLng[] = points.map(
-          (p) => new naver.maps.LatLng(p.lat, p.lng),
-        );
+        const pathArray: any[] = points
+          .map((p) => new (window as any).naver.maps.LatLng(p.lat, p.lng))
+          .sort((a, b) => a.lat - b.lat);
 
-        new naver.maps.Polyline({
+        new (window as any).naver.maps.Polyline({
           map,
           path: pathArray,
           strokeColor: '#9070CF',
           strokeOpacity: 0.8,
           strokeWeight: 3,
         });
+
+        points
+          .sort((a, b) => a.lat - b.lat)
+          .forEach(({ lat, lng }) => {
+            new naver.maps.Marker({
+              position: new naver.maps.LatLng(lat, lng),
+              map,
+              icon: {
+                url: '/svg/ico-line.svg', // 원하는 마커 이미지 경로
+                size: new naver.maps.Size(40, 40), // 실제 이미지 표시 크기
+                origin: new naver.maps.Point(0, 0),
+                anchor: new naver.maps.Point(20, 40), // 이미지 하단 중앙이 좌표에 닿도록
+              },
+            });
+          });
 
         // LatLngBounds로 모든 좌표를 포함하도록 설정
         const bounds = new naver.maps.LatLngBounds();
