@@ -59,12 +59,11 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
     }
   }, [customCourseData.courseData.places]);
 
-  // useEffect(() => {
-  //   if (customCourseData.placeList.length > 4) {
-  //     console.log(11111);
-  //     showToast('더 이상 추가할 수 없어요. 4개의 장소만 추가가 가능해요.');
-  //   }
-  // }, [customCourseData.placeList]);
+  useEffect(() => {
+    if (customCourseData.courseData.places.length >= 6) {
+      showToast('더 이상 추가할 수 없어요. 6개의 장소만 추가가 가능해요.');
+    }
+  }, [customCourseData.courseData.places, showToast]);
 
   const handleDeletePlace = useCallback(
     async (uuid: string) => {

@@ -95,6 +95,13 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
       return;
     }
 
+    // 6개 이상일 때 체크
+    if (customCourseData.courseData.places.length >= 6) {
+      showToast('더 이상 추가할 수 없어요. 6개의 장소만 추가가 가능해요.');
+      setSelectedPlaceType('');
+      return;
+    }
+
     setCustomCourseData({
       courseData: {
         ...customCourseData.courseData,
