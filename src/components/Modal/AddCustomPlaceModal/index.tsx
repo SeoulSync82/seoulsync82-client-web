@@ -6,11 +6,12 @@ import clsx from 'clsx';
 import { useAddCustomPlace, useCheckUsedCustomPlaces } from '@/service/course/useCourseService';
 import { ModalProps } from '../Modal';
 import useCourseStore from '@/stores/courseSlice';
+import { useToast } from '@/context/ToastContext';
 
-export type PlaceType = 'Restaurant' | 'Cafe' | 'Bar' | 'Shopping' | 'Culture' | 'Entertainment';
+export type PlaceType = 'RESTAURANT' | 'CAFE' | 'BAR' | 'SHOPPING' | 'CULTURE' | 'ENTERTAINMENT';
 export type PlaceTypeItem = {
   label: string;
-  type: PlaceType;
+  type: string;
   position: string;
 };
 
@@ -30,6 +31,8 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
 
   const [selectedPlaceType, setSelectedPlaceType] = useState('');
 
+  const { toasts, showToast } = useToast();
+
   const customCourseData = useCourseStore((state) => state.customCourseData);
   const setCustomCourseData = useCourseStore((state) => state.setCustomCourseData);
 
@@ -40,9 +43,9 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
   } = useAddCustomPlace(
     {
       place_type: selectedPlaceType.toUpperCase(),
-      place_uuids: customCourseData.placeList?.map((p) => p.uuid).join(','),
-      station_uuid: customCourseData.stationUuid,
-      theme_uuid: customCourseData.themeUuid,
+      place_uuids: customCourseData.courseData.places?.map((p) => p.uuid).join(','),
+      station_uuid: customCourseData.subwayData.stationUuid,
+      theme_uuid: customCourseData.subwayData.themeUuid,
     },
     {
       enabled: !!selectedPlaceType && !isModalOpen,
@@ -50,21 +53,28 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
   );
 
   // 사용된 장소 체크
-  const { isFetching: isCheckingUsedPlaces } = useCheckUsedCustomPlaces(
-    {
-      place_type: selectedPlaceType.toUpperCase(),
-      place_uuids: customCourseData.placeList?.map((p) => p.uuid).join(','),
-      station_uuid: customCourseData.stationUuid,
-      line_uuid: customCourseData.lineUuid,
-      theme_uuid: customCourseData.themeUuid,
-    },
-    {
-      enabled: isModalOpen,
-    },
-  );
+  const { isFetching: isCheckingUsedPlaces, data: checkUsedPlacesResponse } =
+    useCheckUsedCustomPlaces(
+      {
+        place_type: selectedPlaceType.toUpperCase(),
+        place_uuids: customCourseData.courseData.places?.map((p) => p.uuid).join(','),
+        station_uuid: customCourseData.subwayData.stationUuid,
+        line_uuid: customCourseData.subwayData.lineUuid,
+        theme_uuid: customCourseData.subwayData.themeUuid,
+      },
+      {
+        enabled: isModalOpen,
+      },
+    );
+
+  const onClickPlaceTypeButton = (type: string) => {
+    setSelectedPlaceType(type);
+    console.log(111, customCourseData.courseData.places);
+  };
 
   const onClickAiButton = () => {
     onCloseModal();
+    console.log(222, customCourseData.courseData.places);
   };
 
   // 쿼리 응답이 도착할 때(isSuccess), 새 장소를 전역 상태에 추가 (이미 있는 uuid면 중복 추가 X)
@@ -72,26 +82,32 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
     if (!isSuccess || !addPlaceResponse) return;
 
     const newPlace = addPlaceResponse.data;
-    console.log(newPlace);
+
     if (!newPlace?.uuid) {
       alert('해당 타입에 적합한 장소가 더 이상 없습니다.');
       return;
     }
 
-    // 중복 여부 체크 - 이미 placeList에 있는 uuid면 추가 X
-    const alreadyExists = customCourseData.placeList.some((p) => p.uuid === newPlace.uuid);
+    // 중복 여부 체크 - 이미 places에 있는 uuid면 추가 X
+    const alreadyExists = customCourseData.courseData.places.some((p) => p.uuid === newPlace.uuid);
     if (alreadyExists) {
       setSelectedPlaceType(''); // selectedPlaceType을 초기화 - 쿼리 재실행 방지
       return;
     }
 
     setCustomCourseData({
-      placeList: [...customCourseData.placeList, newPlace],
+      courseData: {
+        ...customCourseData.courseData,
+        places: [...customCourseData.courseData.places, newPlace],
+      },
     });
 
     // 같은 타입 연속으로 클릭시 같은 곳 데이터 응답하는 현상 방지
     setSelectedPlaceType('');
-  }, [isSuccess, addPlaceResponse]);
+  }, [isSuccess, addPlaceResponse, customCourseData, setCustomCourseData, toasts, showToast]);
+
+  console.log(777, checkUsedPlacesResponse?.data.items);
+  console.log(888, typeof checkUsedPlacesResponse?.data.items['CAFE']);
 
   return (
     <Modal isOpen={isModalOpen} onClose={onCloseModal} {...rest}>
@@ -103,8 +119,8 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
             type={type}
             position={position}
             isSelected={selectedPlaceType === type}
-            isIconActive={!isAddingPlace && !isCheckingUsedPlaces}
-            onClick={() => setSelectedPlaceType(type)}
+            isIconActive={checkUsedPlacesResponse?.data.items[type.toUpperCase()] > 0}
+            onClick={() => onClickPlaceTypeButton(type)}
           />
         ))}
         <SvgIcon
@@ -135,7 +151,7 @@ const PlaceTypeButton = ({
   onClick?: () => void;
 }) => {
   const placeTypeButtonVariants = cva(
-    'absolute flex size-[71px] flex-col items-center justify-center text-12 font-normal',
+    'absolute flex size-[70px] flex-col items-center justify-center text-xs font-normal',
     {
       variants: {
         isSelected: { true: 'rounded-full shadow-[2px_2px_8px_rgba(0,0,0,0.1)]' },
@@ -146,10 +162,12 @@ const PlaceTypeButton = ({
     },
   );
 
+  console.log(999, isIconActive);
+
   return (
     <div className={clsx(placeTypeButtonVariants({ isSelected }), position)} onClick={onClick}>
-      <SvgIcon name={type} width={35} height={35} active={isIconActive} />
-      <span className={clsx('mt-[8px]', isIconActive ? 'text-primary-500' : 'text-gray-400')}>
+      <SvgIcon name={type} width={35} height={35} color={isIconActive ? '#9070CF' : '#D9D9D9'} />
+      <span className={clsx('mt-2 text-xs', isIconActive ? 'text-primary-500' : 'text-gray-400')}>
         {label}
       </span>
     </div>

@@ -6,11 +6,12 @@ import useCourseStore from '@/stores/courseSlice';
 import Image from '@/components/Image';
 import { Link } from 'react-router-dom';
 import SvgIcon from '@/components/SvgIcon';
+import { useToast } from '@/context/ToastContext';
 
 const BottomSheetModal = React.lazy(() => import('@/components/Modal/BottomSheetModal'));
 const AddPlaceModal = React.lazy(() => import('@/components/Modal/AddCustomPlaceModal'));
 
-interface CustomCourseStepProps {
+export interface CustomCourseStepProps {
   data?: {
     aiRecommendCourseData?: any;
   };
@@ -22,6 +23,7 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
 
   const [placeToDelete, setPlaceToDelete] = useState<any>(null);
 
+  const { showToast } = useToast();
   const { isModalOpen, openModal, closeModal } = useModal();
   const {
     isModalOpen: isBottomSheetModalOpen,
@@ -33,19 +35,20 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
 
   useEffect(() => {
     if (!data?.aiRecommendCourseData) return;
-    if (customCourseData.courseUuid === data.aiRecommendCourseData.course_uuid) return;
+    if (customCourseData.courseData.uuid === data.aiRecommendCourseData.course_uuid) return;
 
     setCustomCourseData({
-      ...customCourseData,
-      courseUuid: data.aiRecommendCourseData.course_uuid,
-      courseName: data.aiRecommendCourseData.course_name,
-      placeList: data.aiRecommendCourseData.places ?? [],
+      courseData: {
+        uuid: data.aiRecommendCourseData.course_uuid,
+        name: data.aiRecommendCourseData.course_name,
+        places: data.aiRecommendCourseData.places ?? [],
+      },
     });
-  }, [data, customCourseData, setCustomCourseData]);
+  }, [data, customCourseData.courseData.places, setCustomCourseData]);
 
   useEffect(() => {
     const currentLength = placeRefs.current.length;
-    const requiredLength = customCourseData.placeList.length;
+    const requiredLength = customCourseData.courseData.places.length;
     if (currentLength < requiredLength) {
       placeRefs.current = [
         ...placeRefs.current,
@@ -54,32 +57,43 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
         ),
       ];
     }
-  }, [customCourseData.placeList]);
+  }, [customCourseData.courseData.places]);
+
+  // useEffect(() => {
+  //   if (customCourseData.placeList.length > 4) {
+  //     console.log(11111);
+  //     showToast('더 이상 추가할 수 없어요. 4개의 장소만 추가가 가능해요.');
+  //   }
+  // }, [customCourseData.placeList]);
 
   const handleDeletePlace = useCallback(
     async (uuid: string) => {
-      const placeToDelete = customCourseData.placeList.find((p: any) => p.uuid === uuid);
+      const placeToDelete = customCourseData.courseData.places.find((p: any) => p.uuid === uuid);
       setPlaceToDelete(placeToDelete);
       openBottomSheetModal();
     },
-    [customCourseData.placeList, openBottomSheetModal],
+    [customCourseData.courseData.places, openBottomSheetModal],
   );
 
   const handleConfirmBottomSheetModal = useCallback(async () => {
-    const filterredList = customCourseData.placeList.filter((p) => p.uuid !== placeToDelete.uuid);
+    const filterredList = customCourseData.courseData.places.filter(
+      (p) => p.uuid !== placeToDelete.uuid,
+    );
     setCustomCourseData({
-      ...customCourseData,
-      placeList: filterredList,
+      courseData: {
+        ...customCourseData.courseData,
+        places: filterredList,
+      },
     });
     closeBottomSheetModal();
-    alert('장소가 삭제되었어요'); // TODO: 토스트 메시지 추가
-  }, [closeBottomSheetModal, customCourseData, setCustomCourseData, placeToDelete]);
+    showToast('장소가 삭제되었어요');
+  }, [closeBottomSheetModal, customCourseData, setCustomCourseData, placeToDelete, showToast]);
 
   return (
     <div className="flex w-full overflow-y-hidden">
       <div className="h-full w-full overflow-y-auto bg-white px-5 pb-[60px]">
         <AddPlaceButton onClick={openModal} />
-        {customCourseData.placeList.map((place, idx) => (
+        {customCourseData.courseData.places.map((place, idx) => (
           <CustomPlaceItem
             key={place.uuid}
             place={place}

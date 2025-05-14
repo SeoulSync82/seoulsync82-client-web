@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSubwayLines, useSubwayStations } from '@/service/subway/useSubwayService';
 import { useThemesList } from '@/service/theme/useThemeService';
 import { BottomButton } from '@/components/Button';
@@ -33,47 +33,51 @@ const AiRecommendPage = () => {
   const [currentStepIdx, setCurrentStepIdx] = useState(0);
 
   const { data: subwayLineData } = useSubwayLines();
-  const { data: subwayStationData } = useSubwayStations(customCourseData.lineUuid as string, {
-    enabled: !!customCourseData.lineUuid,
-  });
+  const { data: subwayStationData } = useSubwayStations(
+    customCourseData.subwayData.lineUuid as string,
+    {
+      enabled: !!customCourseData.subwayData.lineUuid,
+    },
+  );
   const { data: themeData } = useThemesList();
   const { data: aiRecommendCourseData } = useAiCourseRecommend(
-    customCourseData.stationUuid,
-    customCourseData.themeUuid !== THEME_UUID_OVER_THREE_POINT_FIVE_STARS
-      ? customCourseData.themeUuid
+    customCourseData.subwayData.stationUuid,
+    customCourseData.subwayData.themeUuid !== THEME_UUID_OVER_THREE_POINT_FIVE_STARS
+      ? customCourseData.subwayData.themeUuid
       : '',
-    customCourseData.placeType,
+    '', // placeType 제거됨
     {
-      enabled: !!customCourseData.stationUuid && !!customCourseData.themeUuid,
+      enabled: !!customCourseData.subwayData.stationUuid && !!customCourseData.subwayData.themeUuid,
     },
   );
 
   const { mutate: saveAiRecommendCourse } = useSaveRecommendCourse();
 
   const isBottomButtonDisabled =
-    (currentStepIdx === 0 && (!customCourseData.lineUuid || !customCourseData.stationUuid)) ||
+    (currentStepIdx === 0 &&
+      (!customCourseData.subwayData.lineUuid || !customCourseData.subwayData.stationUuid)) ||
     (currentStepIdx === 1 &&
-      (!customCourseData.lineUuid ||
-        !customCourseData.stationUuid ||
-        !customCourseData.themeUuid)) ||
-    (currentStepIdx === 2 && customCourseData.placeList.length < 3);
+      (!customCourseData.subwayData.lineUuid ||
+        !customCourseData.subwayData.stationUuid ||
+        !customCourseData.subwayData.themeUuid)) ||
+    (currentStepIdx === 2 && customCourseData.courseData.places.length < 3);
 
   const onClickBottomButton = async () => {
     if (currentStepIdx === 2) {
       // Custom step
-      if (customCourseData.placeList.length < 3) {
+      if (customCourseData.courseData.places.length < 3) {
         alert('toast: 3개 이상의 장소를 추가해주세요.');
         return;
       }
       const data = {
-        station_uuid: customCourseData.stationUuid,
-        theme_uuid: customCourseData.themeUuid,
-        course_uuid: customCourseData.courseUuid,
-        course_name: customCourseData.courseName,
-        places: customCourseData.placeList,
+        station_uuid: customCourseData.subwayData.stationUuid,
+        theme_uuid: customCourseData.subwayData.themeUuid,
+        course_uuid: customCourseData.courseData.uuid,
+        course_name: customCourseData.courseData.name,
+        places: customCourseData.courseData.places,
       };
       await saveAiRecommendCourse(data);
-      window.location.href = `/course/${customCourseData?.courseUuid}`;
+      window.location.href = `/course/${customCourseData.courseData.uuid}`;
       resetCustomCourseData();
       return;
     }
@@ -88,6 +92,12 @@ const AiRecommendPage = () => {
     aiRecommendCourseData,
   });
 
+  useEffect(() => {
+    return () => {
+      resetCustomCourseData();
+    };
+  }, []);
+
   return (
     <>
       <StepButtonGroup
@@ -98,7 +108,7 @@ const AiRecommendPage = () => {
           }
         }}
       />
-      <CurrentStepView data={currentStepData} />
+      <CurrentStepView data={currentStepData as any} /> {/* TODO: 타입 정의 필요 */}
       <BottomButton disabled={isBottomButtonDisabled} onClick={onClickBottomButton}>
         {currentStepIdx === 2 ? '완료' : '선택하기'}
       </BottomButton>
@@ -134,18 +144,15 @@ const StepButtonGroup = ({
 
 const getCurrentStepData = (
   stepIdx: number,
-  {
-    subwayLineData,
-    subwayStationData,
-    themeData,
-    aiRecommendCourseData,
-  }: {
+  stepData: {
     subwayLineData?: any;
     subwayStationData?: any;
     themeData?: any;
     aiRecommendCourseData?: any;
   },
 ) => {
+  const { subwayLineData, subwayStationData, themeData, aiRecommendCourseData } = stepData;
+
   switch (stepIdx) {
     case 0: // Subway step
       return {

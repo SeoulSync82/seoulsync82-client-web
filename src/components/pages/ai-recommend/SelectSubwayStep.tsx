@@ -1,12 +1,11 @@
 import { SelectStationButton } from '@/components/Button';
 import { SelectSubwayButton } from '@/components/Button';
 import useCourseStore from '@/stores/courseSlice';
-import { AxiosResponse } from 'axios';
 
-interface SelectSubwayStepProps {
+export interface SelectSubwayStepProps {
   data: {
-    lineData: AxiosResponse<{ items: { uuid: string; line: string }[] }> | undefined;
-    stationData: AxiosResponse<{ items: { uuid: string; station: string }[] }> | undefined;
+    lineData: { items: { uuid: string; line: string }[] };
+    stationData: { items: { uuid: string; station: string }[] };
   };
 }
 
@@ -16,16 +15,20 @@ const SelectSubwayStep = ({ data }: SelectSubwayStepProps) => {
 
   const handleSelectSubwayLine = (lineUuid: string) => {
     setCustomCourseData({
-      ...customCourseData,
-      lineUuid,
-      stationUuid: '',
+      subwayData: {
+        ...customCourseData.subwayData,
+        lineUuid,
+        stationUuid: '',
+      },
     });
   };
 
   const handleSelectSubwayStation = (stationUuid: string) => {
     setCustomCourseData({
-      ...customCourseData,
-      stationUuid,
+      subwayData: {
+        ...customCourseData.subwayData,
+        stationUuid,
+      },
     });
   };
 
@@ -37,7 +40,7 @@ const SelectSubwayStep = ({ data }: SelectSubwayStepProps) => {
         {data?.lineData?.items?.map((item) => (
           <SelectSubwayButton
             key={item.uuid}
-            active={customCourseData.lineUuid === item.uuid}
+            active={customCourseData.subwayData.lineUuid === item.uuid}
             onClick={() => handleSelectSubwayLine(item.uuid)}
           >
             {item.line}
@@ -48,7 +51,7 @@ const SelectSubwayStep = ({ data }: SelectSubwayStepProps) => {
         {data?.stationData?.items?.map((item) => (
           <SelectStationButton
             key={item.uuid}
-            active={customCourseData.stationUuid === item.uuid}
+            active={customCourseData.subwayData.stationUuid === item.uuid}
             onClick={() => handleSelectSubwayStation(item.uuid)}
           >
             {item.station}

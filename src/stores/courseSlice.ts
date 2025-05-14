@@ -5,16 +5,20 @@ import { PlaceItemType } from '@/service/course/types';
 import { DEFAULT_LINE_UUID } from '@/constants';
 
 const initialCustomCourseData = {
-  lineUuid: DEFAULT_LINE_UUID,
-  stationUuid: '',
-  themeUuid: '',
-  placeList: [] as PlaceItemType[],
-  placeType: '',
-  courseUuid: '',
-  courseName: '',
+  subwayData: {
+    lineUuid: DEFAULT_LINE_UUID,
+    stationUuid: '',
+    themeUuid: '',
+  },
+  courseData: {
+    uuid: '',
+    name: '',
+    places: [] as PlaceItemType[],
+  },
+  selectedPlace: '',
 };
 
-export interface CustomCourseState {
+export interface CustomCourseStore {
   customCourseData: typeof initialCustomCourseData;
   setCustomCourseData: (courseData: Partial<typeof initialCustomCourseData>) => void;
   resetCustomCourseData: () => void;
@@ -22,7 +26,7 @@ export interface CustomCourseState {
 
 const useCourseStore = create(
   persist(
-    immer<CustomCourseState>((set) => ({
+    immer<CustomCourseStore>((set) => ({
       customCourseData: initialCustomCourseData,
       setCustomCourseData: (data) =>
         set((state) => {

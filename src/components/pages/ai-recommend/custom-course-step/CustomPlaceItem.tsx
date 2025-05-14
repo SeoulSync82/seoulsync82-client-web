@@ -103,6 +103,7 @@ const PlaceDetails = ({ place }: { place: any }) => (
       fallbackWidth={32}
       fallbackHeight={32}
       rounded="lg"
+      className="aspect-square"
     />
     <div className="flex w-full items-center justify-between gap-[22px]">
       <div>
