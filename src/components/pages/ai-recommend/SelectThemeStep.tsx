@@ -15,8 +15,6 @@ const SelectThemeStep = ({ data }: SelectThemeStepProps) => {
     (item: any) => item.uuid === customCourseData.subwayData.themeUuid,
   )?.theme_name;
 
-  console.log(data);
-
   return (
     <div className="flex flex-col">
       {customCourseData.subwayData.themeUuid && (
@@ -28,9 +26,11 @@ const SelectThemeStep = ({ data }: SelectThemeStepProps) => {
             {customCourseData.subwayData.themeUuid && (
               <CapsuleButton
                 active={!!customCourseData.subwayData.themeUuid}
-                onClickCancel={() => setCustomCourseData({ 
-                  subwayData: { ...customCourseData.subwayData, themeUuid: '' }
-                })}
+                onClickCancel={() =>
+                  setCustomCourseData({
+                    subwayData: { ...customCourseData.subwayData, themeUuid: '' },
+                  })
+                }
               >
                 {selectedThemeName}
               </CapsuleButton>
@@ -38,21 +38,23 @@ const SelectThemeStep = ({ data }: SelectThemeStepProps) => {
           </div>
         </div>
       )}
-      <div className="h-[60px] h-fit w-full flex-col">
-        <div className="font ml-5 flex h-[60px] items-center text-16 font-semibold">
-          테마 선택하기
-        </div>
+      <div className="h-fit w-full flex-col">
+        <div className="ml-5 flex h-[60px] items-center text-16 font-semibold">테마 선택하기</div>
         <div className="ml-5 flex flex-row flex-wrap gap-2">
           {data?.themeData?.items?.map((item: any) => (
             <CapsuleButton
               key={item.uuid}
               active={item.uuid === customCourseData.subwayData.themeUuid}
-              onClick={() => setCustomCourseData({ 
-                subwayData: { ...customCourseData.subwayData, themeUuid: item.uuid }
-              })}
-              onClickCancel={() => setCustomCourseData({ 
-                subwayData: { ...customCourseData.subwayData, themeUuid: '' }
-              })}
+              onClick={() =>
+                setCustomCourseData({
+                  subwayData: { ...customCourseData.subwayData, themeUuid: item.uuid },
+                })
+              }
+              onClickCancel={() =>
+                setCustomCourseData({
+                  subwayData: { ...customCourseData.subwayData, themeUuid: '' },
+                })
+              }
             >
               {item.theme_name}
             </CapsuleButton>
