@@ -69,12 +69,10 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
 
   const onClickPlaceTypeButton = (type: string) => {
     setSelectedPlaceType(type);
-    console.log(111, customCourseData.courseData.places);
   };
 
   const onClickAiButton = () => {
     onCloseModal();
-    console.log(222, customCourseData.courseData.places);
   };
 
   // 쿼리 응답이 도착할 때(isSuccess), 새 장소를 전역 상태에 추가 (이미 있는 uuid면 중복 추가 X)
@@ -112,9 +110,6 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
     // 같은 타입 연속으로 클릭시 같은 곳 데이터 응답하는 현상 방지
     setSelectedPlaceType('');
   }, [isSuccess, addPlaceResponse, customCourseData, setCustomCourseData, toasts, showToast]);
-
-  console.log(777, checkUsedPlacesResponse?.data.items);
-  console.log(888, typeof checkUsedPlacesResponse?.data.items['CAFE']);
 
   return (
     <Modal isOpen={isModalOpen} onClose={onCloseModal} {...rest}>

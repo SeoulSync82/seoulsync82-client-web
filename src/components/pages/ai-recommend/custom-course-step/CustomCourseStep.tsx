@@ -47,7 +47,9 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
   }, [data, customCourseData.courseData.places, setCustomCourseData]);
 
   useEffect(() => {
-    const currentLength = placeRefs.current.length;
+    const currentLength = placeRefs.current.filter((ref) => ref.current !== null).length;
+    console.log(1212, currentLength);
+    console.log(2222, placeRefs.current);
     const requiredLength = customCourseData.courseData.places.length;
     if (currentLength < requiredLength) {
       placeRefs.current = [
@@ -60,7 +62,7 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
   }, [customCourseData.courseData.places]);
 
   useEffect(() => {
-    if (customCourseData.courseData.places.length >= 6) {
+    if (customCourseData.courseData.places.length > 6) {
       showToast('더 이상 추가할 수 없어요. 6개의 장소만 추가가 가능해요.');
     }
   }, [customCourseData.courseData.places, showToast]);
