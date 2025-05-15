@@ -31,7 +31,7 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
 
   const [selectedPlaceType, setSelectedPlaceType] = useState('');
 
-  const { toasts, showToast } = useToast();
+  const { showToast } = useToast();
 
   const customCourseData = useCourseStore((state) => state.customCourseData);
   const setCustomCourseData = useCourseStore((state) => state.setCustomCourseData);
@@ -67,8 +67,11 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
       },
     );
 
+  console.log('# checkUsedPlacesResponse', checkUsedPlacesResponse?.data.items);
+
   const onClickPlaceTypeButton = (type: string) => {
     setSelectedPlaceType(type);
+    console.log('# selectedPlaceType', type);
   };
 
   const onClickAiButton = () => {
@@ -83,13 +86,6 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
 
     if (!newPlace?.uuid) {
       alert('해당 타입에 적합한 장소가 더 이상 없습니다.');
-      return;
-    }
-
-    // 중복 여부 체크 - 이미 places에 있는 uuid면 추가 X
-    const alreadyExists = customCourseData.courseData.places.some((p) => p.uuid === newPlace.uuid);
-    if (alreadyExists) {
-      setSelectedPlaceType(''); // selectedPlaceType을 초기화 - 쿼리 재실행 방지
       return;
     }
 
@@ -109,7 +105,7 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
 
     // 같은 타입 연속으로 클릭시 같은 곳 데이터 응답하는 현상 방지
     setSelectedPlaceType('');
-  }, [isSuccess, addPlaceResponse, customCourseData, setCustomCourseData, toasts, showToast]);
+  }, [isSuccess, addPlaceResponse, customCourseData, setCustomCourseData, showToast]);
 
   return (
     <Modal isOpen={isModalOpen} onClose={onCloseModal} {...rest}>
@@ -164,7 +160,7 @@ const PlaceTypeButton = ({
     },
   );
 
-  console.log(999, isIconActive);
+  // console.log(999, isIconActive);
 
   return (
     <div className={clsx(placeTypeButtonVariants({ isSelected }), position)} onClick={onClick}>

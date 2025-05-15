@@ -48,9 +48,11 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
 
   useEffect(() => {
     const currentLength = placeRefs.current.filter((ref) => ref.current !== null).length;
-    console.log(1212, currentLength);
-    console.log(2222, placeRefs.current);
     const requiredLength = customCourseData.courseData.places.length;
+    // console.log('placeRefs.current', placeRefs.current);
+    // console.log('currentLength', currentLength);
+    // console.log('requiredLength', requiredLength);
+
     if (currentLength < requiredLength) {
       placeRefs.current = [
         ...placeRefs.current,
@@ -59,13 +61,11 @@ const CustomCourseStep = ({ data }: CustomCourseStepProps) => {
         ),
       ];
     }
-  }, [customCourseData.courseData.places]);
-
-  useEffect(() => {
-    if (customCourseData.courseData.places.length > 6) {
+    if (currentLength > requiredLength) {
+      placeRefs.current = placeRefs.current.slice(0, requiredLength);
       showToast('더 이상 추가할 수 없어요. 6개의 장소만 추가가 가능해요.');
     }
-  }, [customCourseData.courseData.places, showToast]);
+  }, [customCourseData.courseData.places]);
 
   const handleDeletePlace = useCallback(
     async (uuid: string) => {
