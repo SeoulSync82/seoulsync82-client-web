@@ -67,7 +67,6 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
       },
     );
 
-
   const onClickPlaceTypeButton = (type: string) => {
     setSelectedPlaceType(type);
   };
