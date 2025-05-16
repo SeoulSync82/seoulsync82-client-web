@@ -25,6 +25,7 @@ class CourseService extends Service {
   async getMyCourseHistory(size: number, last_id?: number) {
     return await this.service.get(`/course/my-history?size=${size}&last_id=${last_id}`);
   }
+
   async getCourseDetail(uuid: string) {
     return await this.service.get(`/course/${uuid}`);
   }
@@ -32,11 +33,20 @@ class CourseService extends Service {
   async getBookmarkedCourseList(size: number, last_id?: number) {
     return await this.service.get(`/bookmark?size=${size}&last_id=${last_id}`);
   }
+
   async addCourseBookmark(uuid: string) {
     return await this.service.post(`/bookmark/${uuid}`);
   }
+
   async cancelCourseBookmark(uuid: string) {
     return await this.service.patch(`/bookmark/${uuid}`);
+  }
+
+  async addCourseLike(uuid: string) {
+    return await this.service.post(`/reaction/${uuid}`);
+  }
+  async cancelCourseLike(uuid: string) {
+    return await this.service.patch(`/reaction/${uuid}`);
   }
 }
 
