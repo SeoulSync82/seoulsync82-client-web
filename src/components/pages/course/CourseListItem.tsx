@@ -1,7 +1,7 @@
 import Image from '@/components/Image';
 import SvgIcon from '@/components/SvgIcon';
 import { useCancelCourseBookmark, useAddCourseBookmark } from '@/service/course/useCourseService';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 
 export interface CourseListItemProps {
   course_name: string;
@@ -34,8 +34,11 @@ export default function CourseListItem({
     }
   };
 
+  // const location = useLocation();
+  // const course_type = location.pathname.split('/')[1] === 'community' ? 'community' : 'my-course';
+
   return (
-    <Link to={`/course/${course_uuid}`} className="flex items-center px-5">
+    <Link to={`/course/my-course/${course_uuid}`} className="flex items-center px-5">
       <div className="flex w-full gap-3 border-b-[1px] border-gray-200 py-4">
         <CourseImage
           course_image={course_image}
@@ -69,14 +72,13 @@ const CourseImage = ({
       fallbackHeight={32}
       fallbackStatus="bad"
       fallbackBgColor="gray-50"
-      borderColor="gray-200"
     />
     {isBookmarked && (
       <SvgIcon
         name="Bookmark"
         width={24}
         height={24}
-        color={!isBookmarked ? '#E1D9F2' : '#9070CF'}
+        color={isBookmarked ? '#E1D9F2' : undefined}
         className="absolute bottom-1 right-1"
         onClick={onClickBookmark}
       />

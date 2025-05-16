@@ -49,7 +49,7 @@ const routes: RouteObject[] = [
       { path: '/my-page/edit-profile', element: <EditProfile /> },
       { path: '/my-page/social-login-info', element: <SocialLoginInfo /> },
       { path: '/course', element: <MyCourse /> },
-      { path: '/course/:id', element: <MyCourseDetail /> },
+      { path: '/course/:type/:id', element: <MyCourseDetail /> },
       { path: '/ai-recommend', element: <AiRecommend /> },
       { path: '/culture', element: <Culture /> },
       { path: '/culture/:type/:id', element: <CultureDetail /> },
