@@ -49,9 +49,8 @@ import {
   IcoLogout,
   IcoLogin,
   IcoReset,
+  IcoFlag,
 } from '../Icon';
-import IcoFlag from '../Icon/IcoFlag';
-import SvgIcoFlag from '../Icon/IcoFlag';
 import { IconProps, SVGName } from './type';
 import { cn } from '@/utils/tailwindcss';
 
