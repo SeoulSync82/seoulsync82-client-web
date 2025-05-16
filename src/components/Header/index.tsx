@@ -94,6 +94,11 @@ const Header: React.FC = () => {
         pageName: '커뮤니티',
         Component: DefaultHeader,
       },
+      {
+        match: (p) => p.startsWith('/review'),
+        pageName: '한줄평 작성',
+        Component: DefaultHeader,
+      },
       // fallback ‑ 매칭되지 않는 모든 경로
       {
         match: () => true,

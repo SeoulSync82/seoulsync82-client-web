@@ -23,6 +23,7 @@ const CultureDetail = React.lazy(() => import('@/pages/Culture/CultureDetail'));
 const Notifications = React.lazy(() => import('@/pages/Notifications'));
 const Map = React.lazy(() => import('@/pages/Map'));
 const Community = React.lazy(() => import('@/pages/Community'));
+const Review = React.lazy(() => import('@/pages/Review'));
 const Login = React.lazy(() => import('@/pages/Login'));
 
 const Root = () => {
@@ -54,6 +55,7 @@ const routes: RouteObject[] = [
       { path: '/culture', element: <Culture /> },
       { path: '/culture/:type/:id', element: <CultureDetail /> },
       { path: '/notifications', element: <Notifications /> },
+      { path: '/review', element: <Review /> },
     ],
   },
   { path: '/map', element: <Map /> },
