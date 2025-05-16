@@ -16,7 +16,7 @@ export type PlaceTypeItem = {
 };
 
 const placeTypes: PlaceTypeItem[] = [
-  { label: '식당', type: 'Restaurant', position: 'bottom-[7%] left-[4%]' },
+  { label: '음식점', type: 'Restaurant', position: 'bottom-[7%] left-[4%]' },
   { label: '카페', type: 'Cafe', position: 'bottom-[38%] left-[13%]' },
   { label: '술집', type: 'Bar', position: 'bottom-[59%] left-[30%]' },
   { label: '쇼핑', type: 'Shopping', position: 'bottom-[59%] right-[30%]' },
