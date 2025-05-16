@@ -46,24 +46,22 @@ const MyCoursePage = () => {
   return (
     <div className="page w-full">
       <TabButtonGroup tabType={type} onClickTab={handleTabClick} tabItems={tabItems} />
-      <CourseList courseList={courseList || []} bottomRef={bottomRef} />
+      <div className="hide-scroll h-[calc(100dvh-192px)] w-full overflow-y-scroll">
+        {courseList?.map((item: CourseListItemProps) => (
+          <CourseListItem
+            key={item.course_uuid}
+            isBookmarked={
+              type === 'liked'
+                ? courseList.some((course) => course.course_uuid === item.course_uuid)
+                : undefined
+            }
+            {...item}
+          />
+        ))}
+        <div ref={bottomRef} />
+      </div>
     </div>
   );
 };
-
-const CourseList = ({
-  courseList,
-  bottomRef,
-}: {
-  courseList: CourseListItemProps[];
-  bottomRef: React.RefObject<HTMLDivElement>;
-}) => (
-  <div className="hide-scroll h-[calc(100dvh-192px)] w-full overflow-y-scroll">
-    {courseList?.map((item: CourseListItemProps) => (
-      <CourseListItem key={item.course_uuid} {...item} />
-    ))}
-    <div ref={bottomRef} />
-  </div>
-);
 
 export default withAuthGuard(MyCoursePage);
