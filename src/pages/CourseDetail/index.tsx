@@ -106,8 +106,8 @@ const CourseDetailPage = () => {
     ];
 
   return (
-    <div className="page flex flex-col bg-gray-100">
-      <div className="w-full flex-1 overflow-y-auto">
+    <div className="page flex flex-col">
+      <div className="w-full flex-1 overflow-y-auto ">
         <NaverMap points={mapPoints} height={198} zoom={14} />
         <div className="flex-1 rounded-t-lg bg-gray-50">
           <div className="bg-white px-5 py-4">
