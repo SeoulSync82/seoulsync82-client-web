@@ -1,5 +1,6 @@
 import Image from '@/components/Image';
 import SvgIcon from '@/components/SvgIcon';
+import { useCancelCourseBookmark, useAddCourseBookmark } from '@/service/course/useCourseService';
 import { Link } from 'react-router';
 
 export interface CourseListItemProps {
@@ -8,6 +9,7 @@ export interface CourseListItemProps {
   course_uuid?: string;
   line: string;
   subway: string;
+  isBookmarked?: boolean;
 }
 
 export default function CourseListItem({
@@ -16,33 +18,79 @@ export default function CourseListItem({
   line,
   subway,
   course_uuid,
+  isBookmarked,
 }: CourseListItemProps) {
   const tags = [...line.split(','), ...subway.split(',').map((v) => `${v}역`)];
+
+  const { mutate: addCourseBookmark } = useAddCourseBookmark();
+  const { mutate: cancelCourseBookmark } = useCancelCourseBookmark();
+
+  const onClickBookmark = (e: React.MouseEvent<SVGSVGElement>) => {
+    e.preventDefault();
+    if (isBookmarked) {
+      cancelCourseBookmark(course_uuid as string);
+    } else {
+      addCourseBookmark(course_uuid as string);
+    }
+  };
 
   return (
     <Link to={`/course/${course_uuid}`} className="flex items-center px-5">
       <div className="flex w-full gap-3 border-b-[1px] border-gray-200 py-4">
-        <Image
-          src={course_image}
-          alt="Course Image"
-          width={80}
-          height={80}
-          objectFit="cover"
-          rounded="lg"
-          fallbackWidth={32}
-          fallbackHeight={32}
-          fallbackStatus="bad"
-          // placeholder={<div className="h-full w-full animate-pulse bg-gray-200" />}
+        <CourseImage
+          course_image={course_image}
+          isBookmarked={isBookmarked}
+          onClickBookmark={onClickBookmark}
         />
-        <div className="flex flex-col items-start justify-center gap-1">
-          <TagList tags={tags} />
-          <Rating />
-          <CourseName name={course_name} />
-        </div>
+        <CourseDetails course_name={course_name} tags={tags} />
       </div>
     </Link>
   );
 }
+
+const CourseImage = ({
+  course_image,
+  isBookmarked,
+  onClickBookmark,
+}: {
+  course_image: string;
+  isBookmarked?: boolean;
+  onClickBookmark: (e: React.MouseEvent<SVGSVGElement>) => void;
+}) => (
+  <div className="relative">
+    <Image
+      src={course_image}
+      alt="Course Image"
+      width={80}
+      height={80}
+      objectFit="cover"
+      rounded="lg"
+      fallbackWidth={32}
+      fallbackHeight={32}
+      fallbackStatus="bad"
+      fallbackBgColor="gray-50"
+      borderColor="gray-200"
+    />
+    {isBookmarked && (
+      <SvgIcon
+        name="Bookmark"
+        width={24}
+        height={24}
+        color={!isBookmarked ? '#E1D9F2' : '#9070CF'}
+        className="absolute bottom-1 right-1"
+        onClick={onClickBookmark}
+      />
+    )}
+  </div>
+);
+
+const CourseDetails = ({ course_name, tags }: { course_name: string; tags: string[] }) => (
+  <div className="flex flex-col items-start justify-center gap-1">
+    <TagList tags={tags} />
+    <Rating />
+    <CourseName name={course_name} />
+  </div>
+);
 
 const Tag = ({ tag }: { tag: string }) => (
   <span className="flex h-5 items-center justify-center rounded-full border-[1px] border-[#E0D1FF] px-2 text-10 font-semibold text-primary-500">
