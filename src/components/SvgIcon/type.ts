@@ -34,6 +34,6 @@ export type IconProps = {
   height?: number;
   active?: boolean;
   style?: string;
-  onClick?: (event: React.MouseEvent) => void;
+  onClick?: (event: React.MouseEvent<SVGSVGElement>) => void;
   className?: string;
 };
