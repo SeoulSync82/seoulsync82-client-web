@@ -110,3 +110,23 @@ export const useSaveRecommendCourse = () =>
       window.location.replace(`/course/${data.items}`);
     },
   });
+
+export const useAddCourseBookmark = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (uuid: string) => CourseService.addCourseBookmark(uuid),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getBookmarkedCourseList'] });
+    },
+  });
+};
+
+export const useCancelCourseBookmark = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (uuid: string) => CourseService.cancelCourseBookmark(uuid),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getBookmarkedCourseList'] });
+    },
+  });
+};
