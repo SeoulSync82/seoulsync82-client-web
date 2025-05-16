@@ -39,10 +39,11 @@ export const useCommunityPostList = ({
   });
 };
 
-export const useCommunityPostDetail = (uuid: string) => {
+export const useCommunityPostDetail = (uuid: string, { enabled }: { enabled: boolean }) => {
   return useQuery({
     queryKey: ['communityPostDetail', uuid],
     queryFn: () => CommunityService.getCommunityPostDetail(uuid),
+    enabled,
   });
 };
 

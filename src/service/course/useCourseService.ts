@@ -82,10 +82,11 @@ export const useAddCustomPlaceMutation = () => {
   });
 };
 
-export const useCourseDetail = (uuid: string) =>
+export const useCourseDetail = (uuid: string, { enabled }: { enabled: boolean }) =>
   useQuery({
     queryKey: ['courseDetail', uuid],
     queryFn: () => CourseService.getCourseDetail(uuid),
+    enabled,
   });
 
 export const useCheckUsedCustomPlaces = (params: any, { enabled }: { enabled: boolean }) =>
