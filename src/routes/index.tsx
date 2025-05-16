@@ -16,7 +16,7 @@ const NoticeDetail = React.lazy(() => import('@/pages/MyPage/Notice/NoticeDetail
 const EditProfile = React.lazy(() => import('@/pages/MyPage/EditProfile'));
 const SocialLoginInfo = React.lazy(() => import('@/pages/MyPage/SocialLoginInfo'));
 const MyCourse = React.lazy(() => import('@/pages/MyCourse'));
-const MyCourseDetail = React.lazy(() => import('@/pages/MyCourse/MyCourseDetail'));
+const CourseDetail = React.lazy(() => import('@/pages/CourseDetail'));
 const AiRecommend = React.lazy(() => import('@/pages/AiRecommend'));
 const Culture = React.lazy(() => import('@/pages/Culture'));
 const CultureDetail = React.lazy(() => import('@/pages/Culture/CultureDetail'));
@@ -43,14 +43,14 @@ const routes: RouteObject[] = [
     children: [
       { index: true, element: <Home /> },
       { path: '/login', element: <Login /> },
+      { path: '/course', element: <MyCourse /> },
+      { path: '/course/:type/:id', element: <CourseDetail /> },
       { path: '/community', element: <Community /> },
       { path: '/my-page', element: <MyPage /> },
       { path: '/my-page/notice', element: <Notice /> },
       { path: '/my-page/notice/:id', element: <NoticeDetail /> },
       { path: '/my-page/edit-profile', element: <EditProfile /> },
       { path: '/my-page/social-login-info', element: <SocialLoginInfo /> },
-      { path: '/course', element: <MyCourse /> },
-      { path: '/course/:type/:id', element: <MyCourseDetail /> },
       { path: '/ai-recommend', element: <AiRecommend /> },
       { path: '/culture', element: <Culture /> },
       { path: '/culture/:type/:id', element: <CultureDetail /> },
