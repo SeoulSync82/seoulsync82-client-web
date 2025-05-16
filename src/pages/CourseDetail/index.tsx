@@ -102,7 +102,7 @@ const CourseDetailPage = () => {
             icon: 'Reset',
             onClick: handleReset,
           },
-      { label: '한줄평', icon: 'Write', onClick: handleReview },
+      { label: isCommunityPage ? '글쓰기' : '한줄평', icon: 'Write', onClick: handleReview },
     ];
 
   return (
