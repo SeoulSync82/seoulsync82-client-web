@@ -36,20 +36,22 @@ interface CustomPlaceItemProps {
   place: any;
   idx: number;
   onDelete?: (uuid: string, itemRef?: React.RefObject<HTMLDivElement>) => void;
+  hasDeleteButton?: boolean;
 }
 
 const CustomPlaceItem = forwardRef<HTMLDivElement, CustomPlaceItemProps>(
   ({ place, idx, onDelete }, ref) => {
-    const handleDelete = () => {
-      onDelete?.(place.uuid, ref as React.RefObject<HTMLDivElement>);
-    };
-
     return (
       <div ref={ref} className="mb-4 flex min-h-[70px] w-full items-start">
         <div className="flex w-full">
           <CustomPlaceFlag number={idx + 1} placeType={place.place_type} />
-          <div className="flex w-full flex-col items-center justify-start gap-2">
-            <CustomPlaceHeader placeType={place.place_type} onDelete={handleDelete} />
+          <div className="flex w-full flex-col">
+            <div className="flex h-8 w-full items-center justify-between pl-4">
+              <div className="text-sm font-normal text-gray-300">
+                {CustomPlaceTypes[place.place_type as keyof typeof CustomPlaceTypes]}
+              </div>
+              {onDelete && <ChipButton onClick={() => onDelete(place.uuid)}>삭제</ChipButton>}
+            </div>
             <CustomPlaceContent place={place} />
           </div>
         </div>
@@ -57,41 +59,8 @@ const CustomPlaceItem = forwardRef<HTMLDivElement, CustomPlaceItemProps>(
     );
   },
 );
-CustomPlaceItem.displayName = 'CustomPlaceItem';
+
 export default CustomPlaceItem;
-
-const CustomPlaceHeader = ({
-  placeType,
-  onDelete,
-}: {
-  placeType: string;
-  onDelete?: () => void;
-}) => (
-  <div className="flex h-8 w-full items-center justify-between pl-4">
-    <div className="text-14 font-normal text-gray-300">
-      {CustomPlaceTypes[placeType as keyof typeof CustomPlaceTypes]}
-    </div>
-    {onDelete && <ChipButton onClick={onDelete}>삭제</ChipButton>}
-  </div>
-);
-
-const CustomPlaceContent = ({ place }: { place: any }) => (
-  <Accordion
-    type="multiple"
-    defaultValue={[place.uuid]}
-    className="flex w-full items-center gap-2.5 rounded-lg"
-    id="accordion"
-  >
-    <AccordionItem value={place.uuid} className="w-full">
-      <AccordionTrigger className="rounded-b-none rounded-t-lg bg-white data-[state=open]:bg-gray-50">
-        {place.place_name}
-      </AccordionTrigger>
-      <AccordionContent className="rounded-b-lg rounded-t-none bg-gray-50 p-4 pt-0">
-        <PlaceDetails place={place} />
-      </AccordionContent>
-    </AccordionItem>
-  </Accordion>
-);
 
 const PlaceDetails = ({ place }: { place: any }) => (
   <div className="flex w-full items-center gap-2.5">
@@ -126,6 +95,24 @@ const PlaceDetails = ({ place }: { place: any }) => (
       </div>
     </div>
   </div>
+);
+
+const CustomPlaceContent = ({ place }: { place: any }) => (
+  <Accordion
+    type="multiple"
+    defaultValue={[place.uuid]}
+    className="flex w-full items-center gap-2.5 rounded-lg"
+    id="accordion"
+  >
+    <AccordionItem value={place.uuid} className="w-full">
+      <AccordionTrigger className="rounded-b-none rounded-t-lg bg-white data-[state=open]:bg-gray-50">
+        {place.place_name}
+      </AccordionTrigger>
+      <AccordionContent className="rounded-b-lg rounded-t-none bg-gray-50 p-4 pt-0">
+        <PlaceDetails place={place} />
+      </AccordionContent>
+    </AccordionItem>
+  </Accordion>
 );
 
 const CustomPlaceFlag = ({
