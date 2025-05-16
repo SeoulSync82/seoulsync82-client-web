@@ -99,7 +99,7 @@ const PostItem: React.FC<{ item: CommunityPostItem }> = ({ item }) => {
         <UserProfile userImage={item.user_profile_image} userName={item.user_name} />
         <LikeIcon isLiked={item.isLiked} likeCount={item.like_count} />
       </div>
-      <Link to={`/course/community/${item.course_uuid}`}>
+      <Link to={`/course/community/${item.uuid}`}>
         <Suspense fallback={<div className="h-full w-full animate-pulse bg-gray-200" />}>
           <Image
             src={item.course_image}
