@@ -13,14 +13,23 @@ import {
 import CustomPlaceItem from '@/components/pages/ai-recommend/custom-course-step/CustomPlaceItem';
 import { useNavigate } from 'react-router';
 import useCourseStore from '@/stores/courseSlice';
+import { useCommunityPostDetail } from '@/service/community/useCommunityService';
 
 const CourseDetailPage = () => {
   const { type, id } = useParams();
   const isCommunityPage = type === 'community';
   const navigate = useNavigate();
 
-  const { data: courseDetailData } = useCourseDetail(id as string);
-  const { line = [], course_name = '', score = '0.0', places = [] } = courseDetailData?.data || {};
+  const { data: courseDetailData } = useCourseDetail(id as string, {
+    enabled: !isCommunityPage,
+  });
+  const { data: communityPostDetailData } = useCommunityPostDetail(id as string, {
+    enabled: isCommunityPage,
+  });
+
+  const detailData = isCommunityPage ? communityPostDetailData : courseDetailData;
+
+  const { line = [], course_name = '', score = '0.0', places = [] } = detailData?.data || {};
   const [stationName, courseName] = course_name.split(',');
 
   const setCustomCourseData = useCourseStore((state) => state.setCustomCourseData);
@@ -69,8 +78,8 @@ const CourseDetailPage = () => {
     navigate(`/ai-recommend`);
   };
 
-  const onClickWrite = () => {
-    navigate('/write');
+  const handleReview = () => {
+    navigate('/review');
   };
 
   const actionButtons: { label: string; icon: string; isActive?: boolean; onClick: () => void }[] =
@@ -93,7 +102,7 @@ const CourseDetailPage = () => {
             icon: 'Reset',
             onClick: handleReset,
           },
-      { label: '한줄평', icon: 'Write', onClick: onClickWrite },
+      { label: '한줄평', icon: 'Write', onClick: handleReview },
     ];
 
   return (
