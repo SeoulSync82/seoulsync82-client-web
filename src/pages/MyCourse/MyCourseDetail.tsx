@@ -107,11 +107,11 @@ const CourseDetailPage = () => {
 
   return (
     <div className="page flex flex-col bg-gray-100">
-      <div className="flex-1 overflow-y-auto">
+      <div className="w-full flex-1 overflow-y-auto">
         <NaverMap points={mapPoints} height={198} zoom={14} />
-        <div className="w-full flex-1 rounded-t-lg bg-gray-50">
+        <div className="flex-1 rounded-t-lg bg-gray-50">
           <div className="bg-white px-5 py-4">
-            <div className="flex items-center gap-[4px]">
+            <div className="flex items-center gap-1">
               {line.map(({ line: lineName, uuid }: { line: string; uuid: string }) => (
                 <div
                   className="flex h-6 items-center rounded-[50px] border-[1px] border-[#E0D1FF] px-[8px] text-12 font-semibold text-primary-500"
