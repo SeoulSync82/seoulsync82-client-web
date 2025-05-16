@@ -87,14 +87,14 @@ const CourseDetailPage = () => {
       {
         label: '북마크',
         icon: 'Bookmark',
-        isActive: courseDetailData?.data?.is_bookmarked,
+        isActive: detailData?.data?.is_bookmarked,
         onClick: handleBookmark,
       },
       isCommunityPage
         ? {
             label: '좋아요',
             icon: 'Heart',
-            isActive: courseDetailData?.data?.is_liked,
+            isActive: detailData?.data?.is_liked,
             onClick: handleLike,
           }
         : {
