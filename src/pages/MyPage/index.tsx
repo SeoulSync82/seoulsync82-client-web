@@ -118,7 +118,7 @@ const MySection = () => {
           text="내가 작성한 글"
           to="/community?me=true&order=popular"
         />
-        <MenuListItem iconName="Bookmark" text="북마크" to="/course?type=liked" />
+        <MenuListItem iconName="Bookmark" text="북마크" to="/course?type=bookmarked" />
       </ul>
     </section>
   );
