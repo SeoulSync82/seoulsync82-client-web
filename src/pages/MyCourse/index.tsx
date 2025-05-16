@@ -48,15 +48,7 @@ const MyCoursePage = () => {
       <TabButtonGroup tabType={type} onClickTab={handleTabClick} tabItems={tabItems} />
       <div className="hide-scroll h-[calc(100dvh-192px)] w-full overflow-y-scroll">
         {courseList?.map((item: CourseListItemProps) => (
-          <CourseListItem
-            key={item.course_uuid}
-            isBookmarked={
-              type === 'liked'
-                ? courseList.some((course) => course.course_uuid === item.course_uuid)
-                : undefined
-            }
-            {...item}
-          />
+          <CourseListItem key={item.course_uuid} isBookmarked={type === 'liked'} {...item} />
         ))}
         <div ref={bottomRef} />
       </div>
