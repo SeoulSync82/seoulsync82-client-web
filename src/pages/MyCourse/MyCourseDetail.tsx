@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import withAuthGuard from '@/hoc/withAuthGuard';
 
-import NaverMap from '@/components/Map';
+import NaverMap from '@/components/NaverMap';
 import SvgIcon from '@/components/SvgIcon';
 import { useCourseDetail } from '@/service/course/useCourseService';
 import CustomPlaceItem from '@/components/pages/ai-recommend/custom-course-step/CustomPlaceItem';

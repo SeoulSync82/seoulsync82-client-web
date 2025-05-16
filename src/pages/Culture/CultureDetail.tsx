@@ -1,4 +1,4 @@
-import NaverMap from '@/components/Map';
+import NaverMap from '@/components/NaverMap';
 import { usePlaceDetail } from '@/service/place/usePlaceService';
 import { convertDateToYMD } from '@/utils';
 import { useParams } from 'react-router';
