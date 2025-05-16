@@ -48,8 +48,10 @@ import {
   IcoHeadphone,
   IcoLogout,
   IcoLogin,
-  IcoFlag,
+  IcoReset,
 } from '../Icon';
+import IcoFlag from '../Icon/IcoFlag';
+import SvgIcoFlag from '../Icon/IcoFlag';
 import { IconProps, SVGName } from './type';
 import { cn } from '@/utils/tailwindcss';
 
@@ -100,6 +102,7 @@ export default function SvgIcon({
     Headphone: IcoHeadphone,
     Logout: IcoLogout,
     Login: IcoLogin,
+    Reset: IcoReset,
   };
   const SvgComponent = svgTypes[name as SVGName];
 
