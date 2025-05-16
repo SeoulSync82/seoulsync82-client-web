@@ -36,22 +36,6 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
   const customCourseData = useCourseStore((state) => state.customCourseData);
   const setCustomCourseData = useCourseStore((state) => state.setCustomCourseData);
 
-  const {
-    data: addPlaceResponse,
-    isFetching: isAddingPlace,
-    isSuccess,
-  } = useAddCustomPlace(
-    {
-      place_type: selectedPlaceType.toUpperCase(),
-      place_uuids: customCourseData.courseData.places?.map((p) => p.uuid).join(','),
-      station_uuid: customCourseData.subwayData.stationUuid,
-      theme_uuid: customCourseData.subwayData.themeUuid,
-    },
-    {
-      enabled: !!selectedPlaceType && !isModalOpen,
-    },
-  );
-
   // 사용된 장소 체크
   const { isFetching: isCheckingUsedPlaces, data: checkUsedPlacesResponse } =
     useCheckUsedCustomPlaces(
@@ -66,6 +50,22 @@ export default function AddCustomPlaceModal(props: AddCustomPlaceModalProps) {
         enabled: isModalOpen,
       },
     );
+
+  const {
+    data: addPlaceResponse,
+    isFetching: isAddingPlace,
+    isSuccess,
+  } = useAddCustomPlace(
+    {
+      place_type: selectedPlaceType.toUpperCase(),
+      place_uuids: customCourseData.courseData.places?.map((p) => p.uuid).join(','),
+      station_uuid: customCourseData.subwayData.stationUuid,
+      theme_uuid: customCourseData.subwayData.themeUuid,
+    },
+    {
+      enabled: !!selectedPlaceType && !isModalOpen && !!checkUsedPlacesResponse,
+    },
+  );
 
   const onClickPlaceTypeButton = (type: string) => {
     setSelectedPlaceType(type);
