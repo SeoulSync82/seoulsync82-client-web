@@ -15,13 +15,15 @@ import { useNavigate } from 'react-router';
 import useCourseStore from '@/stores/courseSlice';
 
 const CourseDetailPage = () => {
-  const { id } = useParams();
-  const { data: courseDetailData } = useCourseDetail(id as string);
+  const { type, id } = useParams();
+  const isCommunityPage = type === 'community';
   const navigate = useNavigate();
-  const setCustomCourseData = useCourseStore((state) => state.setCustomCourseData);
 
+  const { data: courseDetailData } = useCourseDetail(id as string);
   const { line = [], course_name = '', score = '0.0', places = [] } = courseDetailData?.data || {};
   const [stationName, courseName] = course_name.split(',');
+
+  const setCustomCourseData = useCourseStore((state) => state.setCustomCourseData);
 
   const mapPoints = places
     ?.map(({ latitude, longitude }: { latitude: number; longitude: number }) => ({
@@ -35,6 +37,14 @@ const CourseDetailPage = () => {
 
   const { mutate: addCourseLike } = useAddCourseLike();
   const { mutate: cancelCourseLike } = useCancelCourseLike();
+
+  const handleLike = () => {
+    if (courseDetailData?.data?.is_liked) {
+      cancelCourseLike(id as string);
+    } else {
+      addCourseLike(id as string);
+    }
+  };
 
   const handleBookmark = () => {
     if (courseDetailData?.data?.is_bookmarked) {
@@ -71,12 +81,18 @@ const CourseDetailPage = () => {
         isActive: courseDetailData?.data?.is_bookmarked,
         onClick: handleBookmark,
       },
-      {
-        label: '재추천',
-        icon: 'Reset',
-        isActive: courseDetailData?.data?.is_liked,
-        onClick: handleReset,
-      },
+      isCommunityPage
+        ? {
+            label: '좋아요',
+            icon: 'Heart',
+            isActive: courseDetailData?.data?.is_liked,
+            onClick: handleLike,
+          }
+        : {
+            label: '재추천',
+            icon: 'Reset',
+            onClick: handleReset,
+          },
       { label: '한줄평', icon: 'Write', onClick: onClickWrite },
     ];
 
