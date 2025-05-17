@@ -9,6 +9,7 @@ import {
 import Layout from '@/layouts/default';
 import { ErrorBoundaryWrapper } from '@/components/ErrorBoundary';
 
+const Login = React.lazy(() => import('@/pages/Login'));
 const Home = React.lazy(() => import('@/pages/Home'));
 const MyPage = React.lazy(() => import('@/pages/MyPage'));
 const Notice = React.lazy(() => import('@/pages/MyPage/Notice'));
@@ -24,7 +25,7 @@ const Notifications = React.lazy(() => import('@/pages/Notifications'));
 const Map = React.lazy(() => import('@/pages/Map'));
 const Community = React.lazy(() => import('@/pages/Community'));
 const Review = React.lazy(() => import('@/pages/Review'));
-const Login = React.lazy(() => import('@/pages/Login'));
+const Comment = React.lazy(() => import('@/pages/Comment'));
 
 const Root = () => {
   return (
@@ -56,6 +57,7 @@ const routes: RouteObject[] = [
       { path: '/culture/:type/:id', element: <CultureDetail /> },
       { path: '/notifications', element: <Notifications /> },
       { path: '/review', element: <Review /> },
+      { path: '/comment', element: <Comment /> },
     ],
   },
   { path: '/map', element: <Map /> },
