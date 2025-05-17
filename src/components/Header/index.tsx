@@ -125,7 +125,7 @@ const Header: React.FC = () => {
     },
     {
       match: (p) => p.startsWith('/review'),
-      pageName: '커뮤니티 글 작성',
+      pageName: '커뮤니티 글쓰기',
       Component: DefaultHeader,
       rightActions: <button className="text-sm font-bold text-primary-500">등록</button>,
     },
