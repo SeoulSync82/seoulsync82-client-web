@@ -26,6 +26,7 @@ const Map = React.lazy(() => import('@/pages/Map'));
 const Community = React.lazy(() => import('@/pages/Community'));
 const Review = React.lazy(() => import('@/pages/Review'));
 const Comment = React.lazy(() => import('@/pages/Comment'));
+const CourseHistory = React.lazy(() => import('@/pages/CourseHistory'));
 
 const Root = () => {
   return (
@@ -46,6 +47,7 @@ const routes: RouteObject[] = [
       { path: '/login', element: <Login /> },
       { path: '/course', element: <MyCourse /> },
       { path: '/course/:type/:id', element: <CourseDetail /> },
+      { path: '/course-history', element: <CourseHistory /> },
       { path: '/community', element: <Community /> },
       { path: '/my-page', element: <MyPage /> },
       { path: '/my-page/notice', element: <Notice /> },
