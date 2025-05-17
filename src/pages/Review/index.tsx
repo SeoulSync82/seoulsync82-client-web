@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import SvgIcon from '@/components/SvgIcon';
 
 const ReviewPage = () => {
   const { state: selectedCourse } = useLocation();
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-white px-4">
@@ -22,7 +23,7 @@ const AddCourseBox = () => (
     className="mb-8 flex h-[100px] flex-col items-center justify-center gap-3 rounded-md bg-gray-50"
   >
     <SvgIcon name="Plus" width={35} height={35} />
-    <div className="text-base text-gray-300">코스를 추가해주세요</div>
+    <div className="text-sm text-gray-300">코스를 추가해주세요</div>
   </Link>
 );
 
