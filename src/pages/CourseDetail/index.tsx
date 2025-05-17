@@ -78,8 +78,12 @@ const CourseDetailPage = () => {
     navigate(`/ai-recommend`);
   };
 
-  const handleReview = () => {
-    navigate('/review');
+  const handleWrite = () => {
+    if (isCommunityPage) {
+      navigate('/comment');
+    } else {
+      navigate('/review');
+    }
   };
 
   const actionButtons: { label: string; icon: string; isActive?: boolean; onClick: () => void }[] =
@@ -102,7 +106,7 @@ const CourseDetailPage = () => {
             icon: 'Reset',
             onClick: handleReset,
           },
-      { label: isCommunityPage ? '글쓰기' : '한줄평', icon: 'Write', onClick: handleReview },
+      { label: isCommunityPage ? '한줄평' : '글쓰기', icon: 'Write', onClick: handleWrite },
     ];
 
   return (
