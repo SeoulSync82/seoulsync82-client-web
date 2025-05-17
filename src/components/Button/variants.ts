@@ -9,6 +9,7 @@ export const buttonVariants = cva('flex items-center justify-center', {
     },
     height: {
       24: 'h-[24px] min-h-[24px]',
+      32: 'h-[32px] min-h-[32px]',
       36: 'h-[36px] min-h-[36px]',
       44: 'h-[44px] min-h-[44px]',
       48: 'h-[48px] min-h-[48px]',
@@ -41,6 +42,7 @@ export const buttonVariants = cva('flex items-center justify-center', {
       'gray-200': 'text-gray-200',
       'gray-300': 'text-gray-300',
       'gray-400': 'text-gray-400',
+      'gray-700': 'text-gray-700',
       'gray-900': 'text-gray-900',
     },
     fontSize: {
