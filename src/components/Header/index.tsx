@@ -94,6 +94,11 @@ const Header: React.FC = () => {
       rightActions: <SvgIcon name="Share" width={24} height={24} onClick={handleShare} />,
     },
     {
+      match: (p) => p.startsWith('/course-history'),
+      pageName: '코스 추천 내역',
+      Component: DefaultHeader,
+    },
+    {
       match: (p) => p.startsWith('/map'),
       pageName: '지도',
       Component: DefaultHeader,
@@ -120,9 +125,9 @@ const Header: React.FC = () => {
     },
     {
       match: (p) => p.startsWith('/review'),
-      pageName: '커뮤니티 글쓰기',
+      pageName: '커뮤니티 글 작성',
       Component: DefaultHeader,
-      rightActions: <SvgIcon name="Share" width={24} height={24} onClick={handleShare} />,
+      rightActions: <button className="text-sm font-bold text-primary-500">등록</button>,
     },
     {
       match: (p) => p.startsWith('/comment'),
