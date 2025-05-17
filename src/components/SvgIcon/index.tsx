@@ -50,6 +50,7 @@ import {
   IcoLogin,
   IcoReset,
   IcoFlag,
+  IcoShare,
 } from '../Icon';
 import { IconProps, SVGName } from './type';
 import { cn } from '@/utils/tailwindcss';
@@ -102,6 +103,7 @@ export default function SvgIcon({
     Logout: IcoLogout,
     Login: IcoLogin,
     Reset: IcoReset,
+    Share: IcoShare,
   };
   const SvgComponent = svgTypes[name as SVGName];
 

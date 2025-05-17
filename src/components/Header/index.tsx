@@ -6,7 +6,8 @@ import { headerVariants } from './variants';
 import useUserStore from '@/stores/userSlice';
 import { cn } from '@/utils/tailwindcss';
 import { useEditProfile } from '@/pages/MyPage/EditProfile';
-
+import SvgIcon from '../SvgIcon';
+import { useToast } from '@/context/ToastContext';
 interface HeaderProps {
   pageName: string;
   rightActions?: React.ReactNode;
@@ -23,6 +24,21 @@ const Header: React.FC = () => {
   const { pathname } = useLocation();
   const { userProfile, userNameValidation } = useUserStore();
   const { handleEditProfile } = useEditProfile();
+  const { showToast } = useToast();
+
+  const handleShare = async () => {
+    // await navigator.share({
+    //   title: 'Seoulsync',
+    //   text: 'Seoulsync 링크를 공유합니다.',
+    //   url: window.location.href,
+    // });
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      showToast('링크가 복사되었습니다.');
+    } catch (error) {
+      showToast('링크 복사에 실패했습니다.');
+    }
+  };
 
   const makeHeaderConfig = (): HeaderConfigItem[] => {
     return [
@@ -67,7 +83,7 @@ const Header: React.FC = () => {
         match: (p) => p.startsWith('/course/'),
         pageName: '코스 상세',
         Component: DefaultHeader,
-        rightActions: <button>공유하기</button>,
+        rightActions: <SvgIcon name="Share" width={24} height={24} onClick={handleShare} />,
       },
       {
         match: (p) => p.startsWith('/map'),
@@ -96,8 +112,15 @@ const Header: React.FC = () => {
       },
       {
         match: (p) => p.startsWith('/review'),
+        pageName: '커뮤니티 글쓰기',
+        Component: DefaultHeader,
+        rightActions: <SvgIcon name="Share" width={24} height={24} onClick={handleShare} />,
+      },
+      {
+        match: (p) => p.startsWith('/comment'),
         pageName: '한줄평 작성',
         Component: DefaultHeader,
+        rightActions: <SvgIcon name="Share" width={24} height={24} onClick={handleShare} />,
       },
       // fallback ‑ 매칭되지 않는 모든 경로
       {

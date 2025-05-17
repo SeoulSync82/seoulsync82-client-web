@@ -45,6 +45,7 @@ export { default as IcoReset } from './IcoReset';
 export { default as IcoRestaurantActive } from './IcoRestaurantActive';
 export { default as IcoRestaurant } from './IcoRestaurant';
 export { default as IcoSearch } from './IcoSearch';
+export { default as IcoShare } from './IcoShare';
 export { default as IcoShoppingActive } from './IcoShoppingActive';
 export { default as IcoShopping } from './IcoShopping';
 export { default as IcoSpeaker } from './IcoSpeaker';
