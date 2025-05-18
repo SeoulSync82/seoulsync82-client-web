@@ -15,8 +15,8 @@ class CommunityService extends Service {
     return this.service.get(`/community/${uuid}`);
   }
 
-  createCommunityPost(uuid: string) {
-    return this.service.post(`/community/${uuid}`);
+  createCommunityPost(uuid: string, score: number, review: string) {
+    return this.service.post(`/community/${uuid}`, { score, review });
   }
 
   postCommunityLike(uuid: string) {

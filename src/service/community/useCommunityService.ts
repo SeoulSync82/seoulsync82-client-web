@@ -68,3 +68,10 @@ export const useCommunityPostCancelLike = () => {
     },
   });
 };
+
+export const useCreateCommunityPost = () => {
+  return useMutation({
+    mutationFn: ({ uuid, score, review }: { uuid: string; score: number; review: string }) =>
+      CommunityService.createCommunityPost(uuid, score, review),
+  });
+};
