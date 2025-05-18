@@ -1,10 +1,9 @@
-import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import SvgIcon from '@/components/SvgIcon';
+import useReviewStore from '@/stores/reviewSlice';
 
 const ReviewPage = () => {
   const { state: selectedCourse } = useLocation();
-  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-white px-4">
@@ -28,7 +27,8 @@ const AddCourseBox = () => (
 );
 
 const StarRating = () => {
-  const [selectedStars, setSelectedStars] = useState(0);
+  const stars = useReviewStore((state) => state.stars);
+  const setStars = useReviewStore((state) => state.setStars);
 
   return (
     <div className="mb-10 flex flex-col gap-5 border-t-[1px] border-gray-200 pt-10">
@@ -40,8 +40,8 @@ const StarRating = () => {
             name="FullStar"
             width={36}
             height={36}
-            onClick={() => setSelectedStars(n)}
-            color={n <= selectedStars ? '#9070CF' : undefined}
+            onClick={() => setStars(n)}
+            color={n <= stars ? '#9070CF' : undefined}
           />
         ))}
       </div>
@@ -51,7 +51,8 @@ const StarRating = () => {
 };
 
 const ReviewArea = () => {
-  const [review, setReview] = useState('');
+  const review = useReviewStore((state) => state.review);
+  const setReview = useReviewStore((state) => state.setReview);
 
   return (
     <div className="border-t-[1px] border-gray-200 pt-10">
