@@ -1,6 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { queryOptions } from './queries';
+import ThemeService from './ThemeService';
 
 export const useThemesList = () => {
-  return useQuery(queryOptions.getThemes());
+  return useQuery({
+    queryKey: ['themes'],
+    queryFn: () => ThemeService.getThemes(),
+  });
 };
