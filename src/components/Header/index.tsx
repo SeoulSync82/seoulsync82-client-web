@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate, useSearchParams } from 'react-router';
 import HomeHeader from './HomeHeader';
 import DefaultHeader from './DefaultHeader';
 import { headerVariants } from './variants';
@@ -8,7 +8,8 @@ import { cn } from '@/utils/tailwindcss';
 import { useEditProfile } from '@/pages/MyPage/EditProfile';
 import SvgIcon from '../SvgIcon';
 import { useToast } from '@/context/ToastContext';
-
+import { useCreateCommunityPost } from '@/service/community/useCommunityService';
+import useReviewStore from '@/stores/reviewSlice';
 interface HeaderProps {
   pageName: string;
   rightActions?: React.ReactNode;
@@ -25,10 +26,18 @@ const isMobileDevice = () =>
   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 const Header: React.FC = () => {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { userProfile, userNameValidation } = useUserStore();
-  const { handleEditProfile } = useEditProfile();
+
   const { showToast } = useToast();
+
+  const { handleEditProfile } = useEditProfile();
+  const { mutate: createCommunityPost } = useCreateCommunityPost();
+
+  const userProfile = useUserStore((state) => state.userProfile);
+  const userNameValidation = useUserStore((state) => state.userNameValidation);
+  const review = useReviewStore((state) => state.review);
+  const stars = useReviewStore((state) => state.stars);
 
   const handleShare = useCallback(async () => {
     const shareData = {
@@ -49,6 +58,25 @@ const Header: React.FC = () => {
       showToast(isMobileDevice() ? '공유에 실패했습니다.' : '링크 복사에 실패했습니다.');
     }
   }, [showToast]);
+
+  const handleWriteReview = () => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const courseUuid = searchParams.get('course_uuid');
+
+    createCommunityPost(
+      {
+        uuid: courseUuid as string,
+        score: stars,
+        review,
+      },
+      {
+        onSuccess: () => {
+          showToast('커뮤니티 글쓰기가 완료되었어요');
+          navigate('/community');
+        },
+      },
+    );
+  };
 
   const headerConfig: HeaderConfigItem[] = [
     {
@@ -127,7 +155,11 @@ const Header: React.FC = () => {
       match: (p) => p.startsWith('/review'),
       pageName: '커뮤니티 글쓰기',
       Component: DefaultHeader,
-      rightActions: <button className="text-sm font-bold text-primary-500">등록</button>,
+      rightActions: (
+        <button className="text-sm font-bold text-primary-500" onClick={handleWriteReview}>
+          등록
+        </button>
+      ),
     },
     {
       match: (p) => p.startsWith('/comment'),
