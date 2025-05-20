@@ -119,6 +119,7 @@ export const useAddCourseBookmark = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getBookmarkedCourseList'] });
       queryClient.invalidateQueries({ queryKey: ['courseDetail'] });
+      queryClient.invalidateQueries({ queryKey: ['communityPostDetail'] });
     },
   });
 };
@@ -130,26 +131,7 @@ export const useCancelCourseBookmark = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getBookmarkedCourseList'] });
       queryClient.invalidateQueries({ queryKey: ['courseDetail'] });
-    },
-  });
-};
-
-export const useAddCourseLike = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (uuid: string) => CourseService.addCourseLike(uuid),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['courseDetail'] });
-    },
-  });
-};
-
-export const useCancelCourseLike = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (uuid: string) => CourseService.cancelCourseLike(uuid),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['courseDetail'] });
+      queryClient.invalidateQueries({ queryKey: ['communityPostDetail'] });
     },
   });
 };

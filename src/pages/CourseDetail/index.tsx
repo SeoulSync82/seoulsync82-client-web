@@ -7,13 +7,15 @@ import {
   useCourseDetail,
   useAddCourseBookmark,
   useCancelCourseBookmark,
-  useCancelCourseLike,
-  useAddCourseLike,
 } from '@/service/course/useCourseService';
 import CustomPlaceItem from '@/components/pages/ai-recommend/custom-course-step/CustomPlaceItem';
 import { useNavigate } from 'react-router';
 import useCourseStore from '@/stores/courseSlice';
-import { useCommunityPostDetail } from '@/service/community/useCommunityService';
+import {
+  useAddCommunityPostLike,
+  useCancelCommunityPostLike,
+  useCommunityPostDetail,
+} from '@/service/community/useCommunityService';
 
 const CourseDetailPage = () => {
   const { type, id } = useParams();
@@ -44,11 +46,11 @@ const CourseDetailPage = () => {
   const { mutate: addCourseBookmark } = useAddCourseBookmark();
   const { mutate: cancelCourseBookmark } = useCancelCourseBookmark();
 
-  const { mutate: addCourseLike } = useAddCourseLike();
-  const { mutate: cancelCourseLike } = useCancelCourseLike();
+  const { mutate: addCourseLike } = useAddCommunityPostLike();
+  const { mutate: cancelCourseLike } = useCancelCommunityPostLike();
 
   const handleLike = () => {
-    if (courseDetailData?.data?.is_liked) {
+    if (communityPostDetailData?.data?.is_liked) {
       cancelCourseLike(id as string);
     } else {
       addCourseLike(id as string);
@@ -56,10 +58,10 @@ const CourseDetailPage = () => {
   };
 
   const handleBookmark = () => {
-    if (courseDetailData?.data?.is_bookmarked) {
-      cancelCourseBookmark(id as string);
+    if (detailData?.data?.is_bookmarked) {
+      cancelCourseBookmark(detailData?.data?.course_uuid as string);
     } else {
-      addCourseBookmark(id as string);
+      addCourseBookmark(detailData?.data?.course_uuid as string);
     }
   };
 

@@ -26,6 +26,14 @@ class CommunityService extends Service {
   postCommunityCancelLike(uuid: string) {
     return this.service.patch(`/reaction/${uuid}`);
   }
+
+  addCommunityPostLike(uuid: string) {
+    return this.service.post(`/reaction/${uuid}`);
+  }
+
+  cancelCommunityPostLike(uuid: string) {
+    return this.service.patch(`/reaction/${uuid}`);
+  }
 }
 
 export default new CommunityService();

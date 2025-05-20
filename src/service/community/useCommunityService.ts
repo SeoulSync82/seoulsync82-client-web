@@ -75,3 +75,23 @@ export const useCreateCommunityPost = () => {
       CommunityService.createCommunityPost(uuid, score, review),
   });
 };
+
+export const useAddCommunityPostLike = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (uuid: string) => CommunityService.addCommunityPostLike(uuid),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['communityPostDetail'] });
+    },
+  });
+};
+
+export const useCancelCommunityPostLike = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (uuid: string) => CommunityService.cancelCommunityPostLike(uuid),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['communityPostDetail'] });
+    },
+  });
+};

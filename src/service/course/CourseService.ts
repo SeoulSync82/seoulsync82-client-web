@@ -41,13 +41,6 @@ class CourseService extends Service {
   async cancelCourseBookmark(uuid: string) {
     return await this.service.patch(`/bookmark/${uuid}`);
   }
-
-  async addCourseLike(uuid: string) {
-    return await this.service.post(`/reaction/${uuid}`);
-  }
-  async cancelCourseLike(uuid: string) {
-    return await this.service.patch(`/reaction/${uuid}`);
-  }
 }
 
 export default new CourseService();
