@@ -79,11 +79,11 @@ const CourseDetailPage = () => {
   };
 
   const handleWrite = () => {
-    if (isCommunityPage) {
-      navigate('/comment');
-    } else {
-      navigate('/review');
-    }
+    const { course_uuid, course_name, created_at, customs } = detailData?.data || {};
+    const path = isCommunityPage ? '/comment' : `/review?course_uuid=${course_uuid}`;
+    const state = isCommunityPage ? undefined : { course_name, created_at, customs };
+
+    navigate(path, { state });
   };
 
   const actionButtons: { label: string; icon: string; isActive?: boolean; onClick: () => void }[] =
@@ -106,7 +106,11 @@ const CourseDetailPage = () => {
             icon: 'Reset',
             onClick: handleReset,
           },
-      { label: isCommunityPage ? '한줄평' : '글쓰기', icon: 'Write', onClick: handleWrite },
+      {
+        label: detailData?.data?.is_posted || isCommunityPage ? '한줄평' : '글쓰기',
+        icon: 'Write',
+        onClick: handleWrite,
+      },
     ];
 
   return (
