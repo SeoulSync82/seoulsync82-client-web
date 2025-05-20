@@ -20,10 +20,10 @@ const useHeaderActions = () => {
   const userProfile = useUserStore((state) => state.userProfile);
   const userNameValidation = useUserStore((state) => state.userNameValidation);
 
-  const { mutate: createCommunityPost } = useCreateCommunityPost();
-
   const stars = useReviewStore((state) => state.stars);
   const review = useReviewStore((state) => state.review);
+
+  const { mutate: createCommunityPost } = useCreateCommunityPost();
 
   const handleShareLink = useCallback(async () => {
     const shareData = {
