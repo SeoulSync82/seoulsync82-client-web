@@ -1,9 +1,20 @@
 import { Link, useLocation } from 'react-router-dom';
 import SvgIcon from '@/components/SvgIcon';
 import useReviewStore from '@/stores/reviewSlice';
+import { useEffect } from 'react';
 
 const ReviewPage = () => {
   const { state: selectedCourse } = useLocation();
+
+  const setStars = useReviewStore((state) => state.setStars);
+  const setReview = useReviewStore((state) => state.setReview);
+
+  useEffect(() => {
+    return () => {
+      setStars(0);
+      setReview('');
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-white px-4">
