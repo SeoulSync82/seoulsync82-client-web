@@ -10,14 +10,15 @@ interface HeaderProps {
   rightActions?: React.ReactNode;
 }
 interface HeaderConfigItem {
-  match: (path: string) => boolean;
+  match: (path: string, search: string) => boolean;
   pageName: string;
   Component: React.FC<HeaderProps>;
   rightActions?: React.ReactNode;
 }
 
 const Header: React.FC = () => {
-  const { pathname } = useLocation();
+  const location = useLocation();
+  const { pathname, search } = location;
   const { getRightActions } = useHeaderActions();
 
   const headerConfig: HeaderConfigItem[] = [
@@ -79,8 +80,13 @@ const Header: React.FC = () => {
       Component: DefaultHeader,
     },
     {
-      match: (p) => p.startsWith('/community'),
+      match: (p, s) => p.startsWith('/community') && !s.includes('me=true'),
       pageName: '커뮤니티',
+      Component: DefaultHeader,
+    },
+    {
+      match: (p, s) => p.startsWith('/community') && s.includes('me=true'),
+      pageName: '내가 작성한 글',
       Component: DefaultHeader,
     },
     {
@@ -102,7 +108,9 @@ const Header: React.FC = () => {
     },
   ];
 
-  const { Component, pageName, rightActions } = headerConfig.find((c) => c.match(pathname))!;
+  const { Component, pageName, rightActions } = headerConfig.find((c) =>
+    c.match(pathname, search),
+  )!;
 
   return (
     <header className={headerVariants({ isHomePage: pathname === '/' })}>
