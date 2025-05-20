@@ -1,20 +1,14 @@
-import React, { useCallback } from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router';
+import React from 'react';
+import { useLocation } from 'react-router';
+import { headerVariants } from './variants';
 import HomeHeader from './HomeHeader';
 import DefaultHeader from './DefaultHeader';
-import { headerVariants } from './variants';
-import useUserStore from '@/stores/userSlice';
-import { cn } from '@/utils/tailwindcss';
-import { useEditProfile } from '@/pages/MyPage/EditProfile';
-import SvgIcon from '../SvgIcon';
-import { useToast } from '@/context/ToastContext';
-import { useCreateCommunityPost } from '@/service/community/useCommunityService';
-import useReviewStore from '@/stores/reviewSlice';
+import useHeaderActions from '@/hooks/useHeaderActions';
+
 interface HeaderProps {
   pageName: string;
   rightActions?: React.ReactNode;
 }
-
 interface HeaderConfigItem {
   match: (path: string) => boolean;
   pageName: string;
@@ -22,61 +16,9 @@ interface HeaderConfigItem {
   rightActions?: React.ReactNode;
 }
 
-const isMobileDevice = () =>
-  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
 const Header: React.FC = () => {
-  const navigate = useNavigate();
   const { pathname } = useLocation();
-
-  const { showToast } = useToast();
-
-  const { handleEditProfile } = useEditProfile();
-  const { mutate: createCommunityPost } = useCreateCommunityPost();
-
-  const userProfile = useUserStore((state) => state.userProfile);
-  const userNameValidation = useUserStore((state) => state.userNameValidation);
-  const review = useReviewStore((state) => state.review);
-  const stars = useReviewStore((state) => state.stars);
-
-  const handleShare = useCallback(async () => {
-    const shareData = {
-      title: 'Seoulsync',
-      text: 'Seoulsync 링크를 공유합니다.',
-      url: window.location.href,
-    };
-
-    try {
-      if (isMobileDevice() && navigator.share) {
-        await navigator.share(shareData);
-        showToast('공유에 성공했습니다.');
-      } else {
-        await navigator.clipboard.writeText(window.location.href);
-        showToast('링크가 복사되었습니다.');
-      }
-    } catch (error) {
-      showToast(isMobileDevice() ? '공유에 실패했습니다.' : '링크 복사에 실패했습니다.');
-    }
-  }, [showToast]);
-
-  const handleWriteReview = () => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const courseUuid = searchParams.get('course_uuid');
-
-    createCommunityPost(
-      {
-        uuid: courseUuid as string,
-        score: stars,
-        review,
-      },
-      {
-        onSuccess: () => {
-          showToast('커뮤니티 글쓰기가 완료되었어요');
-          navigate('/community');
-        },
-      },
-    );
-  };
+  const { getRightActions } = useHeaderActions();
 
   const headerConfig: HeaderConfigItem[] = [
     {
@@ -88,17 +30,7 @@ const Header: React.FC = () => {
       match: (p) => p.startsWith('/my-page/edit-profile'),
       pageName: '프로필 수정',
       Component: DefaultHeader,
-      rightActions: (
-        <button
-          className={cn('text-base font-bold', {
-            'text-primary-500': userProfile.name,
-            'text-gray-400': !userProfile.name || userNameValidation.errorMessage,
-          })}
-          onClick={handleEditProfile}
-        >
-          완료
-        </button>
-      ),
+      rightActions: getRightActions(),
     },
     {
       match: (p) => p.startsWith('/my-page/social-login-info'),
@@ -119,7 +51,7 @@ const Header: React.FC = () => {
       match: (p) => p.startsWith('/course/'),
       pageName: '코스 상세',
       Component: DefaultHeader,
-      rightActions: <SvgIcon name="Share" width={24} height={24} onClick={handleShare} />,
+      rightActions: getRightActions(),
     },
     {
       match: (p) => p.startsWith('/course-history'),
@@ -155,17 +87,13 @@ const Header: React.FC = () => {
       match: (p) => p.startsWith('/review'),
       pageName: '커뮤니티 글쓰기',
       Component: DefaultHeader,
-      rightActions: (
-        <button className="text-sm font-bold text-primary-500" onClick={handleWriteReview}>
-          등록
-        </button>
-      ),
+      rightActions: getRightActions(),
     },
     {
       match: (p) => p.startsWith('/comment'),
       pageName: '한줄평 작성',
       Component: DefaultHeader,
-      rightActions: <SvgIcon name="Share" width={24} height={24} onClick={handleShare} />,
+      rightActions: getRightActions(),
     },
     {
       match: () => true,
