@@ -30,6 +30,7 @@ const Button = ({
       fontWeight,
       rounded,
       active,
+      disabled,
     }),
     borderColor && combineBorderStyles(borderWidth, borderStyle, borderColor, borderPosition),
     className,

@@ -77,7 +77,7 @@ export const buttonVariants = cva('flex items-center justify-center', {
       false: '',
     },
     disabled: {
-      true: 'cursor-not-allowed opacity-50',
+      true: 'hover:cursor-not-allowed',
       false: '',
     },
   },
