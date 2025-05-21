@@ -82,8 +82,12 @@ const CourseDetailPage = () => {
 
   const handleWrite = () => {
     const { course_uuid, course_name, created_at, customs, is_posted } = detailData?.data || {};
+    const { uuid } = communityPostDetailData?.data || {};
 
-    const path = isCommunityPage || is_posted ? '/comment' : `/review?course_uuid=${course_uuid}`;
+    const path =
+      isCommunityPage || is_posted
+        ? `/comment?community_post_uuid=${uuid}`
+        : `/review?course_uuid=${course_uuid}`;
     const state = !isCommunityPage && !is_posted ? { course_name, created_at, customs } : undefined;
 
     navigate(path, { state });
