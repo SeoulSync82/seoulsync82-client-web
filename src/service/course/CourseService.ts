@@ -1,45 +1,56 @@
 import Service from '../Service';
 import { PlaceCustomParams } from './types';
 class CourseService extends Service {
-  async getCourseRecommend(station_uuid: string, theme_uuid?: string) {
-    return await this.service.get('/course/recommend', {
+  getCourseRecommend(station_uuid: string, theme_uuid?: string) {
+    return this.service.get('/course/recommend', {
       params: theme_uuid ? { station_uuid, theme_uuid } : { station_uuid },
     });
   }
 
-  async getPlaceCustomize({
-    place_uuids,
-    place_type,
-    station_uuid,
-    theme_uuid = '',
-  }: PlaceCustomParams) {
-    return await this.service.get('/course/place/customize', {
+  getPlaceCustomize({ place_uuids, place_type, station_uuid, theme_uuid = '' }: PlaceCustomParams) {
+    return this.service.get('/course/place/customize', {
       params: { place_uuids, place_type, station_uuid, theme_uuid },
     });
   }
 
-  async saveCourseRecommend(data: any) {
-    return await this.service.post('/course/recommend/save', data);
+  saveCourseRecommend(data: any) {
+    return this.service.post('/course/recommend/save', data);
   }
 
-  async getMyCourseHistory(size: number, last_id?: number) {
-    return await this.service.get(`/course/my-history?size=${size}&last_id=${last_id}`);
+  getMyCourseHistory(size: number, last_id?: number) {
+    return this.service.get(`/course/my-history?size=${size}&last_id=${last_id}`);
   }
 
-  async getCourseDetail(uuid: string) {
-    return await this.service.get(`/course/${uuid}`);
+  getCourseDetail(uuid: string) {
+    return this.service.get(`/course/${uuid}`);
   }
 
-  async getBookmarkedCourseList(size: number, last_id?: number) {
-    return await this.service.get(`/bookmark?size=${size}&last_id=${last_id}`);
+  getBookmarkedCourseList(size: number, last_id?: number) {
+    return this.service.get(`/bookmark?size=${size}&last_id=${last_id}`);
   }
 
-  async addCourseBookmark(uuid: string) {
-    return await this.service.post(`/bookmark/${uuid}`);
+  addCourseBookmark(uuid: string) {
+    return this.service.post(`/bookmark/${uuid}`);
   }
 
-  async cancelCourseBookmark(uuid: string) {
-    return await this.service.patch(`/bookmark/${uuid}`);
+  cancelCourseBookmark(uuid: string) {
+    return this.service.patch(`/bookmark/${uuid}`);
+  }
+
+  getCommentList(uuid: string, size: number = 10, last_id?: number) {
+    return this.service.get(`/comment/${uuid}?size=${size}`);
+  }
+
+  addComment(uuid: string, data: any) {
+    return this.service.post(`/comment/${uuid}`, data);
+  }
+
+  updateComment(uuid: string, data: any) {
+    return this.service.patch(`/comment/${uuid}`, data);
+  }
+
+  deleteComment(uuid: string) {
+    return this.service.delete(`/comment/${uuid}`);
   }
 }
 

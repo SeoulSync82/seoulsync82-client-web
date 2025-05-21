@@ -135,3 +135,45 @@ export const useCancelCourseBookmark = () => {
     },
   });
 };
+
+export const useCommentList = (uuid: string, size: number = 10) => {
+  return useInfiniteQuery({
+    queryKey: ['commentList', uuid, size],
+    queryFn: ({ pageParam = 0 }) => CourseService.getCommentList(uuid, size, pageParam),
+    getNextPageParam: (lastPage) => {
+      console.log(lastPage.data.last_item_id);
+      const next = lastPage?.data?.last_item_id;
+      return next ? next : undefined;
+    },
+    select: (data) => {
+      return {
+        author: {
+          review: data.pages[0].data.community_review,
+          user_name: data.pages[0].data.community_user_name,
+          user_profile_image: data.pages[0].data.community_user_profile_image,
+          user_uuid: data.pages[0].data.community_user_uuid,
+        },
+        comments: data.pages.flatMap((page) => page.data.comments),
+      };
+    },
+    initialPageParam: 0,
+  });
+};
+
+export const useAddComment = (uuid: string, comment: string) => {
+  return useMutation({
+    mutationFn: () => CourseService.addComment(uuid, { comment }),
+  });
+};
+
+export const useUpdateComment = (uuid: string, comment: string) => {
+  return useMutation({
+    mutationFn: () => CourseService.updateComment(uuid, { comment }),
+  });
+};
+
+export const useDeleteComment = (uuid: string) => {
+  return useMutation({
+    mutationFn: () => CourseService.deleteComment(uuid),
+  });
+};
