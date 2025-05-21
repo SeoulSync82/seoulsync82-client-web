@@ -7,43 +7,33 @@ import {
   useNotificationList,
   useSetReadNotification,
 } from '@/service/notification/useNotificationService';
+import { useNavigate } from 'react-router';
 
 const NotificationPage = () => {
+  const navigate = useNavigate();
+
   const { data: notificationListData, hasNextPage, fetchNextPage } = useNotificationList();
   const { mutate: readNotification } = useSetReadNotification();
+
   const { bottomRef } = useIntersectionObserver(hasNextPage, fetchNextPage);
 
-  const onClickReadNotification = (uuid: string) => {
-    readNotification(uuid);
+  const onClickReadNotification = (notification: NotificationItemProps) => {
+    readNotification(notification.uuid);
+    navigate(`/course/community/${notification.target_uuid}`);
   };
 
   return (
     <div className="page">
-      <NotificationList
-        notifications={notificationListData || []}
-        onClickReadNotification={onClickReadNotification}
-      />
+      {notificationListData?.map((notification) => (
+        <NotificationItem
+          key={notification.id}
+          {...notification}
+          onClick={() => onClickReadNotification(notification)}
+        />
+      ))}
       <div ref={bottomRef} />
     </div>
   );
 };
-
-const NotificationList = ({
-  notifications,
-  onClickReadNotification,
-}: {
-  notifications: NotificationItemProps[];
-  onClickReadNotification: (uuid: string) => void;
-}) => (
-  <>
-    {notifications?.map((notification) => (
-      <NotificationItem
-        key={notification.id}
-        {...notification}
-        onClick={() => onClickReadNotification(notification.uuid)}
-      />
-    ))}
-  </>
-);
 
 export default withAuthGuard(NotificationPage);
