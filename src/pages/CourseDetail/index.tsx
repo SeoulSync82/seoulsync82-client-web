@@ -145,16 +145,15 @@ const CourseDetailPage = () => {
               {stationName && <span className="text-base font-bold">{stationName}</span>}
               {courseName && <span className="text-base font-medium">,{courseName}</span>}
             </div>
-            {isCommunityPage ||
-              (detailData?.data?.is_posted && (
-                <div className="mt-1 flex h-4 items-center gap-1">
-                  <SvgIcon name="FullStar" width={16} height={16} color="#FFC01D" />
-                  <span className="flex items-center justify-center pt-1 text-sm font-semibold leading-4 text-gray-900">
-                    {score}
-                  </span>
-                  <span className="pt-1 text-sm font-normal leading-4 text-gray-400">(0)</span>
-                </div>
-              ))}
+            {(isCommunityPage || detailData?.data?.is_posted) && (
+              <div className="mt-1 flex h-4 items-center gap-1">
+                <SvgIcon name="FullStar" width={16} height={16} color="#FFC01D" />
+                <span className="flex items-center justify-center pt-1 text-sm font-semibold leading-4 text-gray-900">
+                  {score}
+                </span>
+                <span className="pt-1 text-sm font-normal leading-4 text-gray-400">(0)</span>
+              </div>
+            )}
             <div className="mt-2 truncate text-12 font-medium text-[#6D757D]">
               {detailData?.data?.customs
                 .split(', ')
