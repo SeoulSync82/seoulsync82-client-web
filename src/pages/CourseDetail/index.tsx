@@ -106,7 +106,7 @@ const CourseDetailPage = () => {
         isActive: detailData?.data?.is_bookmarked,
         onClick: handleBookmark,
       },
-      isCommunityPage
+      isCommunityPage || detailData?.data?.is_posted
         ? {
             label: '좋아요',
             icon: 'Heart',
