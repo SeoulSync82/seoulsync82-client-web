@@ -46,11 +46,11 @@ class CourseService extends Service {
   }
 
   updateComment(uuid: string, data: any) {
-    return this.service.patch(`/comment/${uuid}`, data);
+    return this.service.put(`/comment/${uuid}`, data);
   }
 
   deleteComment(uuid: string) {
-    return this.service.delete(`/comment/${uuid}`);
+    return this.service.patch(`/comment/${uuid}`);
   }
 }
 

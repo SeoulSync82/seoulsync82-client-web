@@ -1,7 +1,13 @@
 import Image from '@/components/Image';
-import { useAddComment, useCommentList } from '@/service/course/useCourseService';
+import {
+  useAddComment,
+  useCommentList,
+  useDeleteComment,
+  useUpdateComment,
+} from '@/service/course/useCourseService';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useToast } from '@/context/ToastContext';
 
 const CommentPage = () => {
   const [searchParams] = useSearchParams();
@@ -10,6 +16,10 @@ const CommentPage = () => {
   const [comment, setComment] = useState('');
   const { data: commentListData } = useCommentList(community_post_uuid as string);
   const { mutate: createComment, isPending } = useAddComment(community_post_uuid as string);
+  const { mutate: updateComment } = useUpdateComment(community_post_uuid as string);
+  const { mutate: deleteComment } = useDeleteComment();
+
+  const { showToast } = useToast();
 
   const handleSubmit = () => {
     if (!comment.trim()) return;
@@ -18,19 +28,45 @@ const CommentPage = () => {
     });
   };
 
+  const handleDelete = (commentId: string) => {
+    deleteComment(commentId, {
+      onSuccess: () => {
+        showToast('댓글이 삭제되었습니다.');
+      },
+    });
+  };
+
+  const handleUpdate = (commentId: string) => {
+    // TODO: 수정 관련 UI 요청 필요
+    // updateComment(commentId, {
+    //   onSuccess: () => {
+    //     showToast('댓글이 수정되었습니다.');
+    //   },
+    // });
+  };
+
   return (
     <div className="page flex flex-col items-center justify-between bg-white px-0 pb-7 pt-0">
       <div className="flex w-full flex-col items-center">
         <AuthorHighlight author={commentListData?.author as Author} />
-        <CommentList comments={commentListData?.comments as Comment[]} />
+        <div className="flex h-[calc(100dvh-206px)] w-full max-w-md flex-col gap-5 overflow-y-auto px-4 py-4">
+          {commentListData?.comments?.map((comment) => (
+            <CommentItem
+              key={comment.id}
+              comment={comment}
+              onDelete={() => handleDelete(comment.uuid)}
+              onUpdate={() => handleUpdate(comment.uuid)}
+            />
+          ))}
+        </div>
       </div>
       <div className="w-full px-4">
         <input
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           onKeyDown={(e) => {
-            e.preventDefault();
             if (e.key === 'Enter' && !isPending) {
+              e.preventDefault();
               handleSubmit();
             }
           }}
@@ -81,13 +117,15 @@ type Comment = {
   isAuthor: boolean;
 };
 
-const CommentList = ({ comments }: { comments: Comment[] }) => (
-  <div className="flex h-[calc(100dvh-206px)] w-full max-w-md flex-col gap-5 overflow-y-auto px-4 py-4">
-    {comments?.map((comment) => <CommentItem key={comment.id} comment={comment} />)}
-  </div>
-);
-
-const CommentItem = ({ comment }: { comment: Comment }) => (
+const CommentItem = ({
+  comment,
+  onDelete,
+  onUpdate,
+}: {
+  comment: Comment;
+  onDelete: () => void;
+  onUpdate: () => void;
+}) => (
   <div className="flex items-start gap-3">
     <div className="relative">
       <Image
@@ -108,12 +146,12 @@ const CommentItem = ({ comment }: { comment: Comment }) => (
       <div className="mt-1 flex items-center gap-1 text-xs font-normal text-gray-300">
         <span>{new Date(comment.created_at).toLocaleDateString().slice(0, -1)}</span>
         {comment.isAuthor && (
-          <>
+          <div className="flex items-center gap-1">
             <span>·</span>
-            <button>삭제</button>
+            <button onClick={() => onDelete()}>삭제</button>
             <span>·</span>
-            <button>수정</button>
-          </>
+            <button onClick={() => onUpdate()}>수정</button>
+          </div>
         )}
       </div>
     </div>

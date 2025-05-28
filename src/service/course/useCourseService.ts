@@ -170,20 +170,20 @@ export const useAddComment = (uuid: string) => {
   });
 };
 
-export const useUpdateComment = (uuid: string, comment: string) => {
+export const useUpdateComment = (uuid: string) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: () => CourseService.updateComment(uuid, { comment }),
+    mutationFn: (comment: string) => CourseService.updateComment(uuid, { comment }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['commentList'] });
     },
   });
 };
 
-export const useDeleteComment = (uuid: string) => {
+export const useDeleteComment = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: () => CourseService.deleteComment(uuid),
+    mutationFn: (commentId: string) => CourseService.deleteComment(commentId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['commentList'] });
     },
