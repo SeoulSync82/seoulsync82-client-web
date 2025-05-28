@@ -18,26 +18,22 @@ import {
 } from '@/service/community/useCommunityService';
 
 const CourseDetailPage = () => {
-  const { type, id: courseUuid } = useParams();
-  const [searchParams] = useSearchParams();
-  const community_post_uuid = searchParams.get('community_post_uuid');
+  const { type: pageType, id: courseUuid } = useParams();
+  // const [searchParams] = useSearchParams();
+  // const community_post_uuid = searchParams.get('community_post_uuid');
 
   const navigate = useNavigate();
 
-  const isCommunityPage = type === 'community';
-  const hasCommunityPostUuid = !!community_post_uuid || isCommunityPage;
+  const isCommunityPage = pageType === 'community';
 
   const { data: courseDetailData } = useCourseDetail(courseUuid as string, {
-    enabled: !hasCommunityPostUuid,
+    enabled: !isCommunityPage,
   });
-  const { data: communityPostDetailData } = useCommunityPostDetail(
-    community_post_uuid || (courseUuid as string),
-    {
-      enabled: hasCommunityPostUuid,
-    },
-  );
+  const { data: communityPostDetailData } = useCommunityPostDetail(courseUuid as string, {
+    enabled: isCommunityPage,
+  });
 
-  const detailData = hasCommunityPostUuid ? communityPostDetailData : courseDetailData;
+  const detailData = isCommunityPage ? communityPostDetailData : courseDetailData;
 
   const { line = [], course_name = '', score = '0.0', places = [] } = detailData?.data || {};
   const [stationName, courseName] = course_name.split(',');
@@ -59,9 +55,9 @@ const CourseDetailPage = () => {
 
   const handleLike = () => {
     if (detailData?.data?.is_liked) {
-      cancelCourseLike(community_post_uuid || (courseUuid as string));
+      cancelCourseLike(courseUuid as string);
     } else {
-      addCourseLike(community_post_uuid || (courseUuid as string));
+      addCourseLike(courseUuid as string);
     }
   };
 
