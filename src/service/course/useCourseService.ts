@@ -167,6 +167,7 @@ export const useAddComment = (uuid: string) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['commentList'] });
     },
+    retry: false,
   });
 };
 
