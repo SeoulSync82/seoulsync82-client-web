@@ -8,21 +8,35 @@ const CommentPage = () => {
   const community_post_uuid = searchParams.get('community_post_uuid');
 
   const [comment, setComment] = useState('');
-
   const { data: commentListData } = useCommentList(community_post_uuid as string);
-  const { mutate: createComment } = useAddComment(community_post_uuid as string, comment);
+  const { mutate: createComment, isPending } = useAddComment(community_post_uuid as string);
 
-  console.log(commentListData?.author);
+  const handleSubmit = () => {
+    if (!comment.trim()) return;
+    createComment(comment, {
+      onSuccess: () => setComment(''),
+    });
+  };
 
   return (
     <div className="page flex flex-col items-center bg-white px-0 pb-0 pt-0">
       <AuthorHighlight author={commentListData?.author as Author} />
       <CommentList comments={commentListData?.comments as Comment[]} />
-      <BottomInputPlaceholder
-        comment={comment}
-        setComment={setComment}
-        createComment={createComment}
-      />
+      <div className="w-full px-4">
+        <input
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          onKeyDown={(e) => {
+            e.preventDefault();
+            if (e.key === 'Enter' && !isPending) {
+              handleSubmit();
+            }
+          }}
+          type="text"
+          placeholder="한줄평을 남겨주세요."
+          className="h-[48px] w-full rounded-lg bg-gray-100 px-3 text-base text-gray-900 placeholder:text-gray-300 focus:outline-none"
+        />
+      </div>
     </div>
   );
 };
@@ -103,32 +117,5 @@ const CommentItem = ({ comment }: { comment: Comment }) => (
     </div>
   </div>
 );
-
-const BottomInputPlaceholder = ({
-  comment,
-  setComment,
-  createComment,
-}: {
-  comment: string;
-  setComment: (comment: string) => void;
-  createComment: () => void;
-}) => {
-  return (
-    <div className="w-full px-4">
-      <input
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            createComment();
-          }
-        }}
-        type="text"
-        placeholder="한줄평을 남겨주세요."
-        className="h-[48px] w-full rounded-lg bg-gray-100 px-3 text-base text-gray-900 placeholder:text-gray-300 focus:outline-none"
-      />
-    </div>
-  );
-};
 
 export default CommentPage;

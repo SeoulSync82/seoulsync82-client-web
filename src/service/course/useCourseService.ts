@@ -160,10 +160,10 @@ export const useCommentList = (uuid: string, size: number = 10) => {
   });
 };
 
-export const useAddComment = (uuid: string, comment: string) => {
+export const useAddComment = (uuid: string) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: () => CourseService.addComment(uuid, { comment }),
+    mutationFn: (comment: string) => CourseService.addComment(uuid, { comment }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['commentList'] });
     },

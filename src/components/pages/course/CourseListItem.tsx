@@ -10,6 +10,7 @@ export interface CourseListItemProps {
   line: string;
   subway: string;
   isBookmarked?: boolean;
+  community_uuid?: string;
 }
 
 export default function CourseListItem({
@@ -18,6 +19,7 @@ export default function CourseListItem({
   line,
   subway,
   course_uuid,
+  community_uuid,
   isBookmarked,
 }: CourseListItemProps) {
   const tags = [...line.split(','), ...subway.split(',').map((v) => `${v}역`)];
@@ -38,7 +40,10 @@ export default function CourseListItem({
   // const course_type = location.pathname.split('/')[1] === 'community' ? 'community' : 'my-course';
 
   return (
-    <Link to={`/course/my-course/${course_uuid}`} className="flex items-center px-5">
+    <Link
+      to={`/course/my-course/${course_uuid}${community_uuid ? `?community_post_uuid=${community_uuid}` : ''}`}
+      className="flex items-center px-5"
+    >
       <div className="flex w-full gap-3 border-b-[1px] border-gray-200 py-4">
         <CourseImage
           course_image={course_image}

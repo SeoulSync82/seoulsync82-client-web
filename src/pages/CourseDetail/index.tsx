@@ -9,7 +9,7 @@ import {
   useCancelCourseBookmark,
 } from '@/service/course/useCourseService';
 import CustomPlaceItem from '@/components/pages/ai-recommend/custom-course-step/CustomPlaceItem';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import useCourseStore from '@/stores/courseSlice';
 import {
   useAddCommunityPostLike,
@@ -19,6 +19,9 @@ import {
 
 const CourseDetailPage = () => {
   const { type, id } = useParams();
+  const [searchParams] = useSearchParams();
+  const community_post_uuid = searchParams.get('community_post_uuid');
+
   const isCommunityPage = type === 'community';
   const navigate = useNavigate();
 
@@ -80,13 +83,15 @@ const CourseDetailPage = () => {
     navigate(`/ai-recommend`);
   };
 
+  console.log(111, detailData?.data, community_post_uuid);
+
   const handleWrite = () => {
-    const { course_uuid, course_name, created_at, customs, is_posted } = detailData?.data || {};
-    const { uuid } = communityPostDetailData?.data || {};
+    const { course_uuid, course_name, created_at, customs, is_posted, uuid } =
+      detailData?.data || {};
 
     const path =
       isCommunityPage || is_posted
-        ? `/comment?community_post_uuid=${uuid}`
+        ? `/comment?community_post_uuid=${community_post_uuid || uuid}`
         : `/review?course_uuid=${course_uuid}`;
     const state = !isCommunityPage && !is_posted ? { course_name, created_at, customs } : undefined;
 
