@@ -77,7 +77,7 @@ const AiRecommendPage = () => {
         places: customCourseData.courseData.places,
       };
       await saveAiRecommendCourse(data);
-      window.location.href = `/course/${customCourseData.courseData.uuid}`;
+      window.location.href = `/course/my-course/${customCourseData.courseData.uuid}`;
       resetCustomCourseData();
       return;
     }
