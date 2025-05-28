@@ -19,8 +19,9 @@ import {
 
 const CourseDetailPage = () => {
   const { type: pageType, id: courseUuid } = useParams();
-  // const [searchParams] = useSearchParams();
-  // const community_post_uuid = searchParams.get('community_post_uuid');
+
+  const [searchParams] = useSearchParams();
+  const community_post_uuid = searchParams.get('community_post_uuid');
 
   const navigate = useNavigate();
 
@@ -35,7 +36,13 @@ const CourseDetailPage = () => {
 
   const detailData = isCommunityPage ? communityPostDetailData : courseDetailData;
 
-  const { line = [], course_name = '', score = '0.0', places = [] } = detailData?.data || {};
+  const {
+    line = [],
+    course_name = '',
+    score = '0.0',
+    places = [],
+    course_uuid,
+  } = detailData?.data || {};
   const [stationName, courseName] = course_name.split(',');
 
   const setCustomCourseData = useCourseStore((state) => state.setCustomCourseData);
@@ -63,9 +70,9 @@ const CourseDetailPage = () => {
 
   const handleBookmark = () => {
     if (detailData?.data?.is_bookmarked) {
-      cancelCourseBookmark(courseUuid as string);
+      cancelCourseBookmark(course_uuid || (courseUuid as string));
     } else {
-      addCourseBookmark(courseUuid as string);
+      addCourseBookmark(course_uuid || (courseUuid as string));
     }
   };
 
