@@ -18,21 +18,26 @@ import {
 } from '@/service/community/useCommunityService';
 
 const CourseDetailPage = () => {
-  const { type, id } = useParams();
+  const { type, id: courseUuid } = useParams();
   const [searchParams] = useSearchParams();
   const community_post_uuid = searchParams.get('community_post_uuid');
 
-  const isCommunityPage = type === 'community';
   const navigate = useNavigate();
 
-  const { data: courseDetailData } = useCourseDetail(id as string, {
-    enabled: !isCommunityPage,
-  });
-  const { data: communityPostDetailData } = useCommunityPostDetail(id as string, {
-    enabled: isCommunityPage,
-  });
+  const isCommunityPage = type === 'community';
+  const hasCommunityPostUuid = !!community_post_uuid || isCommunityPage;
 
-  const detailData = isCommunityPage ? communityPostDetailData : courseDetailData;
+  const { data: courseDetailData } = useCourseDetail(courseUuid as string, {
+    enabled: !hasCommunityPostUuid,
+  });
+  const { data: communityPostDetailData } = useCommunityPostDetail(
+    community_post_uuid || (courseUuid as string),
+    {
+      enabled: hasCommunityPostUuid,
+    },
+  );
+
+  const detailData = hasCommunityPostUuid ? communityPostDetailData : courseDetailData;
 
   const { line = [], course_name = '', score = '0.0', places = [] } = detailData?.data || {};
   const [stationName, courseName] = course_name.split(',');
@@ -53,18 +58,18 @@ const CourseDetailPage = () => {
   const { mutate: cancelCourseLike } = useCancelCommunityPostLike();
 
   const handleLike = () => {
-    if (communityPostDetailData?.data?.is_liked) {
-      cancelCourseLike(id as string);
+    if (detailData?.data?.is_liked) {
+      cancelCourseLike(community_post_uuid || (courseUuid as string));
     } else {
-      addCourseLike(id as string);
+      addCourseLike(community_post_uuid || (courseUuid as string));
     }
   };
 
   const handleBookmark = () => {
     if (detailData?.data?.is_bookmarked) {
-      cancelCourseBookmark(detailData?.data?.course_uuid as string);
+      cancelCourseBookmark(courseUuid as string);
     } else {
-      addCourseBookmark(detailData?.data?.course_uuid as string);
+      addCourseBookmark(courseUuid as string);
     }
   };
 
@@ -82,8 +87,6 @@ const CourseDetailPage = () => {
 
     navigate(`/ai-recommend`);
   };
-
-  console.log(111, detailData?.data, community_post_uuid);
 
   const handleWrite = () => {
     const { course_uuid, course_name, created_at, customs, is_posted, uuid } =
@@ -106,7 +109,7 @@ const CourseDetailPage = () => {
         isActive: detailData?.data?.is_bookmarked,
         onClick: handleBookmark,
       },
-      isCommunityPage || detailData?.data?.is_posted
+      isCommunityPage || !!community_post_uuid
         ? {
             label: '좋아요',
             icon: 'Heart',
