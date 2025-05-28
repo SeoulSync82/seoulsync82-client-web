@@ -19,9 +19,11 @@ const CommentPage = () => {
   };
 
   return (
-    <div className="page flex flex-col items-center bg-white px-0 pb-0 pt-0">
-      <AuthorHighlight author={commentListData?.author as Author} />
-      <CommentList comments={commentListData?.comments as Comment[]} />
+    <div className="page flex flex-col items-center justify-between bg-white px-0 pb-7 pt-0">
+      <div className="flex w-full flex-col items-center">
+        <AuthorHighlight author={commentListData?.author as Author} />
+        <CommentList comments={commentListData?.comments as Comment[]} />
+      </div>
       <div className="w-full px-4">
         <input
           value={comment}
@@ -80,7 +82,7 @@ type Comment = {
 };
 
 const CommentList = ({ comments }: { comments: Comment[] }) => (
-  <div className="flex h-[calc(100dvh-300px)] w-full max-w-md flex-col gap-5 overflow-y-auto px-4 py-4">
+  <div className="flex h-[calc(100dvh-206px)] w-full max-w-md flex-col gap-5 overflow-y-auto px-4 py-4">
     {comments?.map((comment) => <CommentItem key={comment.id} comment={comment} />)}
   </div>
 );
